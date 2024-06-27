@@ -6,6 +6,8 @@ import { FuzzingResults, VmParsingData } from "../types/types";
 //////////////////////////////////////
 let echidnaTraceLogger = false;
 let echidnaSequenceLogger = false;
+let currentBrokenPropertyEchidna = "";
+let prevLine = "";
 export function _processEchidna(line: string, jobStats: FuzzingResults): void {
   if (line.includes("[status] tests:")) {
     const durationMatch = line.match(/fuzzing: (\d+\/\d+)/);
@@ -30,7 +32,11 @@ export function _processEchidna(line: string, jobStats: FuzzingResults): void {
     const sequenceMatch = line.includes("Call sequence");
     if (sequenceMatch) {
       echidnaSequenceLogger = true;
+      if (!currentBrokenPropertyEchidna) {
+        currentBrokenPropertyEchidna = prevLine.split(": failed!")[0];
+      }
     }
+
     const tracesMatch = line.includes("Traces:");
     if (tracesMatch) {
       echidnaTraceLogger = true;
@@ -40,11 +46,39 @@ export function _processEchidna(line: string, jobStats: FuzzingResults): void {
       echidnaTraceLogger = false;
       echidnaSequenceLogger = false;
       jobStats.traces.push("---End Trace---");
+
+      const existingProperty = jobStats.brokenProperties.find(
+        (el) => el.brokenProperty === currentBrokenPropertyEchidna
+      );
+      if (
+        existingProperty &&
+        !existingProperty.sequence.includes("---End Trace---")
+      ) {
+        existingProperty.sequence += `---End Trace---\n`;
+      }
+      currentBrokenPropertyEchidna = "";
     }
+
     if (echidnaSequenceLogger || echidnaTraceLogger) {
       jobStats.traces.push(line);
+
+      const existingProperty = jobStats.brokenProperties.find(
+        (el) => el.brokenProperty === currentBrokenPropertyEchidna
+      );
+      if (!existingProperty) {
+        jobStats.brokenProperties.push({
+          brokenProperty: currentBrokenPropertyEchidna,
+          sequence: `${line}\n`,
+        });
+      } else {
+        if (!existingProperty.sequence.includes("---End Trace---")) {
+          existingProperty.sequence += `${line}\n`;
+        }
+      }
     }
   }
+
+  prevLine = line;
 }
 
 export function echidnaLogsToFunctions(

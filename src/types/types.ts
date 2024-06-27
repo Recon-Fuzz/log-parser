@@ -11,7 +11,14 @@ export interface FuzzingResults {
   passed: string;
   results: string[];
   traces: string[];
+  brokenProperties: BrokenProperty[];
 }
+
+export interface BrokenProperty {
+  brokenProperty: string;
+  sequence: string;
+}
+
 
 export interface PropertyAndSequence {
   brokenProperty: string;

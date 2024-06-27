@@ -11,6 +11,7 @@ export const processLogs = (logs: string, tool: string): FuzzingResults => {
     passed: "jobStats pending",
     results: [],
     traces: [],
+    brokenProperties: [],
   };
 
   const lines = logs.split("\n");

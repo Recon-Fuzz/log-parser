@@ -6,12 +6,8 @@ import { captureFuzzingDuration, formatAddress, formatBytes } from "../utils/uti
 
 let medusaTraceLogger = false;
 let medusaTraceLoggerFlag = false;
-let recording = false;
+let currentBrokenPropertyMedusa = "";
 export function _processMedusa(line: string, jobStats: FuzzingResults): void {
-  if (line.includes("Fuzzer stopped, test results follow below ...")) {
-    recording = true;
-  }
-
   if (line.includes("Test for method")) {
     medusaTraceLogger = true;
   }
@@ -34,30 +30,59 @@ export function _processMedusa(line: string, jobStats: FuzzingResults): void {
     }
   } else if (line.includes("[PASSED]") || line.includes("[FAILED]")) {
     jobStats.results.push(line);
-  } else if ((medusaTraceLogger && recording)) {
-    // This is a unique string that indicates when a sequence will be shown
+  } else if (medusaTraceLogger) {
+    const res = /for method ".*\.(?<name>[a-zA-Z_0-9]+)\(.*\)"/.exec(line);
+    const brokenProp = res?.groups?.name ? res.groups.name : "";
+
+    if (brokenProp !== "" || currentBrokenPropertyMedusa !== "") {
+      if (brokenProp !== "") {
+        currentBrokenPropertyMedusa = brokenProp;
+      }
+
+      const existingProperty = jobStats.brokenProperties.find(
+        (el) => el.brokenProperty === currentBrokenPropertyMedusa
+      );
+      if (!existingProperty) {
+        jobStats.brokenProperties.push({
+          brokenProperty: currentBrokenPropertyMedusa,
+          sequence: `${line}\n`,
+        });
+      } else {
+        if (!existingProperty.sequence.includes("---End Trace---")) {
+          existingProperty.sequence += `${line}\n`;
+        }
+      }
+    }
+
     jobStats.traces.push(line);
 
-    // medusaTraceLoggerFlag is used to indicate when a trace log is detected
-    // For a property the `[return (false)]` is the expected format
-    // but this MUST be followed by an empty line for it to conform to the expected trace
     if (line.includes("[return (false)]")) {
       medusaTraceLoggerFlag = true;
     }
 
-    // Once the end of the trace is reached we set the logger to false again
     if (
       line.includes("panic: assertion failed") ||
-      (medusaTraceLoggerFlag && line == "")
+      (medusaTraceLoggerFlag && line === "")
     ) {
       medusaTraceLogger = false;
       medusaTraceLoggerFlag = false;
-      // If the trace ends, let's add an emtpy line
+
       if (line.includes("panic: assertion failed")) {
         jobStats.traces.push("");
       }
 
       jobStats.traces.push("---End Trace---");
+
+      const existingProperty = jobStats.brokenProperties.find(
+        (el) => el.brokenProperty === currentBrokenPropertyMedusa
+      );
+      if (
+        existingProperty &&
+        !existingProperty.sequence.includes("---End Trace---")
+      ) {
+        existingProperty.sequence += `---End Trace---\n`;
+      }
+      currentBrokenPropertyMedusa = "";
     }
   }
 }
