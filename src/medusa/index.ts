@@ -1,5 +1,5 @@
 import { FuzzingResults, PropertyAndSequence, VmParsingData } from "../types/types";
-import { formatAddress, formatBytes } from "../utils/utils";
+import { captureFuzzingDuration, formatAddress, formatBytes } from "../utils/utils";
 //////////////////////////////////////
 //          MEDUSA                  //
 //////////////////////////////////////
@@ -18,7 +18,7 @@ export function _processMedusa(line: string, jobStats: FuzzingResults): void {
   if (line.includes("fuzz: elapsed:")) {
     jobStats.duration = captureFuzzingDuration(
       line.replace("fuzz: elapsed:", "")
-    );
+    ) ?? ""; // TODO 0XSI - fix this
     const coverageMatch = line.match(/coverage: (\d+)/);
     if (coverageMatch) {
       jobStats.coverage = coverageMatch[1];
@@ -110,9 +110,12 @@ export function getFunctionCallsWithVM(
     cleanedData = formatBytes(cleanedData);
 
     if (vmData) {
+      //@ts-ignore
       const block = parseInt(entry.match(/block=(\d+)/)[1]);
+      //@ts-ignore
       const time = parseInt(entry.match(/time=(\d+)/)[1]);
       const sender = entry.match(/sender=(0x[0-9a-fA-F]{40})/)
+      //@ts-ignore
         ? entry.match(/sender=(0x[0-9a-fA-F]{40})/)[1]
         : "";
       if (vmData.roll) {

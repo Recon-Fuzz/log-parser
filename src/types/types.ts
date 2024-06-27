@@ -17,3 +17,8 @@ export interface PropertyAndSequence {
   brokenProperty: string;
   sequence: string[] | string;
 }
+
+export enum Fuzzer {
+  MEDUSA = "MEDUSA",
+  ECHIDNA = "ECHIDNA",
+}

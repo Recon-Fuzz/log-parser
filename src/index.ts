@@ -1,4 +1,4 @@
-import type { FuzzingResults } from "./types/types";
+import { Fuzzer, type FuzzingResults } from "./types/types";
 import { _processEchidna } from "./echidna";
 import { _processMedusa } from "./medusa";
 import { _processTraceLogs } from "./utils/utils";
@@ -14,11 +14,11 @@ export const processLogs = (logs: string, tool: string): FuzzingResults => {
   };
 
   const lines = logs.split("\n");
-
+  console.log("tool", tool)
   lines.forEach((line) => {
-    if (tool === "MEDUSA") {
+    if (tool === Fuzzer.MEDUSA) {
       _processMedusa(line, jobStats);
-    } else if (tool === "ECHIDNA") {
+    } else if (tool === Fuzzer.ECHIDNA) {
       _processEchidna(line, jobStats);
     }
   });
