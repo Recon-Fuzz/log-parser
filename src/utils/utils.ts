@@ -33,15 +33,28 @@ export function formatAddress(input: string): string {
   return cleanedData;
 }
 
-export function formatBytes(input: string): string {
-  // Regular expression to match byte sequences (hexadecimal sequences without '0x' and not mistaken for Ethereum addresses)
-  const potentialBytes = input.match(/\b(?!0x)(?=.*[a-fA-F])[0-9a-fA-F]{2,}\b/g);
+export function formatBytes(input: string) {
+  const parenthesesRegex = /\(([^)]+)\)/;
+  const match = parenthesesRegex.exec(input);
 
-  if (potentialBytes) {
-    potentialBytes.forEach(byteSequence => {
-      input = input.replace(byteSequence, `hex"${byteSequence}"`);
-    });
+  if (match && match[1]) {
+    let innerContent = match[1];
+
+    const byteSequenceRegex = /\b(?!0x)(?=\w*[a-fA-F])\w{2,}\b/g;
+    const potentialBytes = innerContent.match(byteSequenceRegex);
+    if (potentialBytes) {
+      innerContent = innerContent.replace(/\b(?!0x)(?=\w*[a-fA-F])\w{2,}\b(?!")/g, (byteSequence) => {
+        // Only wrap sequences not already wrapped with hex""
+        if (!byteSequence.startsWith('hex"')) {
+          return `hex"${byteSequence}"`;
+        }
+        return byteSequence;
+      });
+    }
+
+    input = input.replace(match[1], innerContent);
   }
+
   return input;
 }
 
