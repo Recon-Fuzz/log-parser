@@ -1,6 +1,7 @@
 import fs from "fs";
 import { processLogs } from "../src/index";
 import { Fuzzer } from "../src/types/types";
+import { medusaLogsToFunctions } from "../src/medusa";
 
 describe("Testing fuzz results for", () => {
   describe("Medusa fuzzer", () => {
@@ -11,7 +12,7 @@ describe("Testing fuzz results for", () => {
     });
 
     test("Medusa coverage", () => {
-      expect(jobStatsMedusa.coverage).toBe("26");
+      expect(jobStatsMedusa.coverage).toBe(26);
     });
 
     test("Medusa failed", () => {
@@ -44,7 +45,7 @@ describe("Testing fuzz results for", () => {
     });
 
     test("Echidna coverage", () => {
-      expect(jobStatsEchidna.coverage).toBe("53367");
+      expect(jobStatsEchidna.coverage).toBe(53367);
     });
 
     test("Echidna failed", () => {
@@ -68,4 +69,20 @@ describe("Testing fuzz results for", () => {
       })
     })
   })
+
+  describe("It should parse the bytes correctly", () => {
+    const data = fs.readFileSync("./tests/test_data/medusa-bytes-parsing.txt", "utf8");
+    const formattedData = processLogs(data, Fuzzer.MEDUSA);
+    test("It should format the bytes correctly", () => {
+      formattedData.brokenProperties.forEach(el => {
+        const vmData = {
+          roll: false,
+          time: false,
+          prank: false
+        }
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        expect(format.includes("hex")).toBe(true);
+      })
+    });
+  });
 })

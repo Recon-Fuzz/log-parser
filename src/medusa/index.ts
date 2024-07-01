@@ -18,7 +18,7 @@ export function _processMedusa(line: string, jobStats: FuzzingResults): void {
     ) ?? ""; // TODO 0XSI - fix this
     const coverageMatch = line.match(/coverage: (\d+)/);
     if (coverageMatch) {
-      jobStats.coverage = coverageMatch[1];
+      jobStats.coverage = +coverageMatch[1];
     }
   } else if (line.includes("Test summary:")) {
     const passedMatch = line.match(/(\d+ test\(s\) passed)/);

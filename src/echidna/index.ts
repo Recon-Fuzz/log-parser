@@ -22,7 +22,7 @@ export function _processEchidna(line: string, jobStats: FuzzingResults): void {
       jobStats.duration = durationMatch[1];
     }
     if (coverageMatch) {
-      jobStats.coverage = coverageMatch[1];
+      jobStats.coverage = +coverageMatch[1];
     }
     if (failedMatch && passedMatch) {
       const failed = parseInt(failedMatch[1]);

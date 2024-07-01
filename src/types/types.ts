@@ -6,7 +6,7 @@ export interface VmParsingData {
 
 export interface FuzzingResults {
   duration: string;
-  coverage: string;
+  coverage: number;
   failed: number;
   passed: number;
   results: string[];

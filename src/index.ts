@@ -6,7 +6,7 @@ import { _processTraceLogs } from "./utils/utils";
 export const processLogs = (logs: string, tool: string): FuzzingResults => {
   const jobStats: FuzzingResults = {
     duration: "",
-    coverage: "",
+    coverage: 0,
     failed: 0,
     passed: 0,
     results: [],
