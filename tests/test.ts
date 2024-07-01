@@ -14,3 +14,8 @@ const dataEchidna = fs.readFileSync("./tests/test_data/echidna.txt", "utf8");
 
 const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
 console.log(jobStatsEchidna)
+
+
+describe("Testing fuzz results", () => {
+
+})
