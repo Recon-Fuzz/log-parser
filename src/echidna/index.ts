@@ -28,8 +28,8 @@ export function _processEchidna(line: string, jobStats: FuzzingResults): void {
       const failed = parseInt(failedMatch[1]);
       const total = parseInt(passedMatch[1]);
       const passed = total - failed;
-      jobStats.failed = `${failed}`;
-      jobStats.passed = `${passed}`;
+      jobStats.failed = failed;
+      jobStats.passed = passed;
     }
   } else {
     const sequenceMatch = line.includes("Call sequence");

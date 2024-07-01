@@ -7,8 +7,8 @@ export const processLogs = (logs: string, tool: string): FuzzingResults => {
   const jobStats: FuzzingResults = {
     duration: "",
     coverage: "",
-    failed: "jobStats pending",
-    passed: "jobStats pending",
+    failed: 0,
+    passed: 0,
     results: [],
     traces: [],
     brokenProperties: [],

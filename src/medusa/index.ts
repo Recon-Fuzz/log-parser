@@ -24,10 +24,10 @@ export function _processMedusa(line: string, jobStats: FuzzingResults): void {
     const passedMatch = line.match(/(\d+ test\(s\) passed)/);
     const failedMatch = line.match(/(\d+ test\(s\) failed)/);
     if (passedMatch) {
-      jobStats.passed = passedMatch[1];
+      jobStats.passed = +passedMatch[1].split(" test(s)")[0];
     }
     if (failedMatch) {
-      jobStats.failed = failedMatch[1];
+      jobStats.failed = +failedMatch[1].split(" test(s)")[0];
     }
   } else if (line.includes("Fuzzer stopped, test results follow below ...")) {
     resultsLogger = true;

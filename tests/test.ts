@@ -15,15 +15,15 @@ describe("Testing fuzz results for", () => {
     });
 
     test("Medusa failed", () => {
-      expect(jobStatsMedusa.failed).toBe("3 test(s) failed");
+      expect(jobStatsMedusa.failed).toBe(3);
     });
 
     test("Medusa passed", () => {
-      expect(jobStatsMedusa.passed).toBe("14 test(s) passed");
+      expect(jobStatsMedusa.passed).toBe(14);
     });
 
     test("Results array should be the length of failed + passed", () => {
-      expect(jobStatsMedusa.results.length).toBe(17); // 14 passed + 3 failed
+      expect(jobStatsMedusa.results.length).toBe(jobStatsMedusa.failed + jobStatsMedusa.passed); // 14 passed + 3 failed
     })
     test("brokenProperties array should be the length of failed", () => {
       expect(jobStatsMedusa.brokenProperties.length).toBe(3);
@@ -48,18 +48,18 @@ describe("Testing fuzz results for", () => {
     });
 
     test("Echidna failed", () => {
-      expect(jobStatsEchidna.failed).toBe("2");
+      expect(jobStatsEchidna.failed).toBe(2);
     });
 
     test("Echidna passed", () => {
-      expect(jobStatsEchidna.passed).toBe("15");
+      expect(jobStatsEchidna.passed).toBe(15);
     });
 
     test("Results array should be the length of failed + passed", () => {
-      expect(jobStatsEchidna.results.length).toBe(17); // 14 passed + 3 failed
+      expect(jobStatsEchidna.results.length).toBe(jobStatsEchidna.failed + jobStatsEchidna.passed); // 14 passed + 3 failed
     })
     test("brokenProperties array should be the length of failed", () => {
-      expect(jobStatsEchidna.brokenProperties.length).toBe(+jobStatsEchidna.failed);
+      expect(jobStatsEchidna.brokenProperties.length).toBe(jobStatsEchidna.failed);
     });
     test("All traces for broken properties should start with 'test for method' and end with ---End Trace---", () => {
       jobStatsEchidna.brokenProperties.forEach((el) => {
