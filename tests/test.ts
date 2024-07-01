@@ -1,5 +1,5 @@
 import fs from "fs";
-import { processLogs } from "../src/index";
+import { processLogs } from "../src/main";
 import { Fuzzer } from "../src/types/types";
 import { medusaLogsToFunctions } from "../src/medusa";
 

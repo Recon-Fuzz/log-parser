@@ -1,29 +1,34 @@
-import { Fuzzer, type FuzzingResults } from "./types/types";
-import { _processEchidna } from "./echidna";
-import { _processMedusa } from "./medusa";
-import { _processTraceLogs } from "./utils/utils";
+// Medusa
+export {
+  _processMedusa,
+  getPropertyAndSequenceString,
+  getFunctionCallsWithVM,
+  getFunctionCalls,
+  getHeaders,
+  medusaLogsToFunctions,
+} from "./medusa/index";
 
-export const processLogs = (logs: string, tool: string): FuzzingResults => {
-  const jobStats: FuzzingResults = {
-    duration: "",
-    coverage: 0,
-    failed: 0,
-    passed: 0,
-    results: [],
-    traces: [],
-    brokenProperties: [],
-  };
+// Echidna
+export { _processEchidna, echidnaLogsToFunctions } from "./echidna/index";
 
-  const lines = logs.split("\n");
-  console.log("tool", tool)
-  lines.forEach((line) => {
-    if (tool === Fuzzer.MEDUSA) {
-      _processMedusa(line, jobStats);
-    } else if (tool === Fuzzer.ECHIDNA) {
-      _processEchidna(line, jobStats);
-    }
-  });
+// Utils
+export {
+  captureFuzzingDuration,
+  correctChecksum,
+  correctAllChecksums,
+  formatAddress,
+  formatBytes,
+  _processTraceLogs,
+} from "./utils/utils";
 
-  jobStats.traces = _processTraceLogs(jobStats.traces);
-  return jobStats;
-};
+// Types
+export {
+  VmParsingData,
+  FuzzingResults,
+  BrokenProperty,
+  PropertyAndSequence,
+  Fuzzer,
+} from "./types/types";
+
+// Main function
+export { processLogs } from "./main";
