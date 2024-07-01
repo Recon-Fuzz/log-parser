@@ -9,6 +9,9 @@ let echidnaSequenceLogger = false;
 let currentBrokenPropertyEchidna = "";
 let prevLine = "";
 export function _processEchidna(line: string, jobStats: FuzzingResults): void {
+  if (line.includes(": passing") || line.includes(": failed!")) {
+    jobStats.results.push(line);
+  }
   if (line.includes("[status] tests:")) {
     const durationMatch = line.match(/fuzzing: (\d+\/\d+)/);
     const coverageMatch = line.match(/cov: (\d+)/);

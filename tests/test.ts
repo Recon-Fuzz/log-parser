@@ -1,22 +1,11 @@
-// TODO 0XSI
-// Set up basic regression tests
 import fs from "fs";
 import { processLogs } from "../src/index";
 import { Fuzzer } from "../src/types/types";
-
-
-
-
-const dataEchidna = fs.readFileSync("./tests/test_data/echidna.txt", "utf8");
-
-const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
-console.log(jobStatsEchidna)
 
 describe("Testing fuzz results for", () => {
   describe("Medusa fuzzer", () => {
     const dataMedusa = fs.readFileSync("./tests/test_data/medusa.txt", "utf8");
     const jobStatsMedusa = processLogs(dataMedusa, Fuzzer.MEDUSA);
-    console.log(jobStatsMedusa)
     test("Medusa fuzzing duration", () => {
       expect(jobStatsMedusa.duration).toBe("4h0m0s");
     });
@@ -42,6 +31,39 @@ describe("Testing fuzz results for", () => {
     test("All traces for broken properties should start with 'test for method' and end with ---End Trace---", () => {
       jobStatsMedusa.brokenProperties.forEach((el) => {
         expect(el.sequence.startsWith("Test for method")).toBe(true);
+        expect(el.sequence.endsWith("---End Trace---\n")).toBe(true);
+      })
+    })
+  })
+  describe("Echidna fuzzer", () => {
+    const dataEchidna = fs.readFileSync("./tests/test_data/echidna.txt", "utf8");
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    console.log(jobStatsEchidna)
+    test("Echidna fuzzing duration", () => {
+      expect(jobStatsEchidna.duration).toBe("20000462/20000000");
+    });
+
+    test("Echidna coverage", () => {
+      expect(jobStatsEchidna.coverage).toBe("53367");
+    });
+
+    test("Echidna failed", () => {
+      expect(jobStatsEchidna.failed).toBe("2");
+    });
+
+    test("Echidna passed", () => {
+      expect(jobStatsEchidna.passed).toBe("15");
+    });
+
+    test("Results array should be the length of failed + passed", () => {
+      expect(jobStatsEchidna.results.length).toBe(17); // 14 passed + 3 failed
+    })
+    test("brokenProperties array should be the length of failed", () => {
+      expect(jobStatsEchidna.brokenProperties.length).toBe(+jobStatsEchidna.failed);
+    });
+    test("All traces for broken properties should start with 'test for method' and end with ---End Trace---", () => {
+      jobStatsEchidna.brokenProperties.forEach((el) => {
+        expect(el.sequence.startsWith("  Call sequence:\n")).toBe(true);
         expect(el.sequence.endsWith("---End Trace---\n")).toBe(true);
       })
     })
