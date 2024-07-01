@@ -9,6 +9,9 @@ let echidnaSequenceLogger = false;
 let currentBrokenPropertyEchidna = "";
 let prevLine = "";
 export function _processEchidna(line: string, jobStats: FuzzingResults): void {
+  if (line.includes(": passing") || line.includes(": failed!")) {
+    jobStats.results.push(line);
+  }
   if (line.includes("[status] tests:")) {
     const durationMatch = line.match(/fuzzing: (\d+\/\d+)/);
     const coverageMatch = line.match(/cov: (\d+)/);
@@ -19,14 +22,14 @@ export function _processEchidna(line: string, jobStats: FuzzingResults): void {
       jobStats.duration = durationMatch[1];
     }
     if (coverageMatch) {
-      jobStats.coverage = coverageMatch[1];
+      jobStats.coverage = +coverageMatch[1];
     }
     if (failedMatch && passedMatch) {
       const failed = parseInt(failedMatch[1]);
       const total = parseInt(passedMatch[1]);
       const passed = total - failed;
-      jobStats.failed = `${failed}`;
-      jobStats.passed = `${passed}`;
+      jobStats.failed = failed;
+      jobStats.passed = passed;
     }
   } else {
     const sequenceMatch = line.includes("Call sequence");

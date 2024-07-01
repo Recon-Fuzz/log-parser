@@ -7,6 +7,7 @@ import { captureFuzzingDuration, formatAddress, formatBytes } from "../utils/uti
 let medusaTraceLogger = false;
 let medusaTraceLoggerFlag = false;
 let currentBrokenPropertyMedusa = "";
+let resultsLogger = false;
 export function _processMedusa(line: string, jobStats: FuzzingResults): void {
   if (line.includes("Test for method")) {
     medusaTraceLogger = true;
@@ -17,18 +18,22 @@ export function _processMedusa(line: string, jobStats: FuzzingResults): void {
     ) ?? ""; // TODO 0XSI - fix this
     const coverageMatch = line.match(/coverage: (\d+)/);
     if (coverageMatch) {
-      jobStats.coverage = coverageMatch[1];
+      jobStats.coverage = +coverageMatch[1];
     }
   } else if (line.includes("Test summary:")) {
     const passedMatch = line.match(/(\d+ test\(s\) passed)/);
     const failedMatch = line.match(/(\d+ test\(s\) failed)/);
     if (passedMatch) {
-      jobStats.passed = passedMatch[1];
+      jobStats.passed = +passedMatch[1].split(" test(s)")[0];
     }
     if (failedMatch) {
-      jobStats.failed = failedMatch[1];
+      jobStats.failed = +failedMatch[1].split(" test(s)")[0];
     }
-  } else if (line.includes("[PASSED]") || line.includes("[FAILED]")) {
+  } else if (line.includes("Fuzzer stopped, test results follow below ...")) {
+    resultsLogger = true;
+  } else if (line.includes("[PASSED]") && resultsLogger) {
+    jobStats.results.push(line);
+  } else if (line.includes("[FAILED]") && resultsLogger) {
     jobStats.results.push(line);
   } else if (medusaTraceLogger) {
     const res = /for method ".*\.(?<name>[a-zA-Z_0-9]+)\(.*\)"/.exec(line);
