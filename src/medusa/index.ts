@@ -7,6 +7,7 @@ import { captureFuzzingDuration, formatAddress, formatBytes } from "../utils/uti
 let medusaTraceLogger = false;
 let medusaTraceLoggerFlag = false;
 let currentBrokenPropertyMedusa = "";
+let resultsLogger = false;
 export function _processMedusa(line: string, jobStats: FuzzingResults): void {
   if (line.includes("Test for method")) {
     medusaTraceLogger = true;
@@ -28,7 +29,11 @@ export function _processMedusa(line: string, jobStats: FuzzingResults): void {
     if (failedMatch) {
       jobStats.failed = failedMatch[1];
     }
-  } else if (line.includes("[PASSED]") || line.includes("[FAILED]")) {
+  } else if (line.includes("Fuzzer stopped, test results follow below ...")) {
+    resultsLogger = true;
+  } else if (line.includes("[PASSED]") && resultsLogger) {
+    jobStats.results.push(line);
+  } else if (line.includes("[FAILED]") && resultsLogger) {
     jobStats.results.push(line);
   } else if (medusaTraceLogger) {
     const res = /for method ".*\.(?<name>[a-zA-Z_0-9]+)\(.*\)"/.exec(line);
