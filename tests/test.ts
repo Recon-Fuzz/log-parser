@@ -85,4 +85,18 @@ describe("Testing fuzz results for", () => {
       })
     });
   });
+  describe("It should format the addresses correctly", () => {
+    const addressData = fs.readFileSync("./tests/test_data/medusa-address-parsing.txt", "utf8");
+    const vmData = {
+      roll: false,
+      time: false,
+      prank: false
+    }
+    expect(addressData.includes("0xffffffffffffffffffffffffffffffffffffffff")).toBe(true);
+    expect(addressData.includes("0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF")).toBe(false);
+
+    const format = medusaLogsToFunctions(addressData, "", vmData);
+    expect(format.includes("0xffffffffffffffffffffffffffffffffffffffff")).toBe(false);
+    expect(format.includes("0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF")).toBe(true);
+  });
 })
