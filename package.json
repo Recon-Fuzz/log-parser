@@ -1,12 +1,13 @@
 {
   "name": "@recon-fuzz/log-parser",
   "description": "Fuzzer log parser for Recon Fuzz",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "GPL-2.0-only",
-  "main": "index.ts",
+  "main": "main.ts",
   "author": "0xsi <simon.busch@live.fr>",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
