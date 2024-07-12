@@ -3,7 +3,7 @@
   "description": "Fuzzer log parser for Recon Fuzz",
   "version": "0.0.4",
   "license": "GPL-2.0-only",
-  "main": "main.ts",
+  "main": "main.js",
   "author": "0xsi <simon.busch@live.fr>",
   "scripts": {
     "test": "jest",
