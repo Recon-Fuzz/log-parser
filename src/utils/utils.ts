@@ -1,4 +1,4 @@
-import { toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddress } from "ethereumjs-util";
 
 export function captureFuzzingDuration(line: string): string | null {
   const pattern = /\b(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?\b/;
@@ -58,7 +58,7 @@ export function formatBytes(input: string) {
   return input;
 }
 
-export function _processTraceLogs(logs: string[]): string[] {
+export function processTraceLogs(logs: string[]): string[] {
   const result: string[] = [];
   let currentItem: string = "";
 

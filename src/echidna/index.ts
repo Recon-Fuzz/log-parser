@@ -9,15 +9,15 @@ let echidnaSequenceLogger = false;
 let currentBrokenPropertyEchidna = "";
 let prevLine = "";
 /**
- * The _processEchidna function processes log lines to extract job statistics and traces for fuzzing results.
- * @param {string} line - The `_processEchidna` function processes a line of text
+ * The processEchidna function processes log lines to extract job statistics and traces for fuzzing results.
+ * @param {string} line - The `processEchidna` function processes a line of text
  * from a log file generated during fuzzing and updates the `jobStats` object
  * @param {FuzzingResults} jobStats - The `jobStats` parameter in the
- * `_processEchidna` function is an object of type `FuzzingResults`. It contains
+ * `processEchidna` function is an object of type `FuzzingResults`. It contains
  * various properties to store information related to the fuzzing job being
  * processed.
  */
-export function _processEchidna(line: string, jobStats: FuzzingResults): void {
+export function processEchidna(line: string, jobStats: FuzzingResults): void {
   if (line.includes(": passing") || line.includes(": failed!")) {
     jobStats.results.push(line);
   }
@@ -121,7 +121,7 @@ export function echidnaLogsToFunctions(
     .map((test: string, i: number) => {
       let updated = test
         .trim()
-        .replaceAll(")", ");")
+        .replace(/\)/g, ");")
         .replace(
           "Call sequence",
           `function test_prefix_${i}_${prefix}() public {`

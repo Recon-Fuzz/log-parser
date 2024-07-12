@@ -9,14 +9,14 @@ let medusaTraceLoggerFlag = false;
 let currentBrokenPropertyMedusa = "";
 let resultsLogger = false;
 /**
- * The function `_processMedusa` parses and extracts information from a given line
+ * The function `processMedusa` parses and extracts information from a given line
  * of text to update job statistics and log results for a Medusa testing job.
- * @param {string} line - The function `_processMedusa` takes in two parameters:
+ * @param {string} line - The function `processMedusa` takes in two parameters:
  * `line` and `jobStats`.
- * @param {FuzzingResults} jobStats - The function `_processMedusa` takes in two
+ * @param {FuzzingResults} jobStats - The function `processMedusa` takes in two
  * parameters: `line` of type string and `jobStats` of type `FuzzingResults`.
  */
-export function _processMedusa(line: string, jobStats: FuzzingResults): void {
+export function processMedusa(line: string, jobStats: FuzzingResults): void {
   if (line.includes("Test for method")) {
     medusaTraceLogger = true;
   }

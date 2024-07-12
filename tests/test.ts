@@ -1,7 +1,7 @@
 import fs from "fs";
 import { processLogs } from "../src/main";
 import { Fuzzer } from "../src/types/types";
-import { medusaLogsToFunctions } from "../src/medusa";
+import { medusaLogsToFunctions } from "../src/medusa/index";
 
 describe("Testing fuzz results for", () => {
   describe("Medusa fuzzer", () => {

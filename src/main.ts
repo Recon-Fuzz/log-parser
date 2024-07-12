@@ -1,7 +1,7 @@
 import { Fuzzer, type FuzzingResults } from "./types/types";
-import { _processEchidna } from "./echidna";
-import { _processMedusa } from "./medusa";
-import { _processTraceLogs } from "./utils/utils";
+import { processEchidna } from "./echidna/index"
+import { processMedusa } from "./medusa/index";
+import { processTraceLogs } from "./utils/utils";
 
 /**
  * The `processLogs` function processes logs based on the specified tool (Medusa or
@@ -31,12 +31,12 @@ export const processLogs = (logs: string, tool: Fuzzer): FuzzingResults => {
 
   lines.forEach((line) => {
     if (tool === Fuzzer.MEDUSA) {
-      _processMedusa(line, jobStats);
+      processMedusa(line, jobStats);
     } else if (tool === Fuzzer.ECHIDNA) {
-      _processEchidna(line, jobStats);
+      processEchidna(line, jobStats);
     }
   });
 
-  jobStats.traces = _processTraceLogs(jobStats.traces);
+  jobStats.traces = processTraceLogs(jobStats.traces);
   return jobStats;
 };
