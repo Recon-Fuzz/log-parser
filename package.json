@@ -1,7 +1,7 @@
 {
   "name": "@recon-fuzz/log-parser",
   "description": "Fuzzer log parser for Recon Fuzz",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "GPL-2.0-only",
   "main": "lib/bundle.js",
   "author": "0xsi <simon.busch@live.fr>",
