@@ -1,1 +1,19 @@
 /node_modules
+/lib
+/docs
+
+
+## Demo Folders
+
+/out
+/codegen-out
+/demo
+/cli
+
+/recon_out
+
+.DS_Store
+
+## NPM
+
+.npmrc
