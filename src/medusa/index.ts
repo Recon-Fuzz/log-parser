@@ -124,12 +124,11 @@ export function getPropertyAndSequenceString(
     .filter((entry) => !entry.includes("[FAILED]"))
     .filter((entry) => entry.trim() != "");
 
-  const bodies = splitted.map((entry) =>
+    const bodies = splitted.map((entry) =>
     vmData
       ? getFunctionCallsWithVM(entry, vmData)
       : getFunctionCalls(entry).map((body) => body.replace(" (block=", ";"))
   );
-
   const headers = splitted.map((entry, counter) => getHeaders(entry, counter));
 
   if (bodies.length != headers.length) {
@@ -161,9 +160,8 @@ export function getFunctionCallsWithVM(
   vmData?: VmParsingData
 ): string[] {
   const pattern: RegExp =
-    /(\w+)\(([^)]*)\)\s+\(block=\d*, time=\d*, gas=\d*, gasprice=\d*, value=\d*, sender=\d*x\d*/gm;
+    /(\w+)\(([^)]*)\)\(?[^)]*\)?\s+\(block=\d*, time=\d*, gas=\d*, gasprice=\d*, value=\d*, sender=\d*x\d*\)/gm;
   const matches: RegExpMatchArray | null = logs.match(pattern);
-
   //TODO 0XSI
   // Could be splited to be reusable by the log parser
   const functionCalls = matches?.map((entry) => {
@@ -174,6 +172,8 @@ export function getFunctionCallsWithVM(
     cleanedData += formatAddress(splittedEntry);
     // Format bytes by adding hex"".
     cleanedData = formatBytes(cleanedData);
+    const pattern = /(\w+)\([^)]*\)(\([^)]*\))/g; // Would catch cases such as: check_liquidation_solvency()();
+    cleanedData = cleanedData.replace(pattern, "$1$2");
 
     if (vmData) {
       //@ts-ignore
@@ -200,7 +200,6 @@ export function getFunctionCallsWithVM(
     }
     return returnData;
   }) as string[];
-
   return functionCalls || [];
 }
 

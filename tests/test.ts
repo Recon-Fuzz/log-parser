@@ -24,8 +24,10 @@ describe("Testing fuzz results for", () => {
     });
 
     test("Results array should be the length of failed + passed", () => {
-      expect(jobStatsMedusa.results.length).toBe(jobStatsMedusa.failed + jobStatsMedusa.passed); // 14 passed + 3 failed
-    })
+      expect(jobStatsMedusa.results.length).toBe(
+        jobStatsMedusa.failed + jobStatsMedusa.passed
+      ); // 14 passed + 3 failed
+    });
     test("brokenProperties array should be the length of failed", () => {
       expect(jobStatsMedusa.brokenProperties.length).toBe(3);
     });
@@ -33,13 +35,24 @@ describe("Testing fuzz results for", () => {
       jobStatsMedusa.brokenProperties.forEach((el) => {
         expect(el.sequence.startsWith("Test for method")).toBe(true);
         expect(el.sequence.endsWith("---End Trace---\n")).toBe(true);
-      })
-    })
-  })
+      });
+    });
+    jobStatsMedusa.brokenProperties.forEach((el) => {
+      const vmData = {
+        roll: true,
+        time: true,
+        prank: true,
+      };
+      const format = medusaLogsToFunctions(el.sequence, "", vmData);
+      // console.log(format)
+    });
+  });
   describe("Echidna fuzzer", () => {
-    const dataEchidna = fs.readFileSync("./tests/test_data/echidna.txt", "utf8");
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna.txt",
+      "utf8"
+    );
     const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
-    console.log(jobStatsEchidna)
     test("Echidna fuzzing duration", () => {
       expect(jobStatsEchidna.duration).toBe("20000462/20000000");
     });
@@ -57,46 +70,145 @@ describe("Testing fuzz results for", () => {
     });
 
     test("Results array should be the length of failed + passed", () => {
-      expect(jobStatsEchidna.results.length).toBe(jobStatsEchidna.failed + jobStatsEchidna.passed); // 14 passed + 3 failed
-    })
+      expect(jobStatsEchidna.results.length).toBe(
+        jobStatsEchidna.failed + jobStatsEchidna.passed
+      ); // 14 passed + 3 failed
+    });
     test("brokenProperties array should be the length of failed", () => {
-      expect(jobStatsEchidna.brokenProperties.length).toBe(jobStatsEchidna.failed);
+      expect(jobStatsEchidna.brokenProperties.length).toBe(
+        jobStatsEchidna.failed
+      );
     });
     test("All traces for broken properties should start with 'test for method' and end with ---End Trace---", () => {
       jobStatsEchidna.brokenProperties.forEach((el) => {
         expect(el.sequence.startsWith("  Call sequence:\n")).toBe(true);
         expect(el.sequence.endsWith("---End Trace---\n")).toBe(true);
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe("It should parse the bytes correctly", () => {
-    const data = fs.readFileSync("./tests/test_data/medusa-bytes-parsing.txt", "utf8");
+    const data = fs.readFileSync(
+      "./tests/test_data/medusa-bytes-parsing.txt",
+      "utf8"
+    );
     const formattedData = processLogs(data, Fuzzer.MEDUSA);
     test("It should format the bytes correctly", () => {
-      formattedData.brokenProperties.forEach(el => {
+      formattedData.brokenProperties.forEach((el) => {
         const vmData = {
           roll: false,
           time: false,
-          prank: false
-        }
+          prank: false,
+        };
         const format = medusaLogsToFunctions(el.sequence, "", vmData);
         expect(format.includes("hex")).toBe(true);
-      })
+      });
     });
   });
   describe("It should format the addresses correctly", () => {
-    const addressData = fs.readFileSync("./tests/test_data/medusa-address-parsing.txt", "utf8");
+    const addressData = fs.readFileSync(
+      "./tests/test_data/medusa-address-parsing.txt",
+      "utf8"
+    );
     const vmData = {
       roll: false,
       time: false,
-      prank: false
-    }
-    expect(addressData.includes("0xffffffffffffffffffffffffffffffffffffffff")).toBe(true);
-    expect(addressData.includes("0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF")).toBe(false);
+      prank: false,
+    };
+    expect(
+      addressData.includes("0xffffffffffffffffffffffffffffffffffffffff")
+    ).toBe(true);
+    expect(
+      addressData.includes("0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF")
+    ).toBe(false);
 
     const format = medusaLogsToFunctions(addressData, "", vmData);
-    expect(format.includes("0xffffffffffffffffffffffffffffffffffffffff")).toBe(false);
-    expect(format.includes("0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF")).toBe(true);
+    expect(format.includes("0xffffffffffffffffffffffffffffffffffffffff")).toBe(
+      false
+    );
+    expect(format.includes("0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF")).toBe(
+      true
+    );
   });
-})
+  describe("It should parse correctly the logs for Medusa 0.1.5 -- second test", () => {
+    const dataMedusa = fs.readFileSync(
+      "./tests/test_data/medusa-0.1.5.txt",
+      "utf8"
+    );
+    const jobStatsMedusa = processLogs(dataMedusa, Fuzzer.MEDUSA);
+    test("Medusa fuzzing duration", () => {
+      expect(jobStatsMedusa.duration).toBe("11h59m56s");
+    });
+    test("Medusa coverage", () => {
+      expect(jobStatsMedusa.coverage).toBe(12);
+    });
+    test("Expect right amount of test faield and passed", () => {
+      expect(jobStatsMedusa.failed).toBe(2);
+      expect(jobStatsMedusa.passed).toBe(81);
+    })
+    test("It format as expect", () => {
+      jobStatsMedusa.brokenProperties.forEach((el) => {
+        const vmData = {
+          roll: true,
+          time: true,
+          prank: true,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        expect(format.includes(`test_${el.brokenProperty}_()`));
+      });
+      expect(jobStatsMedusa.brokenProperties.length).toBe(2);
+      expect(
+        jobStatsMedusa.brokenProperties[0].brokenProperty.includes(
+          "check_the_overflow();"
+        )
+      );
+      expect(
+        jobStatsMedusa.brokenProperties[1].brokenProperty.includes(
+          "check_liquidation_solvency();"
+        )
+      );
+      expect(
+        jobStatsMedusa.brokenProperties[1].brokenProperty.includes(
+          "oracle2_setPrice_debt(71999513637761396317130899634986633);"
+        )
+      );
+    });
+  });  describe("It should parse correctly the logs for Medusa 0.1.5", () => {
+    const dataMedusa = fs.readFileSync(
+      "./tests/test_data/medusa-0.1.5-2.txt",
+      "utf8"
+    );
+    const jobStatsMedusa = processLogs(dataMedusa, Fuzzer.MEDUSA);
+    test("Medusa fuzzing duration", () => {
+      expect(jobStatsMedusa.duration).toBe("3h59m57s");
+    });
+    test("Medusa coverage", () => {
+      expect(jobStatsMedusa.coverage).toBe(104);
+    });
+    test("Expect right amount of test faield and passed", () => {
+      expect(jobStatsMedusa.failed).toBe(4);
+      expect(jobStatsMedusa.passed).toBe(43);
+    })
+    test("It format as expect", () => {
+      jobStatsMedusa.brokenProperties.forEach((el) => {
+        const vmData = {
+          roll: true,
+          time: true,
+          prank: true,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        expect(format.includes(`test_${el.brokenProperty}_()`));
+      });
+      expect(jobStatsMedusa.brokenProperties.length).toBe(4);
+      expect(
+        jobStatsMedusa.brokenProperties[0].brokenProperty.includes(
+          "observe();"
+        )
+      );
+      expect(
+        jobStatsMedusa.brokenProperties[1].brokenProperty.includes(
+          "liquidateCdps();"
+        )
+      );
+    });
+  });});
