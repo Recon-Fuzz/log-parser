@@ -143,6 +143,10 @@ describe("Testing fuzz results for", () => {
     test("Medusa coverage", () => {
       expect(jobStatsMedusa.coverage).toBe(12);
     });
+    test("Expect right amount of test faield and passed", () => {
+      expect(jobStatsMedusa.failed).toBe(2);
+      expect(jobStatsMedusa.passed).toBe(81);
+    })
     test("It format as expect", () => {
       jobStatsMedusa.brokenProperties.forEach((el) => {
         const vmData = {
