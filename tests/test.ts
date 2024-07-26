@@ -138,7 +138,7 @@ describe("Testing fuzz results for", () => {
     const jobStatsMedusa = processLogs(dataMedusa, Fuzzer.MEDUSA);
     console.log(jobStatsMedusa);
     test("Medusa fuzzing duration", () => {
-      expect(jobStatsMedusa.duration).toBe("9h55m11s");
+      expect(jobStatsMedusa.duration).toBe("11h59m56s");
     });
     test("Medusa coverage", () => {
       expect(jobStatsMedusa.coverage).toBe(12);

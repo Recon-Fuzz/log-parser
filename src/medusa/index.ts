@@ -172,7 +172,7 @@ export function getFunctionCallsWithVM(
     cleanedData += formatAddress(splittedEntry);
     // Format bytes by adding hex"".
     cleanedData = formatBytes(cleanedData);
-    const pattern = /(\w+)\([^)]*\)(\([^)]*\))/g;
+    const pattern = /(\w+)\([^)]*\)(\([^)]*\))/g; // Would catch cases such as: check_liquidation_solvency()();
     cleanedData = cleanedData.replace(pattern, "$1$2");
 
     if (vmData) {
