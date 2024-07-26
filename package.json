@@ -1,13 +1,13 @@
 {
-  "name": "@recon-fuzz/log-parser",
+  "name": "@recon-fuzz/log-parser-experimental",
   "description": "Fuzzer log parser for Recon Fuzz",
-  "version": "0.0.6",
+  "version": "0.0.1",
   "license": "GPL-2.0-only",
   "main": "lib/bundle.js",
   "author": "0xsi <simon.busch@live.fr>",
   "scripts": {
     "test": "jest",
-    "build": "tsc && webpack"
+    "build": "tsc"
   },
   "dependencies": {
     "ethereumjs-util": "^7.1.5",
@@ -15,13 +15,9 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
-    "assert": "^2.1.0",
-    "buffer": "^6.0.3",
     "jest": "^29.7.0",
-    "stream-browserify": "^3.0.0",
     "ts-jest": "^29.1.5",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.5.2",
-    "webpack-cli": "^5.1.4"
+    "typescript": "^5.5.2"
   }
 }
