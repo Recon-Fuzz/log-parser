@@ -79,24 +79,21 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
     }
 
     if (echidnaSequenceLogger || echidnaTraceLogger) {
-      //TODO 0XSI check this
-      if (line.includes("*wait* ")) {
-        jobStats.traces.push(`// ${line}`);
-      } else {
-        jobStats.traces.push(line);
-      }
+      jobStats.traces.push(line);
 
       const existingProperty = jobStats.brokenProperties.find(
         (el) => el.brokenProperty === currentBrokenPropertyEchidna
       );
-      if (!existingProperty) {
-        jobStats.brokenProperties.push({
-          brokenProperty: currentBrokenPropertyEchidna,
-          sequence: `${line}\n`,
-        });
-      } else {
-        if (!existingProperty.sequence.includes("---End Trace---")) {
-          existingProperty.sequence += `${line}\n`;
+      if (!line.includes("*wait* ")) {
+        if (!existingProperty) {
+          jobStats.brokenProperties.push({
+            brokenProperty: currentBrokenPropertyEchidna,
+            sequence: `${line}\n`,
+          });
+        } else {
+          if (!existingProperty.sequence.includes("---End Trace---")) {
+            existingProperty.sequence += `${line}\n`;
+          }
         }
       }
     }
