@@ -45,7 +45,14 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
     if (sequenceMatch) {
       echidnaSequenceLogger = true;
       if (!currentBrokenPropertyEchidna) {
-        currentBrokenPropertyEchidna = prevLine.split(": failed!")[0];
+        if (prevLine.includes("falsified!")) {
+          const fasifieldMatch = prevLine.match(/Test\s+(.*?)\s+falsified!/);
+          if (fasifieldMatch) {
+            currentBrokenPropertyEchidna = fasifieldMatch[1].replace("()", "");
+          }
+        } else {
+          currentBrokenPropertyEchidna = prevLine.split(": failed!")[0];
+        }
       }
     }
 
@@ -54,7 +61,7 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       echidnaTraceLogger = true;
     }
 
-    if (line === "" && echidnaTraceLogger) {
+    if (line === "" && echidnaTraceLogger || line.includes("Saved reproducer")) {
       echidnaTraceLogger = false;
       echidnaSequenceLogger = false;
       jobStats.traces.push("---End Trace---");
@@ -72,7 +79,12 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
     }
 
     if (echidnaSequenceLogger || echidnaTraceLogger) {
-      jobStats.traces.push(line);
+      //TODO 0XSI check this
+      if (line.startsWith("*wait* ")) {
+        jobStats.traces.push(`// ${line}`);
+      } else {
+        jobStats.traces.push(line);
+      }
 
       const existingProperty = jobStats.brokenProperties.find(
         (el) => el.brokenProperty === currentBrokenPropertyEchidna
