@@ -80,7 +80,7 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
 
     if (echidnaSequenceLogger || echidnaTraceLogger) {
       //TODO 0XSI check this
-      if (line.startsWith("*wait* ")) {
+      if (line.includes("*wait* ")) {
         jobStats.traces.push(`// ${line}`);
       } else {
         jobStats.traces.push(line);
