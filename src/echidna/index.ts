@@ -48,13 +48,15 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
         if (prevLine.includes("falsified!")) {
           const fasifieldMatch = prevLine.match(/Test\s+(.*?)\s+falsified!/);
           if (fasifieldMatch) {
-            currentBrokenPropertyEchidna = fasifieldMatch[1].replace("()", "");
+            currentBrokenPropertyEchidna = fasifieldMatch[1];
           }
         } else {
           currentBrokenPropertyEchidna = prevLine.split(": failed!")[0];
         }
       }
     }
+
+    currentBrokenPropertyEchidna = cleanUpBrokenPropertyName(currentBrokenPropertyEchidna);
 
     const tracesMatch = line.includes("Traces:");
     if (tracesMatch) {
@@ -100,6 +102,12 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   }
 
   prevLine = line;
+}
+
+// Replace brokenProp() by brokenProp
+// Also account to brokenProp(uint256) to brokenProp
+function cleanUpBrokenPropertyName(brokenProp: string): string {
+  return brokenProp.replace(/\(.*?\)/g, "");
 }
 
 /**
