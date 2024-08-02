@@ -48,7 +48,7 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
         if (prevLine.includes("falsified!")) {
           const fasifieldMatch = prevLine.match(/Test\s+(.*?)\s+falsified!/);
           if (fasifieldMatch) {
-            currentBrokenPropertyEchidna = fasifieldMatch[1].replace("()", "");
+            currentBrokenPropertyEchidna = fasifieldMatch[1]; //??
           }
         } else {
           currentBrokenPropertyEchidna = prevLine.split(": failed!")[0];

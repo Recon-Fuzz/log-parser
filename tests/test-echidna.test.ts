@@ -65,5 +65,11 @@ describe("Testing fuzz results for", () => {
         jobStatsEchidna.failed + jobStatsEchidna.passed
       );
     });
+    test("broken property should have the correct length", () => {
+      jobStatsEchidna.brokenProperties.forEach(el => {
+        console.log(el.brokenProperty)
+      })
+      expect(jobStatsEchidna.brokenProperties.length).toBe(jobStatsEchidna.failed);
+    })
   });
 });
