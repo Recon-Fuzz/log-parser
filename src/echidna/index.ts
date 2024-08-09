@@ -178,7 +178,11 @@ export function echidnaLogsToFunctions(
         if (vmData.prank && sender) {
           returnData += `\n     vm.prank(${sender});`;
         }
-        returnData += `\n ${line.split(";")[0]};`;
+        if (line === "}") {
+          returnData += `\n ${line.split(";")[0]};`;
+        } else {
+          returnData += `\n     ${line.split(";")[0]};`;
+        }
       } else {
         returnData = `  ${line.split(";")[0]};`;
       }
