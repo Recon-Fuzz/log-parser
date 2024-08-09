@@ -40,9 +40,9 @@ export function processMedusa(line: string, jobStats: FuzzingResults): void {
   } else if (line.includes("Fuzzer stopped, test results follow below ...")) {
     resultsLogger = true;
   } else if (line.includes("[PASSED]") && resultsLogger) {
-    jobStats.results.push(line);
+    if (!jobStats.results.includes(line)) jobStats.results.push(line);
   } else if (line.includes("[FAILED]") && resultsLogger) {
-    jobStats.results.push(line);
+    if (!jobStats.results.includes(line)) jobStats.results.push(line);
   } else if (medusaTraceLogger) {
     const res = /for method ".*\.(?<name>[a-zA-Z_0-9]+)\(.*\)"/.exec(line);
     const brokenProp = res?.groups?.name ? res.groups.name : "";
@@ -123,7 +123,6 @@ export function getPropertyAndSequenceString(
     .filter((entry) => !entry.includes("[PASSED]"))
     .filter((entry) => !entry.includes("[FAILED]"))
     .filter((entry) => entry.trim() != "");
-
     const bodies = splitted.map((entry) =>
     vmData
       ? getFunctionCallsWithVM(entry, vmData)
@@ -160,7 +159,7 @@ export function getFunctionCallsWithVM(
   vmData?: VmParsingData
 ): string[] {
   const pattern: RegExp =
-    /(\w+)\(([^)]*)\)\(?[^)]*\)?\s+\(block=\d*, time=\d*, gas=\d*, gasprice=\d*, value=\d*, sender=\d*x\d*\)/gm;
+    /(\w+)\(([^)]*)\)\(?[^)]*\)?\s+\(block=\d*, time=\d*, gas=\d*, gasprice=\d*, value=\d*, sender=0x[0-9a-fA-F]{40}\)/gm;
   const matches: RegExpMatchArray | null = logs.match(pattern);
   //TODO 0XSI
   // Could be splited to be reusable by the log parser
@@ -174,7 +173,6 @@ export function getFunctionCallsWithVM(
     cleanedData = formatBytes(cleanedData);
     const pattern = /(\w+)\([^)]*\)(\([^)]*\))/g; // Would catch cases such as: check_liquidation_solvency()();
     cleanedData = cleanedData.replace(pattern, "$1$2");
-
     if (vmData) {
       //@ts-ignore
       const block = parseInt(entry.match(/block=(\d+)/)[1]);

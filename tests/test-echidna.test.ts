@@ -1,6 +1,7 @@
 import fs from "fs";
 import { processLogs } from "../src/main";
 import { Fuzzer } from "../src/types/types";
+import { echidnaLogsToFunctions } from "../src/echidna";
 
 describe("Testing fuzz results for", () => {
   describe("Echidna fuzzer", () => {
@@ -68,5 +69,15 @@ describe("Testing fuzz results for", () => {
     test("broken property should have the correct length", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(jobStatsEchidna.failed);
     })
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      const vmData = {
+        roll: true,
+        time: true,
+        prank: true,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      console.log("format", format);
+      console.log("=========")
+    });
   });
 });

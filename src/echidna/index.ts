@@ -57,7 +57,6 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
     }
 
     currentBrokenPropertyEchidna = cleanUpBrokenPropertyName(currentBrokenPropertyEchidna);
-
     const tracesMatch = line.includes("Traces:");
     if (tracesMatch) {
       echidnaTraceLogger = true;
@@ -130,6 +129,7 @@ function cleanUpBrokenPropertyName(brokenProp: string): string {
 export function echidnaLogsToFunctions(
   input: string,
   prefix: string,
+  brokenProp?: string,
   vmData?: VmParsingData
 ): string {
   const callSequenceMatches =
@@ -141,8 +141,8 @@ export function echidnaLogsToFunctions(
         .replace(/\)/g, ");")
         .replace(
           "Call sequence",
-          `function test_prefix_${i}_${prefix}() public {`
-        )
+          `function ${brokenProp ? `test_${brokenProp}_${prefix}`: `test_prefix_${i}_${prefix}`}() public {`
+        ) // TODO 0XSI WRONG
         // Fixing shitty regex
         .replace("{,", "{")
         .replace("{:", "{")

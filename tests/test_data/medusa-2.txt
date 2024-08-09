@@ -1,0 +1,874 @@
+[1m[32m[0m[0m [1mReading the configuration file at: [1mmedusa-leverage.json[0m[0m
+ Compiling targets with crytic-compile
+ Running with a timeout of 3600 seconds
+ Initializing corpus
+ Setting up base chain
+ Initializing and validating corpus call sequences
+ Fuzzing with 10 workers
+ [NOT STARTED] Property Test: EchidnaLeverageTester.echidna_ZR_03()
+ [NOT STARTED] Property Test: EchidnaLeverageTester.echidna_ZR_05()
+ [NOT STARTED] Property Test: EchidnaLeverageTester.echidna_ZR_06()
+ [NOT STARTED] Property Test: EchidnaLeverageTester.echidna_ZR_02()
+ [NOT STARTED] Property Test: EchidnaLeverageTester.echidna_ZR_01()
+ [NOT STARTED] Property Test: EchidnaLeverageTester.echidna_ZR_04()
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.openCdpWithWrappedEth(uint256,uint256)
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.MAX_COLL_ROUNDING_ERROR()
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.closeCdp(uint256)
+ fuzz: elapsed: 0s, calls: 0 (0/sec), seq/s: 0, coverage: 0, shrinking: 0, failures: 0/0
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.openCdpWithEth(uint256,uint256)
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.leverageZapRouter()
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.openCdp(uint256,uint256)
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.MAXIMUM_COLL()
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.adjustDebt(uint256,uint256,bool,uint256)
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.setEthPerShare(uint256)
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.zapRouter()
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.MAXIMUM_DEBT()
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.setUp()
+ [NOT STARTED] Assertion Test: EchidnaLeverageTester.openCdpWithWstEth(uint256,uint256)
+ fuzz: elapsed: 3s, calls: 956 (318/sec), seq/s: 1, coverage: 32, shrinking: 6, failures: 0/5
+ fuzz: elapsed: 6s, calls: 1186 (76/sec), seq/s: 0, coverage: 32, shrinking: 9, failures: 0/7
+ fuzz: elapsed: 9s, calls: 1227 (13/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 12s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 15s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 18s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 21s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 24s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 27s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 30s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 33s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 36s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 39s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 42s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 45s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 48s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 51s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 54s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 57s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m0s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m3s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m6s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m9s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m12s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m15s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m18s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m21s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m24s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m27s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m30s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m33s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m36s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m39s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m42s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m45s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m48s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m51s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m54s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 1m57s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m0s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m3s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m6s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m9s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m12s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m15s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m18s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m21s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m24s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m27s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m30s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m33s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m36s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m39s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m42s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m45s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m48s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m51s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m54s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 2m57s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m0s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m3s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m6s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m9s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m12s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m15s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m18s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m21s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m24s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m27s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m30s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m33s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m36s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m39s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m42s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m45s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m48s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m51s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m54s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 3m57s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m0s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m3s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m6s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m9s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m12s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m15s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m18s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m21s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m24s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m27s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m30s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m33s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m36s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m39s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m42s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m45s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m48s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m51s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m54s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 4m57s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m0s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m3s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m6s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m9s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m12s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m15s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m18s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m21s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m24s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m27s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m30s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m33s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m36s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m39s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m42s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m45s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m48s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m51s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m54s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 5m57s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 6m0s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 6m3s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 6m6s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 6m9s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 6m12s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 6m15s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 10, failures: 0/7
+ fuzz: elapsed: 6m18s, calls: 1227 (0/sec), seq/s: 0, coverage: 32, shrinking: 9, failures: 0/7
+ [FAILED] Assertion Test: EchidnaLeverageTester.adjustDebt(uint256,uint256,bool,uint256)
+Test for method "EchidnaLeverageTester.adjustDebt(uint256,uint256,bool,uint256)" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) EchidnaLeverageTester.openCdp(uint256,uint256)(1000000004108778551667449658, 105312484325886431744503092818299753851693965302407841361032451757) (block=7, time=360609, gas=12500000, gasprice=1, value=0, sender=0x0c9e4828dC9a79a597699307c4a084595145a732)
+2) EchidnaLeverageTester.openCdpWithWstEth(uint256,uint256)(1907581463413, 24977868298724657059611480884018896116778570547190056589290194981972792511629) (block=363, time=361107, gas=12500000, gasprice=1, value=0, sender=0xA2379A9c84396B4287d91B7D74470cc9304e3b39)
+3) EchidnaLeverageTester.setEthPerShare(uint256)(4180868818916642034853158551031505185887962386177133769177308866263541543243) (block=37009, time=956852, gas=12500000, gasprice=1, value=0, sender=0x3545A2F3928d5b21E71a790FB458F4AE03306C55)
+4) EchidnaLeverageTester.adjustDebt(uint256,uint256,bool,uint256)(3122231932514754744013995720345172450767739977074079027575801706861214668580, 793656835931584505968427799668433393403650327376415791965724901973210983, false, 56546388094511190786007551477216174223856598028819194306424210598367301283) (block=65671, time=1194426, gas=12500000, gasprice=1, value=0, sender=0xA2379A9c84396B4287d91B7D74470cc9304e3b39)
+[Execution Trace]
+ => [call] EchidnaLeverageTester.adjustDebt(uint256,uint256,bool,uint256)(3122231932514754744013995720345172450767739977074079027575801706861214668580, 793656835931584505968427799668433393403650327376415791965724901973210983, false, 56546388094511190786007551477216174223856598028819194306424210598367301283) (addr=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da, value=0, sender=0xA2379A9c84396B4287d91B7D74470cc9304e3b39)
+ => [call] AccruableCdpManager.getActiveCdpsCount()() (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] SortedCdps.getSize()() (addr=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8, value=<nil>, sender=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6)
+ => [return (2)]
+ => [return (2)]
+ => [call] SortedCdps.cdpCountOf(address)(0xa2379a9c84396b4287d91b7d74470cc9304e3b39) (addr=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1)]
+ => [event] LogString("Clamping value 3122231932514754744013995720345172450767739977074079027575801706861214668580 to 0")
+ => [call] SortedCdps.cdpOfOwnerByIndex(address,uint256)(0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 0) (addr=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001)]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=4000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] CollateralTokenTester.balanceOf(address)(0x4c8f2587a9677a4444946398423c4480970bac4c) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0)]
+ => [call] ZapRouterActor.proxy(address,bytes,uint256,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, d0e30db000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000, 4000000000000000000000000, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.deposit()() (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=4000000000000000000000000, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Deposit(0x4c8f2587a9677a4444946398423c4480970bac4c, 4000000000000000000000000, 4258160252748451213317691)
+ => [return ()]
+ => [return (true, )]
+ => [call] CollateralTokenTester.balanceOf(address)(0x4c8f2587a9677a4444946398423c4480970bac4c) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (3999999999999999999999999)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, a9059cbb0000000000000000000000002987fb3f62ddb949f2bb519cbb73e351acdc53d2000000000000000000000000000000000000000000034f086f3b33b684000000, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.transfer(address,uint256)(0x2987fb3f62ddb949f2bb519cbb73e351acdc53d2, 4000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Transfer(0x4c8f2587a9677a4444946398423c4480970bac4c, 0x2987fb3f62ddb949f2bb519cbb73e351acdc53d2, 4000000000000000000000000)
+ => [event] TransferShares(0x4c8f2587a9677a4444946398423c4480970bac4c, 0x2987fb3f62ddb949f2bb519cbb73e351acdc53d2, 4258160252748451213317691)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=4000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] CollateralTokenTester.balanceOf(address)(0x4c8f2587a9677a4444946398423c4480970bac4c) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0)]
+ => [call] ZapRouterActor.proxy(address,bytes,uint256,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, d0e30db000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000, 4000000000000000000000000, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.deposit()() (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=4000000000000000000000000, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Deposit(0x4c8f2587a9677a4444946398423c4480970bac4c, 4000000000000000000000000, 4258160252748451213317691)
+ => [return ()]
+ => [return (true, )]
+ => [call] CollateralTokenTester.balanceOf(address)(0x4c8f2587a9677a4444946398423c4480970bac4c) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (3999999999999999999999999)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, a9059cbb000000000000000000000000bf5570a21934f011a219c38546403fd87125f0e2000000000000000000000000000000000000000000034f086f3b33b684000000, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.transfer(address,uint256)(0xbf5570a21934f011a219c38546403fd87125f0e2, 4000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Transfer(0x4c8f2587a9677a4444946398423c4480970bac4c, 0xbf5570a21934f011a219c38546403fd87125f0e2, 4000000000000000000000000)
+ => [event] TransferShares(0x4c8f2587a9677a4444946398423c4480970bac4c, 0xbf5570a21934f011a219c38546403fd87125f0e2, 4258160252748451213317691)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] EBTCTokenTester.unprotectedMint(address,uint256)(0xbf5570a21934f011a219c38546403fd87125f0e2, 2000000000000000000000000000) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [event] Transfer(0x0000000000000000000000000000000000000000, 0xbf5570a21934f011a219c38546403fd87125f0e2, 2000000000000000000000000000)
+ => [return ()]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=2000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] CollateralTokenTester.balanceOf(address)(0x4c8f2587a9677a4444946398423c4480970bac4c) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0)]
+ => [call] ZapRouterActor.proxy(address,bytes,uint256,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, d0e30db000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000, 2000000000000000000000000, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.deposit()() (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=2000000000000000000000000, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Deposit(0x4c8f2587a9677a4444946398423c4480970bac4c, 2000000000000000000000000, 2129080126374225606658845)
+ => [return ()]
+ => [return (true, )]
+ => [call] CollateralTokenTester.balanceOf(address)(0x4c8f2587a9677a4444946398423c4480970bac4c) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1999999999999999999999999)]
+ => [call] ZapRouterActor.sender()() (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0xa2379a9c84396b4287d91b7d74470cc9304e3b39)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, a9059cbb000000000000000000000000a2379a9c84396b4287d91b7d74470cc9304e3b3900000000000000000000000000000000000000000001a784379d99db41ffffff, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.transfer(address,uint256)(0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 1999999999999999999999999) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Transfer(0x4c8f2587a9677a4444946398423c4480970bac4c, 0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 1999999999999999999999999)
+ => [event] TransferShares(0x4c8f2587a9677a4444946398423c4480970bac4c, 0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 2129080126374225606658844)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=2000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] ZapRouterActor.proxy(address,bytes,uint256,bool)(0xa2c9bfabd29cdf7d14c9c290f782ee27ab17eef2, d0e30db000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000, 2000000000000000000000000, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] WETH9.deposit()() (addr=0xa2c9bFabd29cdf7D14C9c290f782Ee27Ab17eeF2, value=2000000000000000000000000, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Deposit(0x4c8f2587a9677a4444946398423c4480970bac4c, 2000000000000000000000000)
+ => [return ()]
+ => [return (true, )]
+ => [call] ZapRouterActor.sender()() (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0xa2379a9c84396b4287d91b7d74470cc9304e3b39)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0xa2c9bfabd29cdf7d14c9c290f782ee27ab17eef2, a9059cbb000000000000000000000000a2379a9c84396b4287d91b7d74470cc9304e3b3900000000000000000000000000000000000000000001a784379d99db42000000, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] WETH9.transfer(address,uint256)(0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 2000000000000000000000000) (addr=0xa2c9bFabd29cdf7D14C9c290f782Ee27Ab17eeF2, value=0, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Transfer(0x4c8f2587a9677a4444946398423c4480970bac4c, 0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 2000000000000000000000000)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=2000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] ZapRouterActor.proxy(address,bytes,uint256,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, d0e30db000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000, 2000000000000000000000000, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.deposit()() (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=2000000000000000000000000, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Deposit(0x4c8f2587a9677a4444946398423c4480970bac4c, 2000000000000000000000000, 2129080126374225606658845)
+ => [return ()]
+ => [return (true, )]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, 095ea7b3000000000000000000000000d8d5611b68f8cc56f3a618a6a40bbc89cdf1382500000000000000000000000000000000000000000001a784379d99db42000000, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.approve(address,uint256)(0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, 2000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Approval(0x4c8f2587a9677a4444946398423c4480970bac4c, 0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, 2000000000000000000000000)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] WstETH.balanceOf(address)(0x4c8f2587a9677a4444946398423c4480970bac4c) (addr=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, ea598cb000000000000000000000000000000000000000000001a784379d99db42000000, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] WstETH.wrap(uint256)(2000000000000000000000000) (addr=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825, value=0, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [call] CollateralTokenTester.getSharesByPooledEth(uint256)(2000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825)
+ => [return (2129080126374225606658845)]
+ => [event] Transfer(0x0000000000000000000000000000000000000000, 0x4c8f2587a9677a4444946398423c4480970bac4c, 2129080126374225606658845)
+ => [call] CollateralTokenTester.transferFrom(address,address,uint256)(0x4c8f2587a9677a4444946398423c4480970bac4c, 0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, 2000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825)
+ => [event] Transfer(0x4c8f2587a9677a4444946398423c4480970bac4c, 0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, 2000000000000000000000000)
+ => [event] TransferShares(0x4c8f2587a9677a4444946398423c4480970bac4c, 0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, 2129080126374225606658845)
+ => [return (true)]
+ => [return (2129080126374225606658845)]
+ => [return (true, 00000000000000000000000000000000000000000001c2d9aa383b6509eccb1d)]
+ => [call] WstETH.balanceOf(address)(0x4c8f2587a9677a4444946398423c4480970bac4c) (addr=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (2129080126374225606658845)]
+ => [call] ZapRouterActor.sender()() (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0xa2379a9c84396b4287d91b7d74470cc9304e3b39)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, a9059cbb000000000000000000000000a2379a9c84396b4287d91b7d74470cc9304e3b3900000000000000000000000000000000000000000001c2d9aa383b6509eccb1d, false) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] WstETH.transfer(address,uint256)(0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 2129080126374225606658845) (addr=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825, value=0, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [event] Transfer(0x4c8f2587a9677a4444946398423c4480970bac4c, 0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 2129080126374225606658845)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=2000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] EBTCTokenTester.unprotectedMint(address,uint256)(0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 2000000000000000000000000000) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [event] Transfer(0x0000000000000000000000000000000000000000, 0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 2000000000000000000000000000)
+ => [return ()]
+ => [call] PriceFeedTestnet.fetchPrice()() (addr=0x885477eF2ee9bbEAe80885cE07706900594abf65, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [event] LastGoodPriceUpdated(74280000000000000)
+ => [return (74280000000000000)]
+ => [call] AccruableCdpManager.getSyncedDebtAndCollShares(bytes32)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1907581463413, 1023696612013752077284258)]
+ => [event] LogString("Clamping value 793656835931584505968427799668433393403650327376415791965724901973210983 to 1393590423361")
+ => [call] EbtcLeverageZapRouter.MIN_CHANGE()() (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1000)]
+ => [event] LogString("Clamping value 56546388094511190786007551477216174223856598028819194306424210598367301283 to 67927915871085027338906")
+ => [call] BorrowerOperations.DOMAIN_SEPARATOR()() (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (46ecf6df1cc6c6b147457efffe2421375a4a41900079b18c6e17b1812c2bd41a)]
+ => [call] BorrowerOperations.permitTypeHash()() (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (a3e89b8382a1bf9cfbf89ac68306e7843d0a6cded34c8c26f6ea9d4a2c23ac09)]
+ => [call] BorrowerOperations.nonces(address)(0xa2379a9c84396b4287d91b7d74470cc9304e3b39) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1)]
+ => [call] StdCheats.sign(uint256,bytes32)(12303291, 6c644d64834474c898a8935c1e51170ab995eab267bedd0051464096bd0bfef6) (addr=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (27, a1d7c3c83942b16e44c9734ccd82d0f84811ccb2dd9479ab1d2c17135b5062b1, 771d1c45264f0d0908c8451f8d4a9822d4dfe295ff62658142fe553a17aac97b)]
+ => [call] PriceFeedTestnet.fetchPrice()() (addr=0x885477eF2ee9bbEAe80885cE07706900594abf65, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [event] LastGoodPriceUpdated(74280000000000000)
+ => [return (74280000000000000)]
+ => [call] EbtcLeverageZapRouter.MIN_CHANGE()() (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1000)]
+ => [call] EbtcLeverageZapRouter.MIN_CHANGE()() (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1000)]
+ => [call] AccruableCdpManager.getSyncedCdpCollShares(bytes32)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6)
+ => [return (939372818911213977)]
+ => [return (1023696612013752077284258)]
+ => [call] BorrowerOperations.flashFee(address,uint256)(0xea77e3cc6541c0012928635cb8a9157fb5822af0, 1393590423361) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (418077127)]
+ => [call] BorrowerOperations.DOMAIN_SEPARATOR()() (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (46ecf6df1cc6c6b147457efffe2421375a4a41900079b18c6e17b1812c2bd41a)]
+ => [call] BorrowerOperations.permitTypeHash()() (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (a3e89b8382a1bf9cfbf89ac68306e7843d0a6cded34c8c26f6ea9d4a2c23ac09)]
+ => [call] BorrowerOperations.nonces(address)(0xa2379a9c84396b4287d91b7d74470cc9304e3b39) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1)]
+ => [call] StdCheats.sign(uint256,bytes32)(12303291, 6c644d64834474c898a8935c1e51170ab995eab267bedd0051464096bd0bfef6) (addr=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (27, a1d7c3c83942b16e44c9734ccd82d0f84811ccb2dd9479ab1d2c17135b5062b1, 771d1c45264f0d0908c8451f8d4a9822d4dfe295ff62658142fe553a17aac97b)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 20323a75a2379a9c84396b4287d91b7d74470cc9304e3b390000016b00000000000000010000000000000000000000000000000000000000000000000000014478764f410000000000000000000000000000000000000000000000000000014478764f41000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001112649a52c70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001800000000000000000000000000000000000000000000000000000000000000220000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000001240c2000000000000000000000000000000000000000000000000000000000000001ba1d7c3c83942b16e44c9734ccd82d0f84811ccb2dd9479ab1d2c17135b5062b1771d1c45264f0d0908c8451f8d4a9822d4dfe295ff62658142fe553a17aac97b00000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001112649a52c700000000000000000000000000000000000000000000d8c6b45c605526de20db0000000000000000000000000000000000000000000000000000000000000064651498990000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000ea77e3cc6541c0012928635cb8a9157fb5822af0000000000000000000000000000000000000000000000000000001449161a90800000000000000000000000000000000000000000000000000000000, true) (addr=0x4c8f2587a9677A4444946398423c4480970BAc4c, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] StdCheats.prank(address)(0xa2379a9c84396b4287d91b7d74470cc9304e3b39) (addr=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D, value=0, sender=0x4c8f2587a9677A4444946398423c4480970BAc4c)
+ => [return ()]
+ => [call] EbtcLeverageZapRouter.adjustCdp(bytes32,(uint256,uint256,bool,bytes32,bytes32,uint256,uint256,bool,bool),bytes,(bytes,uint256,bool,uint256,uint256))(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001, {flashLoanAmount: 1393590423361, debtChange: 1393590423361, isDebtIncrease: false, upperHint: 0000000000000000000000000000000000000000000000000000000000000000, lowerHint: 0000000000000000000000000000000000000000000000000000000000000000, marginIncrease: 0, stEthBalanceChange: 18770694918855, isStEthBalanceIncrease: false, useWstETHForDecrease: false}, 00000000000000000000000000000000000000000000000000000000001240c2000000000000000000000000000000000000000000000000000000000000001ba1d7c3c83942b16e44c9734ccd82d0f84811ccb2dd9479ab1d2c17135b5062b1771d1c45264f0d0908c8451f8d4a9822d4dfe295ff62658142fe553a17aac97b, {exchangeData: 651498990000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000ea77e3cc6541c0012928635cb8a9157fb5822af0000000000000000000000000000000000000000000000000000001449161a908, expectedMinOut: 0, performSwapChecks: false, approvalAmount: 18770694918855, expectedCollateral: 1023696611994981382365403}) (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=0, sender=0xA2379A9c84396B4287d91B7D74470cc9304e3b39)
+ => [call] CollateralTokenTester.balanceOf(address)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [return (0)]
+ => [call] AccruableCdpManager.getSyncedCdpDebt(bytes32)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [return (1907581463413)]
+ => [call] BorrowerOperations.permitPositionManagerApproval(address,address,uint8,uint256,uint8,bytes32,bytes32)(0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1, 1196226, 27, a1d7c3c83942b16e44c9734ccd82d0f84811ccb2dd9479ab1d2c17135b5062b1, 771d1c45264f0d0908c8451f8d4a9822d4dfe295ff62658142fe553a17aac97b) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [call] (addr=0x0000000000000000000000000000000000000001, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] PositionManagerApprovalSet(0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1)
+ => [return ()]
+ => [call] BorrowerOperations.flashLoan(address,address,uint256,bytes)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xea77e3cc6541c0012928635cb8a9157fb5822af0, 1393590423361, 00000000000000000000000000000000000000000000000000000000000000200000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000bf5570a21934f011a219c38546403fd87125f0e200000000000000000000000000000000000000000000000000001112649a52c7000000000000000000000000bf5570a21934f011a219c38546403fd87125f0e200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000064651498990000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000ea77e3cc6541c0012928635cb8a9157fb5822af0000000000000000000000000000000000000000000000000000001449161a90800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e0a2379a9c84396b4287d91b7d74470cc9304e3b390000016b000000000000000100000000000000000000000000000000000000000000000000001112649a52c70000000000000000000000000000000000000000000000000000014478764f410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [call] EBTCTokenTester.mint(address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1393590423361) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] Transfer(0x0000000000000000000000000000000000000000, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1393590423361)
+ => [return ()]
+ => [call] EbtcLeverageZapRouter.onFlashLoan(address,address,uint256,uint256,bytes)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xea77e3cc6541c0012928635cb8a9157fb5822af0, 1393590423361, 418077127, 00000000000000000000000000000000000000000000000000000000000000200000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000bf5570a21934f011a219c38546403fd87125f0e200000000000000000000000000000000000000000000000000001112649a52c7000000000000000000000000bf5570a21934f011a219c38546403fd87125f0e200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000064651498990000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000ea77e3cc6541c0012928635cb8a9157fb5822af0000000000000000000000000000000000000000000000000000001449161a90800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e0a2379a9c84396b4287d91b7d74470cc9304e3b390000016b000000000000000100000000000000000000000000000000000000000000000000001112649a52c70000000000000000000000000000000000000000000000000000014478764f410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000) (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [call] BorrowerOperations.adjustCdpWithColl(bytes32,uint256,uint256,bool,bytes32,bytes32,uint256)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001, 18770694918855, 1393590423361, false, 0000000000000000000000000000000000000000000000000000000000000000, 0000000000000000000000000000000000000000000000000000000000000000, 0) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [call] AccruableCdpManager.locked()() (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1)]
+ => [call] SortedCdps.getOwnerAddress(bytes32)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001) (addr=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (0xa2379a9c84396b4287d91b7d74470cc9304e3b39)]
+ => [event] PositionManagerApprovalSet(0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0)
+ => [call] AccruableCdpManager.getCdpStatus(bytes32)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1)]
+ => [call] AccruableCdpManager.syncAccounting(bytes32)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6)
+ => [return (939372818911213977)]
+ => [event] StEthIndexUpdated(1000000000000000000, 939372818911213977, 1194426)
+ => [return ()]
+ => [call] EbtcFeed.fetchPrice()() (addr=0x093139e84D9fAE1cdE07e8Ee173C3316ACf0B942, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [call] PriceFeedTestnet.fetchPrice()() (addr=0x885477eF2ee9bbEAe80885cE07706900594abf65, value=0, sender=0x093139e84D9fAE1cdE07e8Ee173C3316ACf0B942)
+ => [event] LastGoodPriceUpdated(74280000000000000)
+ => [return (74280000000000000)]
+ => [event] LastGoodPriceUpdated(74280000000000000)
+ => [return (74280000000000000)]
+ => [call] CollateralTokenTester.getSharesByPooledEth(uint256)(18770694918855) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (19982156754983)]
+ => [call] AccruableCdpManager.getCdpDebt(bytes32)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1907581463413)]
+ => [call] AccruableCdpManager.getCdpCollShares(bytes32)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1023696612013752077284258)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1023696612013752077284258) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (961632772137217604666344)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1023696611993769920529275) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (961632772118446909747490)]
+ => [call] ActivePool.getSystemCollShares()() (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1393511704269297770986179)]
+ => [call] ActivePool.getSystemDebt()() (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (4108780459248915070)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1393511704269297770986179) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1309027017825220220055680)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(19982156754983) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (18770694918854)]
+ => [call] ActivePool.getSystemCollShares()() (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1393511704269297770986179)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1393511704269297770986179) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1309027017825220220055680)]
+ => [call] ActivePool.getSystemDebt()() (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (4108780459248915070)]
+ => [call] AccruableCdpManager.notifyEndGracePeriod(uint256)(23665065784470409609417) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] TCRNotified(23665065784470409609417)
+ => [return ()]
+ => [call] EBTCTokenTester.balanceOf(address)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1393590423361)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1023696611993769920529275) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (961632772118446909747490)]
+ => [call] AccruableCdpManager.updateCdp(bytes32,address,uint256,uint256,uint256,uint256)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001, 0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 1023696612013752077284258, 1907581463413, 1023696611993769920529275, 513991040052) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] TotalStakesUpdated(1393511704249315614231196)
+ => [event] CdpUpdated(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001, 0xa2379a9c84396b4287d91b7d74470cc9304e3b39, 0x30f33b97449d6d9adc2fb21bc85adbdc6de2d923, 1907581463413, 1023696612013752077284258, 513991040052, 1023696611993769920529275, 1023696611993769920529275, 2)
+ => [return ()]
+ => [call] SortedCdps.reInsert(bytes32,uint256,bytes32,bytes32)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001, 199166236806424383855005394723495, 0000000000000000000000000000000000000000000000000000000000000000, 0000000000000000000000000000000000000000000000000000000000000000) (addr=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] NodeRemoved(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001)
+ => [call] AccruableCdpManager.getCachedNominalICR(bytes32)(0c9e4828dc9a79a597699307c4a084595145a732000000070000000000000000) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8)
+ => [return (9000609003507012801477269)]
+ => [event] NodeAdded(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001, 199166236806424383855005394723495)
+ => [return ()]
+ => [call] ActivePool.decreaseSystemDebt(uint256)(1393590423361) (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [call] ActivePool.setValueAndUpdate(uint128)(4108779065658491709) (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=0, sender=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2)
+ => [event] NewTrackValue(4108780459248915070, 4108779065658491709, 1194426, 3425970995239577048142516)
+ => [return ()]
+ => [event] ActivePoolEBTCDebtUpdated(4108779065658491709)
+ => [return ()]
+ => [call] EBTCTokenTester.burn(address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1393590423361) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] Transfer(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0x0000000000000000000000000000000000000000, 1393590423361)
+ => [return ()]
+ => [call] ActivePool.transferSystemCollShares(address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 19982156754983) (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] SystemCollSharesUpdated(1393511704249315614231196)
+ => [event] CollSharesTransferred(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 19982156754983)
+ => [call] CollateralTokenTester.transferShares(address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 19982156754983) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2)
+ => [event] Transfer(0x2987fb3f62ddb949f2bb519cbb73e351acdc53d2, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 18770694918854)
+ => [event] TransferShares(0x2987fb3f62ddb949f2bb519cbb73e351acdc53d2, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 19982156754983)
+ => [return (18770694918854)]
+ => [return ()]
+ => [return ()]
+ => [call] CollateralTokenTester.approve(address,uint256)(0xbf5570a21934f011a219c38546403fd87125f0e2, 18770694918855) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [event] Approval(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbf5570a21934f011a219c38546403fd87125f0e2, 18770694918855)
+ => [return (true)]
+ => [call] Mock1Inch.swapExactOut(address,address,uint256)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, 0xea77e3cc6541c0012928635cb8a9157fb5822af0, 1394008500488) (addr=0xbf5570a21934f011a219c38546403Fd87125F0E2, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [call] CollateralTokenTester.transferFrom(address,address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbf5570a21934f011a219c38546403fd87125f0e2, 18766942656004) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0xbf5570a21934f011a219c38546403Fd87125F0E2)
+ => [event] Transfer(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbf5570a21934f011a219c38546403fd87125f0e2, 18766942656004)
+ => [event] TransferShares(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbf5570a21934f011a219c38546403fd87125f0e2, 19978162320851)
+ => [return (true)]
+ => [call] EBTCTokenTester.transfer(address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1394008500488) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0xbf5570a21934f011a219c38546403Fd87125F0E2)
+ => [event] Transfer(0xbf5570a21934f011a219c38546403fd87125f0e2, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1394008500488)
+ => [return (true)]
+ => [return (18766942656004)]
+ => [call] CollateralTokenTester.approve(address,uint256)(0xbf5570a21934f011a219c38546403fd87125f0e2, 0) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [event] Approval(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbf5570a21934f011a219c38546403fd87125f0e2, 0)
+ => [return (true)]
+ => [return (439148f0bbc682ca079e46d6e2c2f0c1e3b820f1a291b069d8882abf8cf18dd9)]
+ => [call] EBTCTokenTester.transferFrom(address,address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbbf1c8748d501adee241cbac7b47d8671521623e, 1394008500488) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] Transfer(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbbf1c8748d501adee241cbac7b47d8671521623e, 1394008500488)
+ => [return (true)]
+ => [call] EBTCTokenTester.burn(address,uint256)(0xbbf1c8748d501adee241cbac7b47d8671521623e, 1393590423361) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] Transfer(0xbbf1c8748d501adee241cbac7b47d8671521623e, 0x0000000000000000000000000000000000000000, 1393590423361)
+ => [return ()]
+ => [event] FlashLoanSuccess(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xea77e3cc6541c0012928635cb8a9157fb5822af0, 1393590423361, 418077127)
+ => [return (true)]
+ => [call] AccruableCdpManager.Cdps(bytes32)(a2379a9c84396b4287d91b7d74470cc9304e3b390000016b0000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [return (513991040052, 1023696611993769920529275, 1023696611993769920529275, 200000000000000000, 1)]
+ => [revert ('!LeverageMacroBase: gte post check')]
+ => [return (false, 08c379a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000022214c657665726167654d6163726f426173653a2067746520706f737420636865636b000000000000000000000000000000000000000000000000000000000000)]
+ => [call] EbtcLeverageZapRouter.MIN_CHANGE()() (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1000)]
+ => [call] CollateralTokenTester.getSharesByPooledEth(uint256)(18770694918855) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (19982156754983)]
+ => [call] PriceFeedTestnet.fetchPrice()() (addr=0x885477eF2ee9bbEAe80885cE07706900594abf65, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [event] LastGoodPriceUpdated(74280000000000000)
+ => [return (74280000000000000)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1023696611993769920529275) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (961632772118446909747490)]
+ => [call] HintHelpers.computeCR(uint256,uint256,uint256)(961632772118446909747490, 513991040052, 74280000000000000) (addr=0x5C4CB812615c06840fe3cC45098825cD57B38153, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (138971454260626256898351753060)]
+ => [call] BorrowerOperations.MCR()() (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1100000000000000000)]
+ => [event] AssertFail("ZR-07: Parameters that lead to a valid ICR shouldn't revert")
+ => [panic: assertion failed]
+
+
+ fuzz: elapsed: 6m21s, calls: 1311 (27/sec), seq/s: 0, coverage: 32, shrinking: 9, failures: 1/8
+ fuzz: elapsed: 6m24s, calls: 1556 (81/sec), seq/s: 1, coverage: 32, shrinking: 7, failures: 3/12
+ fuzz: elapsed: 6m27s, calls: 2038 (160/sec), seq/s: 1, coverage: 32, shrinking: 7, failures: 3/17
+ fuzz: elapsed: 6m30s, calls: 2513 (158/sec), seq/s: 1, coverage: 32, shrinking: 7, failures: 3/21
+ fuzz: elapsed: 6m33s, calls: 3013 (166/sec), seq/s: 1, coverage: 32, shrinking: 7, failures: 3/27
+ fuzz: elapsed: 6m36s, calls: 3473 (153/sec), seq/s: 1, coverage: 32, shrinking: 7, failures: 3/31
+ fuzz: elapsed: 6m39s, calls: 3959 (161/sec), seq/s: 1, coverage: 32, shrinking: 7, failures: 3/36
+ fuzz: elapsed: 6m42s, calls: 4446 (162/sec), seq/s: 1, coverage: 32, shrinking: 7, failures: 3/41
+ fuzz: elapsed: 6m45s, calls: 4949 (167/sec), seq/s: 1, coverage: 32, shrinking: 7, failures: 3/45
+ fuzz: elapsed: 6m48s, calls: 5434 (161/sec), seq/s: 1, coverage: 32, shrinking: 7, failures: 3/51
+ fuzz: elapsed: 6m51s, calls: 5944 (169/sec), seq/s: 1, coverage: 32, shrinking: 6, failures: 3/56
+ fuzz: elapsed: 6m54s, calls: 6593 (216/sec), seq/s: 1, coverage: 32, shrinking: 6, failures: 4/62
+ fuzz: elapsed: 6m57s, calls: 7271 (225/sec), seq/s: 2, coverage: 32, shrinking: 6, failures: 4/70
+ fuzz: elapsed: 7m0s, calls: 7912 (213/sec), seq/s: 1, coverage: 32, shrinking: 6, failures: 4/76
+ fuzz: elapsed: 7m3s, calls: 8572 (219/sec), seq/s: 1, coverage: 32, shrinking: 5, failures: 4/82
+ fuzz: elapsed: 7m6s, calls: 9346 (257/sec), seq/s: 2, coverage: 32, shrinking: 4, failures: 5/91
+ fuzz: elapsed: 7m9s, calls: 10328 (327/sec), seq/s: 2, coverage: 32, shrinking: 3, failures: 7/100
+ fuzz: elapsed: 7m12s, calls: 11457 (376/sec), seq/s: 4, coverage: 32, shrinking: 3, failures: 7/113
+ fuzz: elapsed: 7m15s, calls: 12590 (377/sec), seq/s: 3, coverage: 32, shrinking: 3, failures: 7/124
+ fuzz: elapsed: 7m18s, calls: 13701 (370/sec), seq/s: 3, coverage: 32, shrinking: 3, failures: 7/135
+ fuzz: elapsed: 7m21s, calls: 14824 (374/sec), seq/s: 3, coverage: 32, shrinking: 3, failures: 7/147
+ fuzz: elapsed: 7m24s, calls: 15972 (381/sec), seq/s: 3, coverage: 32, shrinking: 3, failures: 7/159
+ fuzz: elapsed: 7m27s, calls: 17140 (389/sec), seq/s: 3, coverage: 32, shrinking: 3, failures: 7/169
+ fuzz: elapsed: 7m30s, calls: 18287 (382/sec), seq/s: 4, coverage: 32, shrinking: 3, failures: 7/182
+ fuzz: elapsed: 7m33s, calls: 19393 (368/sec), seq/s: 2, coverage: 32, shrinking: 3, failures: 7/190
+ fuzz: elapsed: 7m36s, calls: 20507 (371/sec), seq/s: 4, coverage: 32, shrinking: 3, failures: 7/204
+ fuzz: elapsed: 7m39s, calls: 21633 (375/sec), seq/s: 3, coverage: 32, shrinking: 3, failures: 7/215
+ fuzz: elapsed: 7m42s, calls: 22743 (369/sec), seq/s: 3, coverage: 32, shrinking: 3, failures: 7/225
+ fuzz: elapsed: 7m45s, calls: 23878 (378/sec), seq/s: 3, coverage: 34, shrinking: 3, failures: 7/237
+ fuzz: elapsed: 7m48s, calls: 25035 (385/sec), seq/s: 3, coverage: 34, shrinking: 3, failures: 7/249
+ fuzz: elapsed: 7m51s, calls: 26188 (384/sec), seq/s: 3, coverage: 34, shrinking: 2, failures: 7/260
+ fuzz: elapsed: 7m54s, calls: 27484 (431/sec), seq/s: 4, coverage: 34, shrinking: 2, failures: 8/275
+ fuzz: elapsed: 7m57s, calls: 28790 (435/sec), seq/s: 3, coverage: 34, shrinking: 2, failures: 8/286
+ fuzz: elapsed: 8m0s, calls: 30104 (437/sec), seq/s: 4, coverage: 34, shrinking: 2, failures: 8/300
+ fuzz: elapsed: 8m3s, calls: 31439 (444/sec), seq/s: 4, coverage: 34, shrinking: 2, failures: 8/313
+ fuzz: elapsed: 8m6s, calls: 32768 (442/sec), seq/s: 4, coverage: 34, shrinking: 2, failures: 8/326
+ fuzz: elapsed: 8m9s, calls: 34067 (432/sec), seq/s: 4, coverage: 34, shrinking: 2, failures: 8/339
+ fuzz: elapsed: 8m12s, calls: 35408 (445/sec), seq/s: 4, coverage: 34, shrinking: 2, failures: 8/353
+ fuzz: elapsed: 8m15s, calls: 36691 (427/sec), seq/s: 4, coverage: 34, shrinking: 2, failures: 8/366
+ fuzz: elapsed: 8m18s, calls: 37992 (433/sec), seq/s: 3, coverage: 34, shrinking: 2, failures: 8/378
+ fuzz: elapsed: 8m21s, calls: 39277 (428/sec), seq/s: 4, coverage: 34, shrinking: 2, failures: 8/392
+ fuzz: elapsed: 8m24s, calls: 40552 (424/sec), seq/s: 3, coverage: 34, shrinking: 2, failures: 8/403
+ fuzz: elapsed: 8m27s, calls: 41856 (434/sec), seq/s: 4, coverage: 34, shrinking: 2, failures: 8/416
+ fuzz: elapsed: 8m30s, calls: 43178 (439/sec), seq/s: 4, coverage: 34, shrinking: 2, failures: 8/431
+ fuzz: elapsed: 8m33s, calls: 44458 (426/sec), seq/s: 3, coverage: 34, shrinking: 2, failures: 8/442
+ fuzz: elapsed: 8m36s, calls: 45753 (431/sec), seq/s: 4, coverage: 34, shrinking: 1, failures: 8/456
+ fuzz: elapsed: 8m39s, calls: 47107 (451/sec), seq/s: 4, coverage: 34, shrinking: 1, failures: 9/471
+ fuzz: elapsed: 8m42s, calls: 48573 (488/sec), seq/s: 4, coverage: 34, shrinking: 1, failures: 9/484
+ fuzz: elapsed: 8m45s, calls: 49957 (461/sec), seq/s: 5, coverage: 34, shrinking: 1, failures: 9/500
+ fuzz: elapsed: 8m48s, calls: 51420 (487/sec), seq/s: 3, coverage: 34, shrinking: 1, failures: 9/511
+ fuzz: elapsed: 8m51s, calls: 52900 (493/sec), seq/s: 5, coverage: 34, shrinking: 1, failures: 9/529
+ fuzz: elapsed: 8m54s, calls: 54334 (477/sec), seq/s: 4, coverage: 34, shrinking: 1, failures: 9/543
+ fuzz: elapsed: 8m57s, calls: 55825 (496/sec), seq/s: 4, coverage: 34, shrinking: 1, failures: 9/556
+ fuzz: elapsed: 9m0s, calls: 57275 (483/sec), seq/s: 5, coverage: 34, shrinking: 1, failures: 9/573
+ fuzz: elapsed: 9m3s, calls: 58754 (492/sec), seq/s: 4, coverage: 34, shrinking: 1, failures: 9/586
+ fuzz: elapsed: 9m6s, calls: 60173 (472/sec), seq/s: 4, coverage: 34, shrinking: 1, failures: 9/601
+ fuzz: elapsed: 9m9s, calls: 61664 (496/sec), seq/s: 4, coverage: 34, shrinking: 1, failures: 9/616
+ fuzz: elapsed: 9m12s, calls: 63143 (492/sec), seq/s: 4, coverage: 34, shrinking: 1, failures: 9/630
+ fuzz: elapsed: 9m15s, calls: 64565 (473/sec), seq/s: 5, coverage: 34, shrinking: 1, failures: 9/646
+ fuzz: elapsed: 9m18s, calls: 65973 (469/sec), seq/s: 3, coverage: 34, shrinking: 1, failures: 9/658
+ fuzz: elapsed: 9m21s, calls: 67458 (494/sec), seq/s: 5, coverage: 34, shrinking: 1, failures: 9/674
+ fuzz: elapsed: 9m24s, calls: 68900 (480/sec), seq/s: 4, coverage: 34, shrinking: 1, failures: 9/689
+ fuzz: elapsed: 9m27s, calls: 70359 (486/sec), seq/s: 4, coverage: 35, shrinking: 1, failures: 9/702
+ fuzz: elapsed: 9m30s, calls: 71777 (472/sec), seq/s: 4, coverage: 35, shrinking: 1, failures: 9/717
+ fuzz: elapsed: 9m33s, calls: 73276 (499/sec), seq/s: 4, coverage: 35, shrinking: 1, failures: 9/732
+ fuzz: elapsed: 9m36s, calls: 74735 (486/sec), seq/s: 4, coverage: 36, shrinking: 1, failures: 9/747
+ fuzz: elapsed: 9m39s, calls: 76233 (499/sec), seq/s: 4, coverage: 36, shrinking: 1, failures: 9/762
+ fuzz: elapsed: 9m42s, calls: 77764 (510/sec), seq/s: 4, coverage: 38, shrinking: 1, failures: 9/776
+ fuzz: elapsed: 9m45s, calls: 79190 (475/sec), seq/s: 4, coverage: 38, shrinking: 1, failures: 9/791
+ fuzz: elapsed: 9m48s, calls: 80753 (520/sec), seq/s: 4, coverage: 39, shrinking: 1, failures: 9/806
+ fuzz: elapsed: 9m51s, calls: 82283 (509/sec), seq/s: 5, coverage: 39, shrinking: 1, failures: 9/822
+ fuzz: elapsed: 9m54s, calls: 83802 (506/sec), seq/s: 5, coverage: 40, shrinking: 1, failures: 9/838
+ fuzz: elapsed: 9m57s, calls: 85306 (501/sec), seq/s: 3, coverage: 40, shrinking: 1, failures: 9/850
+ fuzz: elapsed: 10m0s, calls: 86844 (512/sec), seq/s: 5, coverage: 40, shrinking: 1, failures: 9/867
+ fuzz: elapsed: 10m3s, calls: 88348 (501/sec), seq/s: 5, coverage: 40, shrinking: 1, failures: 9/883
+ fuzz: elapsed: 10m6s, calls: 89836 (495/sec), seq/s: 4, coverage: 40, shrinking: 1, failures: 9/896
+ fuzz: elapsed: 10m9s, calls: 91297 (486/sec), seq/s: 5, coverage: 40, shrinking: 1, failures: 9/912
+ fuzz: elapsed: 10m12s, calls: 92748 (483/sec), seq/s: 4, coverage: 40, shrinking: 1, failures: 9/926
+ fuzz: elapsed: 10m15s, calls: 94262 (504/sec), seq/s: 4, coverage: 40, shrinking: 1, failures: 9/941
+ fuzz: elapsed: 10m18s, calls: 95755 (497/sec), seq/s: 5, coverage: 40, shrinking: 1, failures: 9/957
+ fuzz: elapsed: 10m21s, calls: 97263 (501/sec), seq/s: 5, coverage: 40, shrinking: 1, failures: 9/973
+ fuzz: elapsed: 10m24s, calls: 98746 (494/sec), seq/s: 4, coverage: 40, shrinking: 1, failures: 9/986
+ fuzz: elapsed: 10m27s, calls: 100231 (494/sec), seq/s: 5, coverage: 40, shrinking: 1, failures: 9/1002
+ fuzz: elapsed: 10m30s, calls: 101693 (487/sec), seq/s: 4, coverage: 40, shrinking: 1, failures: 9/1016
+ fuzz: elapsed: 10m33s, calls: 103185 (497/sec), seq/s: 4, coverage: 40, shrinking: 1, failures: 9/1030
+ fuzz: elapsed: 10m36s, calls: 104720 (511/sec), seq/s: 5, coverage: 40, shrinking: 1, failures: 9/1048
+ fuzz: elapsed: 10m39s, calls: 106239 (505/sec), seq/s: 5, coverage: 40, shrinking: 1, failures: 9/1064
+ fuzz: elapsed: 10m42s, calls: 107754 (504/sec), seq/s: 3, coverage: 40, shrinking: 1, failures: 9/1075
+ Fuzzer stopped, test results follow below ...
+ [PASSED] Assertion Test: EchidnaLeverageTester.MAX_COLL_ROUNDING_ERROR()
+ [PASSED] Assertion Test: EchidnaLeverageTester.MAXIMUM_COLL()
+ [PASSED] Assertion Test: EchidnaLeverageTester.MAXIMUM_DEBT()
+ [PASSED] Assertion Test: EchidnaLeverageTester.closeCdp(uint256)
+ [PASSED] Assertion Test: EchidnaLeverageTester.leverageZapRouter()
+ [PASSED] Assertion Test: EchidnaLeverageTester.openCdp(uint256,uint256)
+ [PASSED] Assertion Test: EchidnaLeverageTester.openCdpWithEth(uint256,uint256)
+ [PASSED] Assertion Test: EchidnaLeverageTester.openCdpWithWrappedEth(uint256,uint256)
+ [PASSED] Assertion Test: EchidnaLeverageTester.openCdpWithWstEth(uint256,uint256)
+ [PASSED] Assertion Test: EchidnaLeverageTester.setEthPerShare(uint256)
+ [PASSED] Assertion Test: EchidnaLeverageTester.setUp()
+ [PASSED] Assertion Test: EchidnaLeverageTester.zapRouter()
+ [PASSED] Property Test: EchidnaLeverageTester.echidna_ZR_01()
+ [PASSED] Property Test: EchidnaLeverageTester.echidna_ZR_02()
+ [PASSED] Property Test: EchidnaLeverageTester.echidna_ZR_03()
+ [PASSED] Property Test: EchidnaLeverageTester.echidna_ZR_04()
+ [PASSED] Property Test: EchidnaLeverageTester.echidna_ZR_05()
+ [PASSED] Property Test: EchidnaLeverageTester.echidna_ZR_06()
+ [FAILED] Assertion Test: EchidnaLeverageTester.adjustDebt(uint256,uint256,bool,uint256)
+Test for method "EchidnaLeverageTester.adjustDebt(uint256,uint256,bool,uint256)" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) EchidnaLeverageTester.openCdpWithEth(uint256,uint256)(626562500180823996, 16075060915416112295835308314129289354665431216177856529736742108949953947) (block=23846, time=231894, gas=12500000, gasprice=1, value=0, sender=0x0c9e4828dC9a79a597699307c4a084595145a732)
+2) EchidnaLeverageTester.setEthPerShare(uint256)(37215593865014713721180040961412472901445427794461161927756504667331812860) (block=23846, time=231894, gas=12500000, gasprice=1, value=0, sender=0x3545A2F3928d5b21E71a790FB458F4AE03306C55)
+3) EchidnaLeverageTester.setEthPerShare(uint256)(331283824645947061796867983645759616483028508032153582481885275744615281) (block=81995, time=497717, gas=12500000, gasprice=1, value=0, sender=0xA2379A9c84396B4287d91B7D74470cc9304e3b39)
+4) EchidnaLeverageTester.openCdpWithWstEth(uint256,uint256)(4720641366, 3618502792036124440380423255778572588706281462112407927864582182985854082753) (block=82005, time=926007, gas=12500000, gasprice=1, value=0, sender=0x3545A2F3928d5b21E71a790FB458F4AE03306C55)
+5) EchidnaLeverageTester.openCdpWithWstEth(uint256,uint256)(0, 3925015117879920031191650298824952076754418379728908250127574318089732) (block=137694, time=1307788, gas=12500000, gasprice=1, value=0, sender=0x3545A2F3928d5b21E71a790FB458F4AE03306C55)
+6) EchidnaLeverageTester.closeCdp(uint256)(51429462243308848878190046511174120489676822693) (block=161578, time=1972537, gas=12500000, gasprice=1, value=0, sender=0x3545A2F3928d5b21E71a790FB458F4AE03306C55)
+7) EchidnaLeverageTester.adjustDebt(uint256,uint256,bool,uint256)(53919893334301279589086896597459093962067521039765627879602884041946, 1028693466809266868511240419901544106002089089712717996690965197924294772016, false, 8432915361793266355917228023181800049329952707762685604530982738972719) (block=172470, time=2202580, gas=12500000, gasprice=1, value=0, sender=0x3545A2F3928d5b21E71a790FB458F4AE03306C55)
+[Execution Trace]
+ => [call] EchidnaLeverageTester.adjustDebt(uint256,uint256,bool,uint256)(53919893334301279589086896597459093962067521039765627879602884041946, 1028693466809266868511240419901544106002089089712717996690965197924294772016, false, 8432915361793266355917228023181800049329952707762685604530982738972719) (addr=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da, value=0, sender=0x3545A2F3928d5b21E71a790FB458F4AE03306C55)
+ => [call] AccruableCdpManager.getActiveCdpsCount()() (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] SortedCdps.getSize()() (addr=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8, value=<nil>, sender=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6)
+ => [return (2)]
+ => [return (2)]
+ => [call] SortedCdps.cdpCountOf(address)(0x3545a2f3928d5b21e71a790fb458f4ae03306c55) (addr=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1)]
+ => [event] LogString("Clamping value 53919893334301279589086896597459093962067521039765627879602884041946 to 0")
+ => [call] SortedCdps.cdpOfOwnerByIndex(address,uint256)(0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 0) (addr=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001)]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=4000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] CollateralTokenTester.balanceOf(address)(0x106b994bad9765ebfe52147b356b7aa461ef4dfd) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0)]
+ => [call] ZapRouterActor.proxy(address,bytes,uint256,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, d0e30db000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000, 4000000000000000000000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.deposit()() (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=4000000000000000000000000, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Deposit(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 4000000000000000000000000, 4028336899082818956997628)
+ => [return ()]
+ => [return (true, )]
+ => [call] CollateralTokenTester.balanceOf(address)(0x106b994bad9765ebfe52147b356b7aa461ef4dfd) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (4000000000000000000000000)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, a9059cbb0000000000000000000000002987fb3f62ddb949f2bb519cbb73e351acdc53d2000000000000000000000000000000000000000000034f086f3b33b684000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.transfer(address,uint256)(0x2987fb3f62ddb949f2bb519cbb73e351acdc53d2, 4000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Transfer(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0x2987fb3f62ddb949f2bb519cbb73e351acdc53d2, 4000000000000000000000000)
+ => [event] TransferShares(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0x2987fb3f62ddb949f2bb519cbb73e351acdc53d2, 4028336899082818956997628)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=4000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] CollateralTokenTester.balanceOf(address)(0x106b994bad9765ebfe52147b356b7aa461ef4dfd) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0)]
+ => [call] ZapRouterActor.proxy(address,bytes,uint256,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, d0e30db000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000, 4000000000000000000000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.deposit()() (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=4000000000000000000000000, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Deposit(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 4000000000000000000000000, 4028336899082818956997628)
+ => [return ()]
+ => [return (true, )]
+ => [call] CollateralTokenTester.balanceOf(address)(0x106b994bad9765ebfe52147b356b7aa461ef4dfd) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (4000000000000000000000000)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, a9059cbb000000000000000000000000bf5570a21934f011a219c38546403fd87125f0e2000000000000000000000000000000000000000000034f086f3b33b684000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.transfer(address,uint256)(0xbf5570a21934f011a219c38546403fd87125f0e2, 4000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Transfer(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0xbf5570a21934f011a219c38546403fd87125f0e2, 4000000000000000000000000)
+ => [event] TransferShares(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0xbf5570a21934f011a219c38546403fd87125f0e2, 4028336899082818956997628)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] EBTCTokenTester.unprotectedMint(address,uint256)(0xbf5570a21934f011a219c38546403fd87125f0e2, 2000000000000000000000000000) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [event] Transfer(0x0000000000000000000000000000000000000000, 0xbf5570a21934f011a219c38546403fd87125f0e2, 2000000000000000000000000000)
+ => [return ()]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=2000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] CollateralTokenTester.balanceOf(address)(0x106b994bad9765ebfe52147b356b7aa461ef4dfd) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0)]
+ => [call] ZapRouterActor.proxy(address,bytes,uint256,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, d0e30db000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000, 2000000000000000000000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.deposit()() (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=2000000000000000000000000, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Deposit(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 2000000000000000000000000, 2014168449541409478498814)
+ => [return ()]
+ => [return (true, )]
+ => [call] CollateralTokenTester.balanceOf(address)(0x106b994bad9765ebfe52147b356b7aa461ef4dfd) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (2000000000000000000000000)]
+ => [call] ZapRouterActor.sender()() (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0x3545a2f3928d5b21e71a790fb458f4ae03306c55)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, a9059cbb0000000000000000000000003545a2f3928d5b21e71a790fb458f4ae03306c5500000000000000000000000000000000000000000001a784379d99db42000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.transfer(address,uint256)(0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 2000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Transfer(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 2000000000000000000000000)
+ => [event] TransferShares(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 2014168449541409478498814)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=2000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] ZapRouterActor.proxy(address,bytes,uint256,bool)(0xa2c9bfabd29cdf7d14c9c290f782ee27ab17eef2, d0e30db000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000, 2000000000000000000000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] WETH9.deposit()() (addr=0xa2c9bFabd29cdf7D14C9c290f782Ee27Ab17eeF2, value=2000000000000000000000000, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Deposit(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 2000000000000000000000000)
+ => [return ()]
+ => [return (true, )]
+ => [call] ZapRouterActor.sender()() (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0x3545a2f3928d5b21e71a790fb458f4ae03306c55)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0xa2c9bfabd29cdf7d14c9c290f782ee27ab17eef2, a9059cbb0000000000000000000000003545a2f3928d5b21e71a790fb458f4ae03306c5500000000000000000000000000000000000000000001a784379d99db42000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] WETH9.transfer(address,uint256)(0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 2000000000000000000000000) (addr=0xa2c9bFabd29cdf7D14C9c290f782Ee27Ab17eeF2, value=0, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Transfer(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 2000000000000000000000000)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=2000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] ZapRouterActor.proxy(address,bytes,uint256,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, d0e30db000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000, 2000000000000000000000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.deposit()() (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=2000000000000000000000000, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Deposit(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 2000000000000000000000000, 2014168449541409478498814)
+ => [return ()]
+ => [return (true, )]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, 095ea7b3000000000000000000000000d8d5611b68f8cc56f3a618a6a40bbc89cdf1382500000000000000000000000000000000000000000001a784379d99db42000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.approve(address,uint256)(0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, 2000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Approval(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, 2000000000000000000000000)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] WstETH.balanceOf(address)(0x106b994bad9765ebfe52147b356b7aa461ef4dfd) (addr=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, ea598cb000000000000000000000000000000000000000000001a784379d99db42000000, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] WstETH.wrap(uint256)(2000000000000000000000000) (addr=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825, value=0, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [call] CollateralTokenTester.getSharesByPooledEth(uint256)(2000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825)
+ => [return (2014168449541409478498814)]
+ => [event] Transfer(0x0000000000000000000000000000000000000000, 0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 2014168449541409478498814)
+ => [call] CollateralTokenTester.transferFrom(address,address,uint256)(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, 2000000000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825)
+ => [event] Transfer(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, 2000000000000000000000000)
+ => [event] TransferShares(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, 2014168449541409478498814)
+ => [return (true)]
+ => [return (2014168449541409478498814)]
+ => [return (true, 00000000000000000000000000000000000000000001aa844a5a181b002b59fe)]
+ => [call] WstETH.balanceOf(address)(0x106b994bad9765ebfe52147b356b7aa461ef4dfd) (addr=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (2014168449541409478498814)]
+ => [call] ZapRouterActor.sender()() (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (0x3545a2f3928d5b21e71a790fb458f4ae03306c55)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0xd8d5611b68f8cc56f3a618a6a40bbc89cdf13825, a9059cbb0000000000000000000000003545a2f3928d5b21e71a790fb458f4ae03306c5500000000000000000000000000000000000000000001aa844a5a181b002b59fe, false) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] WstETH.transfer(address,uint256)(0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 2014168449541409478498814) (addr=0xd8D5611B68f8Cc56F3a618a6a40bbc89Cdf13825, value=0, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [event] Transfer(0x106b994bad9765ebfe52147b356b7aa461ef4dfd, 0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 2014168449541409478498814)
+ => [return (true)]
+ => [return (true, 0000000000000000000000000000000000000000000000000000000000000001)]
+ => [call] ZapRouterActor.<unresolved method>(msg_data=) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=2000000000000000000000000, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return]
+ => [call] EBTCTokenTester.unprotectedMint(address,uint256)(0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 2000000000000000000000000000) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [event] Transfer(0x0000000000000000000000000000000000000000, 0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 2000000000000000000000000000)
+ => [return ()]
+ => [call] PriceFeedTestnet.fetchPrice()() (addr=0x885477eF2ee9bbEAe80885cE07706900594abf65, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [event] LastGoodPriceUpdated(74280000000000000)
+ => [return (74280000000000000)]
+ => [call] AccruableCdpManager.getSyncedDebtAndCollShares(bytes32)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (4720641366, 565873321298727927143815)]
+ => [event] LogString("Clamping value 1028693466809266868511240419901544106002089089712717996690965197924294772016 to 1606835215")
+ => [call] EbtcLeverageZapRouter.MIN_CHANGE()() (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1000)]
+ => [event] LogString("Clamping value 8432915361793266355917228023181800049329952707762685604530982738972719 to 33392579575567748107110")
+ => [call] BorrowerOperations.DOMAIN_SEPARATOR()() (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (46ecf6df1cc6c6b147457efffe2421375a4a41900079b18c6e17b1812c2bd41a)]
+ => [call] BorrowerOperations.permitTypeHash()() (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (a3e89b8382a1bf9cfbf89ac68306e7843d0a6cded34c8c26f6ea9d4a2c23ac09)]
+ => [call] BorrowerOperations.nonces(address)(0x3545a2f3928d5b21e71a790fb458f4ae03306c55) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (3)]
+ => [call] StdCheats.sign(uint256,bytes32)(11184810, 955be448c5b1e8d948349a0088573084df96197a1b72477332d6aa4bd4043ce2) (addr=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (28, ba17e6a833c541209b46a493073560fa4d74bc199408a9789fdb3da92d7cbcfd, 7212e309693e6c2e6424408e76486d691febf7b74857353dd28e7e2615674d14)]
+ => [call] PriceFeedTestnet.fetchPrice()() (addr=0x885477eF2ee9bbEAe80885cE07706900594abf65, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [event] LastGoodPriceUpdated(74280000000000000)
+ => [return (74280000000000000)]
+ => [call] EbtcLeverageZapRouter.MIN_CHANGE()() (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1000)]
+ => [call] EbtcLeverageZapRouter.MIN_CHANGE()() (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1000)]
+ => [call] AccruableCdpManager.getSyncedCdpCollShares(bytes32)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6)
+ => [return (992965608440229820)]
+ => [return (565873321298727927143815)]
+ => [call] BorrowerOperations.flashFee(address,uint256)(0xea77e3cc6541c0012928635cb8a9157fb5822af0, 1606835215) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (482050)]
+ => [call] BorrowerOperations.DOMAIN_SEPARATOR()() (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (46ecf6df1cc6c6b147457efffe2421375a4a41900079b18c6e17b1812c2bd41a)]
+ => [call] BorrowerOperations.permitTypeHash()() (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (a3e89b8382a1bf9cfbf89ac68306e7843d0a6cded34c8c26f6ea9d4a2c23ac09)]
+ => [call] BorrowerOperations.nonces(address)(0x3545a2f3928d5b21e71a790fb458f4ae03306c55) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (3)]
+ => [call] StdCheats.sign(uint256,bytes32)(11184810, 955be448c5b1e8d948349a0088573084df96197a1b72477332d6aa4bd4043ce2) (addr=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (28, ba17e6a833c541209b46a493073560fa4d74bc199408a9789fdb3da92d7cbcfd, 7212e309693e6c2e6424408e76486d691febf7b74857353dd28e7e2615674d14)]
+ => [call] ZapRouterActor.proxy(address,bytes,bool)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 20323a753545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001000000000000000000000000000000000000000000000000000000005fc65c0f000000000000000000000000000000000000000000000000000000005fc65c0f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000050a05458f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000018000000000000000000000000000000000000000000000000000000000000002200000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000021a2dc000000000000000000000000000000000000000000000000000000000000001cba17e6a833c541209b46a493073560fa4d74bc199408a9789fdb3da92d7cbcfd7212e309693e6c2e6424408e76486d691febf7b74857353dd28e7e2615674d1400000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000050a05458f0000000000000000000000000000000000000000000077d40de10bd2c20097f80000000000000000000000000000000000000000000000000000000000000064651498990000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000ea77e3cc6541c0012928635cb8a9157fb5822af0000000000000000000000000000000000000000000000000000000005fcdb71100000000000000000000000000000000000000000000000000000000, true) (addr=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [call] StdCheats.prank(address)(0x3545a2f3928d5b21e71a790fb458f4ae03306c55) (addr=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D, value=0, sender=0x106b994bAD9765eBFE52147B356B7aA461ef4DfD)
+ => [return ()]
+ => [call] EbtcLeverageZapRouter.adjustCdp(bytes32,(uint256,uint256,bool,bytes32,bytes32,uint256,uint256,bool,bool),bytes,(bytes,uint256,bool,uint256,uint256))(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001, {flashLoanAmount: 1606835215, debtChange: 1606835215, isDebtIncrease: false, upperHint: 0000000000000000000000000000000000000000000000000000000000000000, lowerHint: 0000000000000000000000000000000000000000000000000000000000000000, marginIncrease: 0, stEthBalanceChange: 21642954127, isStEthBalanceIncrease: false, useWstETHForDecrease: false}, 000000000000000000000000000000000000000000000000000000000021a2dc000000000000000000000000000000000000000000000000000000000000001cba17e6a833c541209b46a493073560fa4d74bc199408a9789fdb3da92d7cbcfd7212e309693e6c2e6424408e76486d691febf7b74857353dd28e7e2615674d14, {exchangeData: 651498990000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000ea77e3cc6541c0012928635cb8a9157fb5822af0000000000000000000000000000000000000000000000000000000005fcdb711, expectedMinOut: 0, performSwapChecks: false, approvalAmount: 21642954127, expectedCollateral: 565873321298706284189688}) (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=0, sender=0x3545A2F3928d5b21E71a790FB458F4AE03306C55)
+ => [call] CollateralTokenTester.balanceOf(address)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [return (0)]
+ => [call] AccruableCdpManager.getSyncedCdpDebt(bytes32)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [return (4720641366)]
+ => [call] BorrowerOperations.permitPositionManagerApproval(address,address,uint8,uint256,uint8,bytes32,bytes32)(0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1, 2204380, 28, ba17e6a833c541209b46a493073560fa4d74bc199408a9789fdb3da92d7cbcfd, 7212e309693e6c2e6424408e76486d691febf7b74857353dd28e7e2615674d14) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [call] (addr=0x0000000000000000000000000000000000000001, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] PositionManagerApprovalSet(0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1)
+ => [return ()]
+ => [call] BorrowerOperations.flashLoan(address,address,uint256,bytes)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xea77e3cc6541c0012928635cb8a9157fb5822af0, 1606835215, 00000000000000000000000000000000000000000000000000000000000000200000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000bf5570a21934f011a219c38546403fd87125f0e2000000000000000000000000000000000000000000000000000000050a05458f000000000000000000000000bf5570a21934f011a219c38546403fd87125f0e200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000064651498990000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000ea77e3cc6541c0012928635cb8a9157fb5822af0000000000000000000000000000000000000000000000000000000005fcdb71100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e03545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001000000000000000000000000000000000000000000000000000000050a05458f000000000000000000000000000000000000000000000000000000005fc65c0f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [call] EBTCTokenTester.mint(address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1606835215) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] Transfer(0x0000000000000000000000000000000000000000, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1606835215)
+ => [return ()]
+ => [call] EbtcLeverageZapRouter.onFlashLoan(address,address,uint256,uint256,bytes)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xea77e3cc6541c0012928635cb8a9157fb5822af0, 1606835215, 482050, 00000000000000000000000000000000000000000000000000000000000000200000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000bf5570a21934f011a219c38546403fd87125f0e2000000000000000000000000000000000000000000000000000000050a05458f000000000000000000000000bf5570a21934f011a219c38546403fd87125f0e200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000064651498990000000000000000000000005cff9a88183819fe9d88bc9edb48cfca2141ee5a000000000000000000000000ea77e3cc6541c0012928635cb8a9157fb5822af0000000000000000000000000000000000000000000000000000000005fcdb71100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e03545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001000000000000000000000000000000000000000000000000000000050a05458f000000000000000000000000000000000000000000000000000000005fc65c0f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000) (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [call] BorrowerOperations.adjustCdpWithColl(bytes32,uint256,uint256,bool,bytes32,bytes32,uint256)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001, 21642954127, 1606835215, false, 0000000000000000000000000000000000000000000000000000000000000000, 0000000000000000000000000000000000000000000000000000000000000000, 0) (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [call] AccruableCdpManager.locked()() (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1)]
+ => [call] SortedCdps.getOwnerAddress(bytes32)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001) (addr=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (0x3545a2f3928d5b21e71a790fb458f4ae03306c55)]
+ => [event] PositionManagerApprovalSet(0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0)
+ => [call] AccruableCdpManager.getCdpStatus(bytes32)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1)]
+ => [call] AccruableCdpManager.syncAccounting(bytes32)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1000000000000000000) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6)
+ => [return (992965608440229820)]
+ => [return ()]
+ => [call] EbtcFeed.fetchPrice()() (addr=0x093139e84D9fAE1cdE07e8Ee173C3316ACf0B942, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [call] PriceFeedTestnet.fetchPrice()() (addr=0x885477eF2ee9bbEAe80885cE07706900594abf65, value=0, sender=0x093139e84D9fAE1cdE07e8Ee173C3316ACf0B942)
+ => [event] LastGoodPriceUpdated(74280000000000000)
+ => [return (74280000000000000)]
+ => [event] LastGoodPriceUpdated(74280000000000000)
+ => [return (74280000000000000)]
+ => [call] CollateralTokenTester.getSharesByPooledEth(uint256)(21642954127) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (21796277678)]
+ => [call] AccruableCdpManager.getCdpDebt(bytes32)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (4720641366)]
+ => [call] AccruableCdpManager.getCdpCollShares(bytes32)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (565873321298727927143815)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(565873321298727927143815) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (561892746783485036746952)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(565873321298706130866137) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (561892746783463393792826)]
+ => [call] ActivePool.getSystemCollShares()() (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1045709035451872578534548)]
+ => [call] ActivePool.getSystemDebt()() (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (626562504901465362)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1045709035451872578534548) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1038353108638914511178145)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(21796277678) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (21642954126)]
+ => [call] ActivePool.getSystemCollShares()() (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1045709035451872578534548)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(1045709035451872578534548) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1038353108638914511178145)]
+ => [call] ActivePool.getSystemDebt()() (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (626562504901465362)]
+ => [call] AccruableCdpManager.notifyEndGracePeriod(uint256)(123098443497868320007703) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] TCRNotified(123098443497868320007703)
+ => [return ()]
+ => [call] EBTCTokenTester.balanceOf(address)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (1606835215)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(565873321298706130866137) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [return (561892746783463393792826)]
+ => [call] AccruableCdpManager.updateCdp(bytes32,address,uint256,uint256,uint256,uint256)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001, 0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 565873321298727927143815, 4720641366, 565873321298706130866137, 3113806151) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] TotalStakesUpdated(1045709035451850782256870)
+ => [event] CdpUpdated(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001, 0x3545a2f3928d5b21e71a790fb458f4ae03306c55, 0x30f33b97449d6d9adc2fb21bc85adbdc6de2d923, 4720641366, 565873321298727927143815, 3113806151, 565873321298706130866137, 565873321298706130866137, 2)
+ => [return ()]
+ => [call] SortedCdps.reInsert(bytes32,uint256,bytes32,bytes32)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001, 18173042696218443267701573757986965, 0000000000000000000000000000000000000000000000000000000000000000, 0000000000000000000000000000000000000000000000000000000000000000) (addr=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] NodeRemoved(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001)
+ => [call] AccruableCdpManager.getCachedNominalICR(bytes32)(0c9e4828dc9a79a597699307c4a084595145a73200005d260000000000000000) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0xB1e04a556615B12540a29e766D4aB9F6911Ea7B8)
+ => [return (76582258595856846072123875)]
+ => [event] NodeAdded(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001, 18173042696218443267701573757986965)
+ => [return ()]
+ => [call] ActivePool.decreaseSystemDebt(uint256)(1606835215) (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [call] ActivePool.setValueAndUpdate(uint128)(626562503294630147) (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=0, sender=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2)
+ => [event] NewTrackValue(626562504901465362, 626562503294630147, 2202580, 1234757953257591292648974)
+ => [return ()]
+ => [event] ActivePoolEBTCDebtUpdated(626562503294630147)
+ => [return ()]
+ => [call] EBTCTokenTester.burn(address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1606835215) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] Transfer(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0x0000000000000000000000000000000000000000, 1606835215)
+ => [return ()]
+ => [call] ActivePool.transferSystemCollShares(address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 21796277678) (addr=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] SystemCollSharesUpdated(1045709035451850782256870)
+ => [event] CollSharesTransferred(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 21796277678)
+ => [call] CollateralTokenTester.transferShares(address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 21796277678) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0x2987fB3f62DDB949f2bb519CBB73E351aCdC53d2)
+ => [event] Transfer(0x2987fb3f62ddb949f2bb519cbb73e351acdc53d2, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 21642954126)
+ => [event] TransferShares(0x2987fb3f62ddb949f2bb519cbb73e351acdc53d2, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 21796277678)
+ => [return (21642954126)]
+ => [return ()]
+ => [return ()]
+ => [call] CollateralTokenTester.approve(address,uint256)(0xbf5570a21934f011a219c38546403fd87125f0e2, 21642954127) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [event] Approval(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbf5570a21934f011a219c38546403fd87125f0e2, 21642954127)
+ => [return (true)]
+ => [call] Mock1Inch.swapExactOut(address,address,uint256)(0x5cff9a88183819fe9d88bc9edb48cfca2141ee5a, 0xea77e3cc6541c0012928635cb8a9157fb5822af0, 1607317265) (addr=0xbf5570a21934f011a219c38546403Fd87125F0E2, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [call] CollateralTokenTester.transferFrom(address,address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbf5570a21934f011a219c38546403fd87125f0e2, 21638627692) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0xbf5570a21934f011a219c38546403Fd87125F0E2)
+ => [event] Transfer(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbf5570a21934f011a219c38546403fd87125f0e2, 21638627692)
+ => [event] TransferShares(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbf5570a21934f011a219c38546403fd87125f0e2, 21791920594)
+ => [return (true)]
+ => [call] EBTCTokenTester.transfer(address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1607317265) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0xbf5570a21934f011a219c38546403Fd87125F0E2)
+ => [event] Transfer(0xbf5570a21934f011a219c38546403fd87125f0e2, 0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 1607317265)
+ => [return (true)]
+ => [return (21638627692)]
+ => [call] CollateralTokenTester.approve(address,uint256)(0xbf5570a21934f011a219c38546403fd87125f0e2, 0) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=0, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [event] Approval(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbf5570a21934f011a219c38546403fd87125f0e2, 0)
+ => [return (true)]
+ => [return (439148f0bbc682ca079e46d6e2c2f0c1e3b820f1a291b069d8882abf8cf18dd9)]
+ => [call] EBTCTokenTester.transferFrom(address,address,uint256)(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbbf1c8748d501adee241cbac7b47d8671521623e, 1607317265) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] Transfer(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xbbf1c8748d501adee241cbac7b47d8671521623e, 1607317265)
+ => [return (true)]
+ => [call] EBTCTokenTester.burn(address,uint256)(0xbbf1c8748d501adee241cbac7b47d8671521623e, 1606835215) (addr=0xea77E3CC6541C0012928635Cb8A9157Fb5822af0, value=0, sender=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923)
+ => [event] Transfer(0xbbf1c8748d501adee241cbac7b47d8671521623e, 0x0000000000000000000000000000000000000000, 1606835215)
+ => [return ()]
+ => [event] FlashLoanSuccess(0xd3e93bd65baef1e469da6602ac07c8cf95ed38d9, 0xea77e3cc6541c0012928635cb8a9157fb5822af0, 1606835215, 482050)
+ => [return (true)]
+ => [call] AccruableCdpManager.Cdps(bytes32)(3545a2f3928d5b21e71a790fb458f4ae03306c55000140550000000000000001) (addr=0xF6DBBb90bA2799eFff46BBB05e69F5f378135CB6, value=<nil>, sender=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9)
+ => [return (3113806151, 565873321298706130866137, 565873321298706130866137, 201416844954140947, 1)]
+ => [revert ('!LeverageMacroBase: gte post check')]
+ => [return (false, 08c379a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000022214c657665726167654d6163726f426173653a2067746520706f737420636865636b000000000000000000000000000000000000000000000000000000000000)]
+ => [call] EbtcLeverageZapRouter.MIN_CHANGE()() (addr=0xD3E93Bd65bAEf1e469DA6602Ac07C8cF95Ed38d9, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1000)]
+ => [call] CollateralTokenTester.getSharesByPooledEth(uint256)(21642954127) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (21796277678)]
+ => [call] PriceFeedTestnet.fetchPrice()() (addr=0x885477eF2ee9bbEAe80885cE07706900594abf65, value=0, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [event] LastGoodPriceUpdated(74280000000000000)
+ => [return (74280000000000000)]
+ => [call] CollateralTokenTester.getPooledEthByShares(uint256)(565873321298706130866137) (addr=0x5cFf9a88183819fe9d88BC9Edb48CFca2141ee5A, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (561892746783463393792826)]
+ => [call] HintHelpers.computeCR(uint256,uint256,uint256)(561892746783463393792826, 3113806151, 74280000000000000) (addr=0x5C4CB812615c06840fe3cC45098825cD57B38153, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (13403979312479577952677477153586)]
+ => [call] BorrowerOperations.MCR()() (addr=0x30F33B97449D6D9adc2Fb21BC85AdBDc6de2D923, value=<nil>, sender=0x8E995eDF7F549E7252e382eD58DC607fd0Be16da)
+ => [return (1100000000000000000)]
+ => [event] AssertFail("ZR-07: Parameters that lead to a valid ICR shouldn't revert")
+ => [panic: assertion failed]
+
+
+ Test summary: 18 test(s) passed, 1 test(s) failed
+ Coverage report saved to file: medusa/coverage_report.html

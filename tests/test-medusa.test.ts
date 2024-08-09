@@ -37,15 +37,6 @@ describe("Testing fuzz results for", () => {
         expect(el.sequence.endsWith("---End Trace---\n")).toBe(true);
       });
     });
-    jobStatsMedusa.brokenProperties.forEach((el) => {
-      const vmData = {
-        roll: true,
-        time: true,
-        prank: true,
-      };
-      const format = medusaLogsToFunctions(el.sequence, "", vmData);
-      // console.log(format)
-    });
   });
 
   describe("It should parse the bytes correctly", () => {
@@ -173,5 +164,33 @@ describe("Testing fuzz results for", () => {
         )
       );
     });
+  });
+
+  describe("Medusa fuzzer - 2", () => {
+    const datamedusa = fs.readFileSync(
+      "./tests/test_data/medusa-2.txt",
+      "utf8"
+    );
+    const jobStatsmedusa = processLogs(datamedusa, Fuzzer.MEDUSA);
+    test("Duration should be correct", () => {
+      expect(jobStatsmedusa.duration).toBe("10m42s");
+    })
+    test("Coverage should be correct", () => {
+      expect(jobStatsmedusa.coverage).toBe(40);
+    });
+    test("Failed should be correct", () => {
+      expect(jobStatsmedusa.failed).toBe(1);
+    });
+    test("Passed should be correct", () => {
+      expect(jobStatsmedusa.passed).toBe(18);
+    });
+    test("Results array should be the length of failed + passed", () => {
+      expect(jobStatsmedusa.results.length).toBe(
+        jobStatsmedusa.failed + jobStatsmedusa.passed
+      );
+    });
+    test("broken property should have the correct length", () => {
+      expect(jobStatsmedusa.brokenProperties.length).toBe(jobStatsmedusa.failed);
+    })
   });
 });
