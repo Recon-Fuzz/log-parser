@@ -21,24 +21,21 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   if (line.includes(": passing") || line.includes(": failed!")) {
     jobStats.results.push(line);
   }
+  if (line.includes(": passing")) {
+    jobStats.passed++;
+  }
+  if (line.includes(": failed!")) {
+    jobStats.failed++;
+  }
   if (line.includes("[status] tests:")) {
     const durationMatch = line.match(/fuzzing: (\d+\/\d+)/);
     const coverageMatch = line.match(/cov: (\d+)/);
-    const failedMatch = line.match(/tests: (\d+)\//);
-    const passedMatch = line.match(/\/(\d+), fuzzing:/);
 
     if (durationMatch) {
       jobStats.duration = durationMatch[1];
     }
     if (coverageMatch) {
       jobStats.coverage = +coverageMatch[1];
-    }
-    if (failedMatch && passedMatch) {
-      const failed = parseInt(failedMatch[1]);
-      const total = parseInt(passedMatch[1]);
-      const passed = total - failed;
-      jobStats.failed = failed;
-      jobStats.passed = passed;
     }
   } else {
     const sequenceMatch = line.includes("Call sequence");
@@ -57,7 +54,6 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
     }
 
     currentBrokenPropertyEchidna = cleanUpBrokenPropertyName(currentBrokenPropertyEchidna);
-
     const tracesMatch = line.includes("Traces:");
     if (tracesMatch) {
       echidnaTraceLogger = true;
@@ -130,6 +126,7 @@ function cleanUpBrokenPropertyName(brokenProp: string): string {
 export function echidnaLogsToFunctions(
   input: string,
   prefix: string,
+  brokenProp?: string,
   vmData?: VmParsingData
 ): string {
   const callSequenceMatches =
@@ -141,8 +138,8 @@ export function echidnaLogsToFunctions(
         .replace(/\)/g, ");")
         .replace(
           "Call sequence",
-          `function test_prefix_${i}_${prefix}() public {`
-        )
+          `function ${brokenProp ? `test_${brokenProp}_${prefix}`: `test_prefix_${i}_${prefix}`}() public {`
+        ) // TODO 0XSI WRONG
         // Fixing shitty regex
         .replace("{,", "{")
         .replace("{:", "{")
@@ -178,7 +175,11 @@ export function echidnaLogsToFunctions(
         if (vmData.prank && sender) {
           returnData += `\n     vm.prank(${sender});`;
         }
-        returnData += `\n ${line.split(";")[0]};`;
+        if (line === "}") {
+          returnData += `\n ${line.split(";")[0]};`;
+        } else {
+          returnData += `\n     ${line.split(";")[0]};`;
+        }
       } else {
         returnData = `  ${line.split(";")[0]};`;
       }

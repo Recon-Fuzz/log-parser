@@ -22,13 +22,12 @@ describe("Testing fuzz results for", () => {
     });
 
     test("Echidna passed", () => {
-      expect(jobStatsEchidna.passed).toBe(15);
+      expect(jobStatsEchidna.passed).toBe(14);
     });
-
     test("Results array should be the length of failed + passed", () => {
       expect(jobStatsEchidna.results.length).toBe(
         jobStatsEchidna.failed + jobStatsEchidna.passed
-      ); // 15 passed + 2 failed
+      ); // 14 passed + 2 failed
     });
     test("brokenProperties array should be the length of failed", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(
