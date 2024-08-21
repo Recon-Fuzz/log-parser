@@ -193,4 +193,22 @@ describe("Testing fuzz results for", () => {
       expect(jobStatsmedusa.brokenProperties.length).toBe(jobStatsmedusa.failed);
     })
   });
+  describe("Medusa fuzzer - 3", () => {
+    const datamedusa = fs.readFileSync(
+      "./tests/test_data/medusa-3.txt",
+      "utf8"
+    );
+    const jobStatsmedusa = processLogs(datamedusa, Fuzzer.MEDUSA);
+    test("It should format the bytes correctly", () => {
+      jobStatsmedusa.brokenProperties.forEach((el) => {
+        const vmData = {
+          roll: false,
+          time: false,
+          prank: false,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        console.log(format)
+      });
+    });
+  });
 });

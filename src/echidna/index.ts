@@ -139,7 +139,7 @@ export function echidnaLogsToFunctions(
         .replace(
           "Call sequence",
           `function ${brokenProp ? `test_${brokenProp}_${prefix}`: `test_prefix_${i}_${prefix}`}() public {`
-        ) // TODO 0XSI WRONG
+        )
         // Fixing shitty regex
         .replace("{,", "{")
         .replace("{:", "{")
@@ -165,7 +165,6 @@ export function echidnaLogsToFunctions(
 
         const senderMatch = line.match(/from:\s*(0x[0-9a-fA-F]{40})/);
         const sender = senderMatch ? senderMatch[1] : null;
-
         if (vmData.roll && block) {
           returnData += `\n     vm.roll(${block});`;
         }
@@ -176,7 +175,7 @@ export function echidnaLogsToFunctions(
           returnData += `\n     vm.prank(${sender});`;
         }
         if (line === "}") {
-          returnData += `\n ${line.split(";")[0]};`;
+          returnData += `\n ${line}`;
         } else {
           returnData += `\n     ${line.split(";")[0]};`;
         }
