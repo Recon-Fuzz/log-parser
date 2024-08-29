@@ -1,5 +1,13 @@
-import { FuzzingResults, PropertyAndSequence, VmParsingData } from "../types/types";
-import { captureFuzzingDuration, formatAddress, formatBytes } from "../utils/utils";
+import {
+  FuzzingResults,
+  PropertyAndSequence,
+  VmParsingData,
+} from "../types/types";
+import {
+  captureFuzzingDuration,
+  formatAddress,
+  formatBytes,
+} from "../utils/utils";
 //////////////////////////////////////
 //          MEDUSA                  //
 //////////////////////////////////////
@@ -21,9 +29,8 @@ export function processMedusa(line: string, jobStats: FuzzingResults): void {
     medusaTraceLogger = true;
   }
   if (line.includes("fuzz: elapsed:")) {
-    jobStats.duration = captureFuzzingDuration(
-      line.replace("fuzz: elapsed:", "")
-    ) ?? ""; // TODO 0XSI - fix this
+    jobStats.duration =
+      captureFuzzingDuration(line.replace("fuzz: elapsed:", "")) ?? ""; // TODO 0XSI - fix this
     const coverageMatch = line.match(/coverage: (\d+)/);
     if (coverageMatch) {
       jobStats.coverage = +coverageMatch[1];
@@ -123,13 +130,12 @@ export function getPropertyAndSequenceString(
     .filter((entry) => !entry.includes("[PASSED]"))
     .filter((entry) => !entry.includes("[FAILED]"))
     .filter((entry) => entry.trim() != "");
-    const bodies = splitted.map((entry) =>
+  const bodies = splitted.map((entry) =>
     vmData
       ? getFunctionCallsWithVM(entry, vmData)
       : getFunctionCalls(entry).map((body) => body.replace(" (block=", ";"))
   );
   const headers = splitted.map((entry, counter) => getHeaders(entry, counter));
-
   if (bodies.length != headers.length) {
     throw Error("oops");
   }
@@ -159,10 +165,9 @@ export function getFunctionCallsWithVM(
   vmData?: VmParsingData
 ): string[] {
   const pattern: RegExp =
-    /(\w+)\(([^)]*)\)\(?[^)]*\)?\s+\(block=\d*, time=\d*, gas=\d*, gasprice=\d*, value=\d*, sender=0x[0-9a-fA-F]{40}\)/gm;
+    /([\w.]+)\(([^()]*(?:\([^()]*\)[^()]*)*)\)\(?([^()]*)\)?\s+\(block=\d*,\s*time=\d*,\s*gas=\d*,\s*gasprice=\d*,\s*value=\d*,\s*sender=0x[0-9a-fA-F]{40}\)/gm;
   const matches: RegExpMatchArray | null = logs.match(pattern);
-  //TODO 0XSI
-  // Could be splited to be reusable by the log parser
+
   const functionCalls = matches?.map((entry) => {
     let returnData = "";
     let cleanedData = "";
@@ -171,16 +176,26 @@ export function getFunctionCallsWithVM(
     cleanedData += formatAddress(splittedEntry);
     // Format bytes by adding hex"".
     cleanedData = formatBytes(cleanedData);
-    const pattern = /(\w+)\([^)]*\)(\([^)]*\))/g; // Would catch cases such as: check_liquidation_solvency()();
-    cleanedData = cleanedData.replace(pattern, "$1$2");
+    const pattern = /(\w+\.\w+)\([^)]+\)\(([^)]*)\)/g;
+    // Uncommon cenarios like: ((hex"address",uint256)[])([])
+    if (cleanedData.includes("((")) {
+      // Willbasically replace to ([])
+      const patternArrayParams = /\(([^()]+)\)/;
+      cleanedData = cleanedData.replace(patternArrayParams, "");
+      cleanedData = cleanedData.replace(/\(\[\]\)/, "");
+    } else {
+      // Would catch cases such as: check_liquidation_solvency()();
+      cleanedData = cleanedData.replace(pattern, "$1($2)");
+    }
+
     if (vmData) {
       //@ts-ignore
       const block = parseInt(entry.match(/block=(\d+)/)[1]);
       //@ts-ignore
       const time = parseInt(entry.match(/time=(\d+)/)[1]);
       const sender = entry.match(/sender=(0x[0-9a-fA-F]{40})/)
-      //@ts-ignore
-        ? entry.match(/sender=(0x[0-9a-fA-F]{40})/)[1]
+        ? //@ts-ignore
+          entry.match(/sender=(0x[0-9a-fA-F]{40})/)[1]
         : "";
       if (vmData.roll) {
         returnData += `\n   vm.roll(${block});`;
@@ -191,8 +206,7 @@ export function getFunctionCallsWithVM(
       if (vmData.prank) {
         returnData += `\n   vm.prank(${sender});`;
       }
-      returnData += cleanedData
-
+      returnData += cleanedData;
     } else {
       returnData = cleanedData;
     }
@@ -277,6 +291,8 @@ export function medusaLogsToFunctions(
   if (withoutExtraLogs === undefined) {
     withoutExtraLogs = logs;
   }
+  // Splitted
+  // headers
   const testsToBuild = getPropertyAndSequenceString(withoutExtraLogs, vmData);
   const filtered = testsToBuild.filter((entry) =>
     Array.isArray(entry.sequence)
@@ -306,5 +322,5 @@ function test_${test.brokenProperty}_${identifier}() public {
     )
     .join("\n");
 
-    return unableString + asStrings;
+  return unableString + asStrings;
 }

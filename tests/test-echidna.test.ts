@@ -69,7 +69,7 @@ describe("Testing fuzz results for", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(jobStatsEchidna.failed);
     })
   });
-  describe("Echidna fuzzer - 3", () => {
+  describe("Echidna fuzzer - 3 - Address casted as bytes", () => {
     const dataEchidna = fs.readFileSync(
       "./tests/test_data/echidna-3.txt",
       "utf8"
