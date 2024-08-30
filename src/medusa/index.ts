@@ -177,14 +177,18 @@ export function getFunctionCallsWithVM(
     // Format bytes by adding hex"".
     cleanedData = formatBytes(cleanedData);
     const pattern = /(\w+\.\w+)\([^)]+\)\(([^)]*)\)/g;
-    // Uncommon cenarios like: ((hex"address",uint256)[])([])
+    const patternArrayParams = /\(([^()]+)\)/;
+    const emptyArrayPattern = /\(\[\]\)/;
+
+    // Check for uncommon scenarios like: ((hex"address",uint256)[])([])
     if (cleanedData.includes("((")) {
-      // Willbasically replace to ([])
-      const patternArrayParams = /\(([^()]+)\)/;
-      cleanedData = cleanedData.replace(patternArrayParams, "");
-      cleanedData = cleanedData.replace(/\(\[\]\)/, "");
+      // Remove the content inside the first set of parentheses and replace it with an empty string
+      cleanedData = cleanedData.replace(patternArrayParams, '');
+
+      // Remove the extra '([])' from the second set of parentheses
+      cleanedData = cleanedData.replace(emptyArrayPattern, '');
     } else {
-      // Would catch cases such as: check_liquidation_solvency()();
+      // For common cases like: check_liquidation_solvency()();
       cleanedData = cleanedData.replace(pattern, "$1($2)");
     }
 
