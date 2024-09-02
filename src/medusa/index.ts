@@ -82,7 +82,8 @@ export function processMedusa(line: string, jobStats: FuzzingResults): void {
 
     if (
       line.includes("panic: assertion failed") ||
-      (medusaTraceLoggerFlag && line === "")
+      (medusaTraceLoggerFlag && line.trim() === "") ||
+      line.includes("Property Test Execution Trace")
     ) {
       medusaTraceLogger = false;
       medusaTraceLoggerFlag = false;
