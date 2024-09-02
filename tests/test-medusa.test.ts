@@ -109,7 +109,6 @@ describe("Testing fuzz results for", () => {
           prank: true,
         };
         const format = medusaLogsToFunctions(el.sequence, "", vmData);
-        console.log(format)
         expect(format.includes(`test_${el.brokenProperty}_()`));
       });
       expect(jobStatsMedusa.brokenProperties.length).toBe(2);
@@ -246,7 +245,7 @@ describe("Testing fuzz results for", () => {
           prank: false,
         };
         const format = medusaLogsToFunctions(el.sequence, "", vmData);
-        console.log(format)
+        expect(format.includes(el.brokenProperty)).toBe(true);
       });
     });
   });
