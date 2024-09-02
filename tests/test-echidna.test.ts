@@ -83,7 +83,9 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-      console.log(format)
+      expect(format.includes(el.brokenProperty)).toBe(true);
+      expect(format.includes("0x1fffffffe")).toBe(false);
+      expect(format.includes("0x00000000000000000000000000000001fffffffE")).toBe(true);
     });
   });
 });

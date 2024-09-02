@@ -1,5 +1,6 @@
 
 import { FuzzingResults, VmParsingData } from "../types/types";
+import { correctAllChecksums } from "../utils/utils";
 
 //////////////////////////////////////
 //          ECHIDNA                 //
@@ -155,6 +156,13 @@ export function echidnaLogsToFunctions(
         return line;
       }
       let returnData = "";
+      let cleanedData = line;
+
+      if (line.split(" from")[0].includes("0x")) {
+        const startLine = line.split(" from")[0];
+        const endLine = line.split(" from")[1];
+        cleanedData = correctAllChecksums(startLine) + endLine;
+      }
 
       if (vmData) {
         const blockMatch = line.match(/Block delay:\s*(\d+)/);
@@ -164,6 +172,7 @@ export function echidnaLogsToFunctions(
         const time = timeMatch ? parseInt(timeMatch[1]) : null;
 
         const senderMatch = line.match(/from:\s*(0x[0-9a-fA-F]{40})/);
+
         const sender = senderMatch ? senderMatch[1] : null;
         if (vmData.roll && block) {
           returnData += `\n     vm.roll(${block});`;
@@ -174,13 +183,13 @@ export function echidnaLogsToFunctions(
         if (vmData.prank && sender) {
           returnData += `\n     vm.prank(${sender});`;
         }
-        if (line === "}") {
-          returnData += `\n ${line}`;
+        if (cleanedData === "}") {
+          returnData += `\n ${cleanedData}`;
         } else {
-          returnData += `\n     ${line.split(";")[0]};`;
+          returnData += `\n     ${cleanedData.split(";")[0]};`;
         }
       } else {
-        returnData = `  ${line.split(";")[0]};`;
+        returnData = `  ${cleanedData.split(";")[0]};`;
       }
       return returnData;
     })

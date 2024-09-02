@@ -18,8 +18,11 @@ export function correctChecksum(address: string): string {
   }
 }
 
-export function correctAllChecksums(input: string): string {
-  return input.replace(/0x[0-9a-fA-F]{40}/g, (match) => correctChecksum(match));
+export function correctAllChecksums(input: string) {
+  return input.replace(/0x[0-9a-fA-F]{1,40}/g, (match) => {
+    const correctedAddress = convertToEthereumAddress(match);
+    return correctChecksum(correctedAddress);
+  });
 }
 
 export function formatAddress(input: string): string {
@@ -43,13 +46,16 @@ export function formatBytes(input: string) {
     const byteSequenceRegex = /\b(?!0x)(?=\w*[a-fA-F])\w{2,}\b/g;
     const potentialBytes = innerContent.match(byteSequenceRegex);
     if (potentialBytes) {
-      innerContent = innerContent.replace(/\b(?!0x)(?=\w*[a-fA-F])\w{2,}\b(?!")/g, (byteSequence) => {
-        // Only wrap sequences not already wrapped with hex""
-        if (!byteSequence.startsWith('hex"')) {
-          return `hex"${byteSequence}"`;
+      innerContent = innerContent.replace(
+        /\b(?!0x)(?=\w*[a-fA-F])\w{2,}\b(?!")/g,
+        (byteSequence) => {
+          // Only wrap sequences not already wrapped with hex""
+          if (!byteSequence.startsWith('hex"')) {
+            return `hex"${byteSequence}"`;
+          }
+          return byteSequence;
         }
-        return byteSequence;
-      });
+      );
     }
 
     input = input.replace(match[1], innerContent);
@@ -77,4 +83,14 @@ export function processTraceLogs(logs: string[]): string[] {
   }
 
   return result;
+}
+
+function convertToEthereumAddress(rawBytes: string) {
+  let hexString = rawBytes.startsWith("0x") ? rawBytes.slice(2) : rawBytes;
+
+  const paddedHexString = hexString.padStart(40, "0");
+
+  const ethereumAddress = "0x" + paddedHexString;
+
+  return ethereumAddress;
 }
