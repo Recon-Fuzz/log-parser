@@ -1,6 +1,7 @@
 import fs from "fs";
 import { processLogs } from "../src/main";
 import { Fuzzer } from "../src/types/types";
+import { echidnaLogsToFunctions } from "../src/echidna";
 
 describe("Testing fuzz results for", () => {
   describe("Echidna fuzzer", () => {
@@ -67,5 +68,24 @@ describe("Testing fuzz results for", () => {
     test("broken property should have the correct length", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(jobStatsEchidna.failed);
     })
+  });
+  describe("Echidna fuzzer - 3 - Address casted as bytes", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-3.txt",
+      "utf8"
+    );
+
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      expect(format.includes(el.brokenProperty)).toBe(true);
+      expect(format.includes("0x1fffffffe")).toBe(false);
+      expect(format.includes("0x00000000000000000000000000000001fffffffE")).toBe(true);
+    });
   });
 });

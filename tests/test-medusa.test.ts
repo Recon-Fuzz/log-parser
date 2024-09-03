@@ -54,9 +54,11 @@ describe("Testing fuzz results for", () => {
         };
         const format = medusaLogsToFunctions(el.sequence, "", vmData);
         expect(format.includes("hex")).toBe(true);
+        expect(format.includes(el.brokenProperty)).toBe(true);
       });
     });
   });
+
   describe("It should format the addresses correctly", () => {
     const addressData = fs.readFileSync(
       "./tests/test_data/medusa-address-parsing.txt",
@@ -82,6 +84,7 @@ describe("Testing fuzz results for", () => {
       true
     );
   });
+
   describe("It should parse correctly the logs for Medusa 0.1.5 -- second test", () => {
     const dataMedusa = fs.readFileSync(
       "./tests/test_data/medusa-0.1.5.txt",
@@ -125,7 +128,19 @@ describe("Testing fuzz results for", () => {
         )
       );
     });
+    test("It should format correctly", () => {
+      jobStatsMedusa.brokenProperties.forEach((el) => {
+        const vmData = {
+          roll: false,
+          time: false,
+          prank: false,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
   });
+
   describe("It should parse correctly the logs for Medusa 0.1.5", () => {
     const dataMedusa = fs.readFileSync(
       "./tests/test_data/medusa-0.1.5-2.txt",
@@ -164,6 +179,17 @@ describe("Testing fuzz results for", () => {
         )
       );
     });
+    test("It should format correctly", () => {
+      jobStatsMedusa.brokenProperties.forEach((el) => {
+        const vmData = {
+          roll: false,
+          time: false,
+          prank: false,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
   });
 
   describe("Medusa fuzzer - 2", () => {
@@ -192,5 +218,56 @@ describe("Testing fuzz results for", () => {
     test("broken property should have the correct length", () => {
       expect(jobStatsmedusa.brokenProperties.length).toBe(jobStatsmedusa.failed);
     })
+    test("It should format correctly", () => {
+      jobStatsmedusa.brokenProperties.forEach((el) => {
+        const vmData = {
+          roll: false,
+          time: false,
+          prank: false,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
+  });
+
+  describe("Medusa fuzzer - 3 - property should be part of the sequence", () => {
+    const datamedusa = fs.readFileSync(
+      "./tests/test_data/medusa-3.txt",
+      "utf8"
+    );
+    const jobStatsmedusa = processLogs(datamedusa, Fuzzer.MEDUSA);
+    test("It should format the bytes correctly", () => {
+      jobStatsmedusa.brokenProperties.forEach((el) => {
+        const vmData = {
+          roll: false,
+          time: false,
+          prank: false,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
+  });
+
+  describe("Medusa fuzzer - 4 - problem with array as input", () => {
+    // Ex: ((address,uint256)[])([])
+    const datamedusa = fs.readFileSync(
+      "./tests/test_data/medusa-4.txt",
+      "utf8"
+    );
+    const jobStatsmedusa = processLogs(datamedusa, Fuzzer.MEDUSA);
+    test("It should format params correctly", () => {
+      jobStatsmedusa.brokenProperties.forEach((el) => {
+        const vmData = {
+          roll: false,
+          time: false,
+          prank: false,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        expect(format.includes("([])")).toBe(true);
+        expect(format.includes("((address,uint256)[])")).toBe(false);
+      });
+    });
   });
 });
