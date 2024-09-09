@@ -1,15 +1,26 @@
 {
   "name": "@recon-fuzz/log-parser-experimental",
   "description": "Fuzzer log parser for Recon Fuzz",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "license": "GPL-2.0-only",
-  "main": "lib/bundle.js",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "files": [
+    "lib/cjs",
+    "lib/esm"
+  ],
+  "exports": {
+    "require": "./lib/cjs/index.js",
+    "import": "./lib/esm/index.js"
+  },
   "author": "0xsi <simon.busch@live.fr>",
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc && tsc -p tsconfig.cjs.json"
   },
   "dependencies": {
+    "@babel/parser": "^7.25.6",
     "ethereumjs-util": "^7.1.5",
     "ts-node": "^10.9.2"
   },
