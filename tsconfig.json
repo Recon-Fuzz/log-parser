@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "target": "ES2021",
-    "outDir": "./lib",
+    "outDir": "./lib/esm",
     "allowJs": true,
     "esModuleInterop": true,
     "strict": true,
-    "module": "commonjs",
-    "resolveJsonModule": true
+    "module": "ESNext",
+    "declaration": true,
+    "moduleResolution": "node"
   },
   "include": ["./src"],
   "exclude": ["./node_modules"]

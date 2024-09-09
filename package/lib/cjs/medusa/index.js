@@ -1,4 +1,12 @@
-import { captureFuzzingDuration, formatAddress, formatBytes, } from "../utils/utils";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.processMedusa = processMedusa;
+exports.getPropertyAndSequenceString = getPropertyAndSequenceString;
+exports.getFunctionCallsWithVM = getFunctionCallsWithVM;
+exports.getFunctionCalls = getFunctionCalls;
+exports.getHeaders = getHeaders;
+exports.medusaLogsToFunctions = medusaLogsToFunctions;
+const utils_1 = require("../utils/utils");
 //////////////////////////////////////
 //          MEDUSA                  //
 //////////////////////////////////////
@@ -14,13 +22,13 @@ let resultsLogger = false;
  * @param {FuzzingResults} jobStats - The function `processMedusa` takes in two
  * parameters: `line` of type string and `jobStats` of type `FuzzingResults`.
  */
-export function processMedusa(line, jobStats) {
+function processMedusa(line, jobStats) {
     if (line.includes("Test for method")) {
         medusaTraceLogger = true;
     }
     if (line.includes("fuzz: elapsed:")) {
         jobStats.duration =
-            captureFuzzingDuration(line.replace("fuzz: elapsed:", "")) ?? ""; // TODO 0XSI - fix this
+            (0, utils_1.captureFuzzingDuration)(line.replace("fuzz: elapsed:", "")) ?? ""; // TODO 0XSI - fix this
         const coverageMatch = line.match(/coverage: (\d+)/);
         if (coverageMatch) {
             jobStats.coverage = +coverageMatch[1];
@@ -103,7 +111,7 @@ export function processMedusa(line, jobStats) {
  * objects, where each object contains two properties: `brokenProperty` and
  * `sequence`.
  */
-export function getPropertyAndSequenceString(logs, vmData) {
+function getPropertyAndSequenceString(logs, vmData) {
     const splitted = logs
         .split("[FAILED]")
         .filter((entry) => !entry.includes("[PASSED]"))
@@ -136,7 +144,7 @@ export function getPropertyAndSequenceString(logs, vmData) {
  * @returns The function `getFunctionCallsWithVM` returns an array of strings that
  * represent function calls extracted from the provided `logs` string.
  */
-export function getFunctionCallsWithVM(logs, vmData) {
+function getFunctionCallsWithVM(logs, vmData) {
     const pattern = /([\w.]+)\(([^()]*(?:\([^()]*\)[^()]*)*)\)\(?([^()]*)\)?\s+\(block=\d*,\s*time=\d*,\s*gas=\d*,\s*gasprice=\d*,\s*value=\d*,\s*sender=0x[0-9a-fA-F]{40}\)/gm;
     const matches = logs.match(pattern);
     const functionCalls = matches?.map((entry) => {
@@ -144,9 +152,9 @@ export function getFunctionCallsWithVM(logs, vmData) {
         let cleanedData = "";
         const splittedEntry = entry.split(" (block=")[0];
         // Format addresses
-        cleanedData += formatAddress(splittedEntry);
+        cleanedData += (0, utils_1.formatAddress)(splittedEntry);
         // Format bytes by adding hex"".
-        cleanedData = formatBytes(cleanedData);
+        cleanedData = (0, utils_1.formatBytes)(cleanedData);
         const pattern = /(\w+\.\w+)\([^)]+\)\(([^)]*)\)/g;
         const patternArrayParams = /\(([^()]+)\)/;
         const emptyArrayPattern = /\(\[\]\)/;
@@ -201,7 +209,7 @@ export function getFunctionCallsWithVM(logs, vmData) {
  * @returns An array of strings containing the function calls extracted from the
  * input logs string.
  */
-export function getFunctionCalls(logs) {
+function getFunctionCalls(logs) {
     const pattern = /\b(\w+)\(([^)]*)\)\s+\(block=/gm;
     const matches = logs.match(pattern);
     const functionCalls = matches?.map((entry) => entry.toString());
@@ -222,7 +230,7 @@ export function getFunctionCalls(logs) {
  * from the `logs` string. If a method name is found, it returns that name.
  * Otherwise, it returns a string `temp_`.
  */
-export function getHeaders(logs, counter) {
+function getHeaders(logs, counter) {
     const res = /for method ".*\.(?<name>[a-zA-Z_0-9]+)\(.*\)"/.exec(logs);
     return res?.groups?.name ? res.groups.name : `temp_${counter}`;
 }
@@ -244,7 +252,7 @@ export function getHeaders(logs, counter) {
  * generated test functions based on the input logs, identifier, and optional
  * vmData.
  */
-export function medusaLogsToFunctions(logs, identifier, vmData) {
+function medusaLogsToFunctions(logs, identifier, vmData) {
     let withoutExtraLogs;
     // Scrape for entire logs
     withoutExtraLogs = logs.split("Fuzzer stopped, test results follow below ...")[1]; // Get it and drop the prev

@@ -1,5 +1,13 @@
-import { toChecksumAddress } from "ethereumjs-util";
-export function captureFuzzingDuration(line) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.captureFuzzingDuration = captureFuzzingDuration;
+exports.correctChecksum = correctChecksum;
+exports.correctAllChecksums = correctAllChecksums;
+exports.formatAddress = formatAddress;
+exports.formatBytes = formatBytes;
+exports.processTraceLogs = processTraceLogs;
+const ethereumjs_util_1 = require("ethereumjs-util");
+function captureFuzzingDuration(line) {
     const pattern = /\b(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?\b/;
     const match = line.match(pattern);
     if (match) {
@@ -9,21 +17,21 @@ export function captureFuzzingDuration(line) {
         return null;
     }
 }
-export function correctChecksum(address) {
+function correctChecksum(address) {
     try {
-        return toChecksumAddress(address);
+        return (0, ethereumjs_util_1.toChecksumAddress)(address);
     }
     catch (error) {
         return address; // Return the original address if it's invalid
     }
 }
-export function correctAllChecksums(input) {
+function correctAllChecksums(input) {
     return input.replace(/0x[0-9a-fA-F]{1,40}/g, (match) => {
         const correctedAddress = convertToEthereumAddress(match);
         return correctChecksum(correctedAddress);
     });
 }
-export function formatAddress(input) {
+function formatAddress(input) {
     let cleanedData = "";
     const potentialAddrUser = input.match(/0x[0-9a-fA-F]{40}/);
     if (potentialAddrUser) {
@@ -34,7 +42,7 @@ export function formatAddress(input) {
     }
     return cleanedData;
 }
-export function formatBytes(input) {
+function formatBytes(input) {
     const parenthesesRegex = /\(([^)]+)\)/;
     const match = parenthesesRegex.exec(input);
     if (match && match[1]) {
@@ -54,7 +62,7 @@ export function formatBytes(input) {
     }
     return input;
 }
-export function processTraceLogs(logs) {
+function processTraceLogs(logs) {
     const result = [];
     let currentItem = "";
     for (const log of logs) {

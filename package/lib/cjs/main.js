@@ -1,7 +1,10 @@
-import { Fuzzer } from "./types/types";
-import { processEchidna } from "./echidna/index";
-import { processMedusa } from "./medusa/index";
-import { processTraceLogs } from "./utils/utils";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.processLogs = void 0;
+const types_1 = require("./types/types");
+const index_1 = require("./echidna/index");
+const index_2 = require("./medusa/index");
+const utils_1 = require("./utils/utils");
 /**
  * The `processLogs` function processes logs based on the specified tool (Medusa or
  * Echidna) and returns fuzzing results.
@@ -15,7 +18,7 @@ import { processTraceLogs } from "./utils/utils";
  * information about the fuzzing job, such as duration, coverage, number of failed
  * and passed tests, results, traces, and broken properties.
  */
-export const processLogs = (logs, tool) => {
+const processLogs = (logs, tool) => {
     const jobStats = {
         duration: "",
         coverage: 0,
@@ -27,13 +30,14 @@ export const processLogs = (logs, tool) => {
     };
     const lines = logs.split("\n");
     lines.forEach((line) => {
-        if (tool === Fuzzer.MEDUSA) {
-            processMedusa(line, jobStats);
+        if (tool === types_1.Fuzzer.MEDUSA) {
+            (0, index_2.processMedusa)(line, jobStats);
         }
-        else if (tool === Fuzzer.ECHIDNA) {
-            processEchidna(line, jobStats);
+        else if (tool === types_1.Fuzzer.ECHIDNA) {
+            (0, index_1.processEchidna)(line, jobStats);
         }
     });
-    jobStats.traces = processTraceLogs(jobStats.traces);
+    jobStats.traces = (0, utils_1.processTraceLogs)(jobStats.traces);
     return jobStats;
 };
+exports.processLogs = processLogs;

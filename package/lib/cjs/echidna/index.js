@@ -1,4 +1,8 @@
-import { correctAllChecksums } from "../utils/utils";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.processEchidna = processEchidna;
+exports.echidnaLogsToFunctions = echidnaLogsToFunctions;
+const utils_1 = require("../utils/utils");
 //////////////////////////////////////
 //          ECHIDNA                 //
 //////////////////////////////////////
@@ -15,7 +19,7 @@ let prevLine = "";
  * various properties to store information related to the fuzzing job being
  * processed.
  */
-export function processEchidna(line, jobStats) {
+function processEchidna(line, jobStats) {
     if (line.includes(": passing") || line.includes(": failed!")) {
         jobStats.results.push(line);
     }
@@ -109,7 +113,7 @@ function cleanUpBrokenPropertyName(brokenProp) {
  * the specified prefix. It also handles some regex replacements and additional
  * processing based on the `vmData` object.
  */
-export function echidnaLogsToFunctions(input, prefix, brokenProp, vmData) {
+function echidnaLogsToFunctions(input, prefix, brokenProp, vmData) {
     const callSequenceMatches = input.match(/Call sequence(?=:|,)(?=shrinking .*:)?(.+?)\n\n/gs) || [];
     return callSequenceMatches
         .map((test, i) => {
@@ -136,7 +140,7 @@ export function echidnaLogsToFunctions(input, prefix, brokenProp, vmData) {
         if (line.split(" from")[0].includes("0x")) {
             const startLine = line.split(" from")[0];
             const endLine = line.split(" from")[1];
-            cleanedData = correctAllChecksums(startLine) + endLine;
+            cleanedData = (0, utils_1.correctAllChecksums)(startLine) + endLine;
         }
         if (vmData) {
             const blockMatch = line.match(/Block delay:\s*(\d+)/);
