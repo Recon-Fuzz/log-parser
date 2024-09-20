@@ -4,7 +4,7 @@ import { Fuzzer } from "../src/types/types";
 import { echidnaLogsToFunctions } from "../src/echidna";
 
 describe("Testing fuzz results for", () => {
-  describe("Echidna fuzzer", () => {
+  describe("Echidna fuzzer - 1 ", () => {
     const dataEchidna = fs.readFileSync(
       "./tests/test_data/echidna.txt",
       "utf8"
@@ -48,10 +48,15 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-      testFormat(format);
-      testCleanTraces(el.sequence);
-
-      expect(format.includes(el.brokenProperty)).toBe(true);
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
     });
   });
   describe("Echidna fuzzer - 2", () => {
@@ -87,10 +92,15 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-      testFormat(format);
-      testCleanTraces(el.sequence);
-
-      expect(format.includes(el.brokenProperty)).toBe(true);
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
     });
   });
   describe("Echidna fuzzer - 3 - Address casted as bytes", () => {
@@ -107,15 +117,22 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-      testFormat(format);
-      testCleanTraces(el.sequence);
-
-      expect(format.includes(el.brokenProperty)).toBe(true);
-      expect(format.includes("0x1fffffffe")).toBe(false);
-      expect(format.includes("0x00000000000000000000000000000001fffffffE")).toBe(true);
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+      test("it should cast the address passed as bytes correctly", () => {
+        expect(format.includes("0x1fffffffe")).toBe(false);
+        expect(format.includes("0x00000000000000000000000000000001fffffffE")).toBe(true);
+      });
     });
   });
-  describe("Echidna fuzzer - 4", () => {
+  describe("Echidna fuzzer - 4 - Multiple test and callsequence in a single broken props should not happen", () => {
     const dataEchidna = fs.readFileSync(
       "./tests/test_data/echidna-4.txt",
       "utf8"
@@ -129,13 +146,22 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-
-      testFormat(format);
-      testCleanTraces(el.sequence);
-      console.log(format, "\n====>\n", el.sequence, "\n\n broken prop:", el.brokenProperty)
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
     });
-    expect(jobStatsEchidna.passed).toBe(42);
-    expect(jobStatsEchidna.failed).toBe(29);
+    test("it should have the correct totaly of passed tests", () => {
+      expect(jobStatsEchidna.passed).toBe(42);
+    })
+    test("it should have the correct totaly of failed tests", () => {
+      expect(jobStatsEchidna.failed).toBe(29);
+    })
   });
 });
 
