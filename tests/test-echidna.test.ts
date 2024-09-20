@@ -48,10 +48,9 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-      const firstCount = (format.match(/{/g) || []).length;
-      expect(firstCount).toBe(1);
-      const secondCount = (format.match(/}/g) || []).length;
-      expect(secondCount).toBe(1);
+      testFormat(format);
+      testCleanTraces(el.sequence);
+
       expect(format.includes(el.brokenProperty)).toBe(true);
     });
   });
@@ -88,10 +87,9 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-      const firstCount = (format.match(/{/g) || []).length;
-      expect(firstCount).toBe(1);
-      const secondCount = (format.match(/}/g) || []).length;
-      expect(secondCount).toBe(1);
+      testFormat(format);
+      testCleanTraces(el.sequence);
+
       expect(format.includes(el.brokenProperty)).toBe(true);
     });
   });
@@ -109,10 +107,9 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-      const firstCount = (format.match(/{/g) || []).length;
-      expect(firstCount).toBe(1);
-      const secondCount = (format.match(/}/g) || []).length;
-      expect(secondCount).toBe(1);
+      testFormat(format);
+      testCleanTraces(el.sequence);
+
       expect(format.includes(el.brokenProperty)).toBe(true);
       expect(format.includes("0x1fffffffe")).toBe(false);
       expect(format.includes("0x00000000000000000000000000000001fffffffE")).toBe(true);
@@ -133,14 +130,26 @@ describe("Testing fuzz results for", () => {
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
 
-      // Make sure we don't have multiple functions in the same broken prop function
-      const firstCount = (format.match(/{/g) || []).length;
-      expect(firstCount).toBe(1);
-      const secondCount = (format.match(/}/g) || []).length;
-      expect(secondCount).toBe(1);
+      testFormat(format);
+      testCleanTraces(el.sequence);
       console.log(format, "\n====>\n", el.sequence, "\n\n broken prop:", el.brokenProperty)
     });
     expect(jobStatsEchidna.passed).toBe(42);
     expect(jobStatsEchidna.failed).toBe(29);
   });
 });
+
+// Make sure we don't have multiple functions in the same broken prop function
+function testFormat(format: string) {
+  const firstCount = (format.match(/{/g) || []).length;
+  expect(firstCount).toBe(1);
+  const secondCount = (format.match(/}/g) || []).length;
+  expect(secondCount).toBe(1);
+}
+
+//Make sure we only have 1 call sequence per broken property
+function testCleanTraces(traces: string) {
+  expect(traces.includes("---End Trace---")).toBe(true);
+  const sequenceCount = (traces.match(/Call sequence:/g) || []).length;
+  expect(sequenceCount).toBe(1);
+}
