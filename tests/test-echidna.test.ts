@@ -41,6 +41,19 @@ describe("Testing fuzz results for", () => {
         expect(el.sequence.endsWith("---End Trace---\n")).toBe(true);
       });
     });
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      const firstCount = (format.match(/{/g) || []).length;
+      expect(firstCount).toBe(1);
+      const secondCount = (format.match(/}/g) || []).length;
+      expect(secondCount).toBe(1);
+      expect(format.includes(el.brokenProperty)).toBe(true);
+    });
   });
   describe("Echidna fuzzer - 2", () => {
     const dataEchidna = fs.readFileSync(
@@ -68,6 +81,19 @@ describe("Testing fuzz results for", () => {
     test("broken property should have the correct length", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(jobStatsEchidna.failed);
     })
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      const firstCount = (format.match(/{/g) || []).length;
+      expect(firstCount).toBe(1);
+      const secondCount = (format.match(/}/g) || []).length;
+      expect(secondCount).toBe(1);
+      expect(format.includes(el.brokenProperty)).toBe(true);
+    });
   });
   describe("Echidna fuzzer - 3 - Address casted as bytes", () => {
     const dataEchidna = fs.readFileSync(
@@ -83,9 +109,38 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      const firstCount = (format.match(/{/g) || []).length;
+      expect(firstCount).toBe(1);
+      const secondCount = (format.match(/}/g) || []).length;
+      expect(secondCount).toBe(1);
       expect(format.includes(el.brokenProperty)).toBe(true);
       expect(format.includes("0x1fffffffe")).toBe(false);
       expect(format.includes("0x00000000000000000000000000000001fffffffE")).toBe(true);
     });
+  });
+  describe("Echidna fuzzer - 4", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-4.txt",
+      "utf8"
+    );
+
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    jobStatsEchidna.brokenProperties.forEach((el, i) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+
+      // Make sure we don't have multiple functions in the same broken prop function
+      const firstCount = (format.match(/{/g) || []).length;
+      expect(firstCount).toBe(1);
+      const secondCount = (format.match(/}/g) || []).length;
+      expect(secondCount).toBe(1);
+      console.log(format, "\n====>\n", el.sequence, "\n\n broken prop:", el.brokenProperty)
+    });
+    expect(jobStatsEchidna.passed).toBe(42);
+    expect(jobStatsEchidna.failed).toBe(29);
   });
 });
