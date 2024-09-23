@@ -1,4 +1,3 @@
-
 import { FuzzingResults, VmParsingData } from "../types/types";
 import { correctAllChecksums } from "../utils/utils";
 
@@ -54,13 +53,21 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       }
     }
 
-    currentBrokenPropertyEchidna = cleanUpBrokenPropertyName(currentBrokenPropertyEchidna);
+    currentBrokenPropertyEchidna = cleanUpBrokenPropertyName(
+      currentBrokenPropertyEchidna
+    );
     const tracesMatch = line.includes("Traces:");
     if (tracesMatch) {
       echidnaTraceLogger = true;
     }
 
-    if (line === "" && echidnaTraceLogger || line.includes("Saved reproducer")) {
+    if (
+      (line === "" && echidnaTraceLogger) ||
+      line.includes("Saved reproducer") ||
+      line.includes("Traces:") ||
+      line.includes("[") || 
+      line.includes("]")
+    ) {
       echidnaTraceLogger = false;
       echidnaSequenceLogger = false;
       jobStats.traces.push("---End Trace---");
@@ -139,7 +146,11 @@ export function echidnaLogsToFunctions(
         .replace(/\)/g, ");")
         .replace(
           "Call sequence",
-          `function ${brokenProp ? `test_${brokenProp}_${prefix}`: `test_prefix_${i}_${prefix}`}() public {`
+          `function ${
+            brokenProp
+              ? `test_${brokenProp}${`_`+prefix}`
+              : `test_prefix_${i}_${prefix}`
+          }() public {`
         )
         // Fixing shitty regex
         .replace("{,", "{")

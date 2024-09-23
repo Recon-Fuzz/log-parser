@@ -4,7 +4,7 @@ import { Fuzzer } from "../src/types/types";
 import { echidnaLogsToFunctions } from "../src/echidna";
 
 describe("Testing fuzz results for", () => {
-  describe("Echidna fuzzer", () => {
+  describe("Echidna fuzzer - 1 ", () => {
     const dataEchidna = fs.readFileSync(
       "./tests/test_data/echidna.txt",
       "utf8"
@@ -41,6 +41,23 @@ describe("Testing fuzz results for", () => {
         expect(el.sequence.endsWith("---End Trace---\n")).toBe(true);
       });
     });
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
   });
   describe("Echidna fuzzer - 2", () => {
     const dataEchidna = fs.readFileSync(
@@ -68,6 +85,23 @@ describe("Testing fuzz results for", () => {
     test("broken property should have the correct length", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(jobStatsEchidna.failed);
     })
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
   });
   describe("Echidna fuzzer - 3 - Address casted as bytes", () => {
     const dataEchidna = fs.readFileSync(
@@ -83,9 +117,65 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-      expect(format.includes(el.brokenProperty)).toBe(true);
-      expect(format.includes("0x1fffffffe")).toBe(false);
-      expect(format.includes("0x00000000000000000000000000000001fffffffE")).toBe(true);
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+      test("it should cast the address passed as bytes correctly", () => {
+        expect(format.includes("0x1fffffffe")).toBe(false);
+        expect(format.includes("0x00000000000000000000000000000001fffffffE")).toBe(true);
+      });
     });
   });
+  describe("Echidna fuzzer - 4 - Multiple test and callsequence in a single broken props should not happen", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-4.txt",
+      "utf8"
+    );
+
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    jobStatsEchidna.brokenProperties.forEach((el, i) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
+    test("it should have the correct totaly of passed tests", () => {
+      expect(jobStatsEchidna.passed).toBe(42);
+    })
+    test("it should have the correct totaly of failed tests", () => {
+      expect(jobStatsEchidna.failed).toBe(29);
+    })
+  });
 });
+
+// Make sure we don't have multiple functions in the same broken prop function
+function testFormat(format: string) {
+  const firstCount = (format.match(/{/g) || []).length;
+  expect(firstCount).toBe(1);
+  const secondCount = (format.match(/}/g) || []).length;
+  expect(secondCount).toBe(1);
+}
+
+//Make sure we only have 1 call sequence per broken property
+function testCleanTraces(traces: string) {
+  expect(traces.includes("---End Trace---")).toBe(true);
+  const sequenceCount = (traces.match(/Call sequence:/g) || []).length;
+  expect(sequenceCount).toBe(1);
+}
