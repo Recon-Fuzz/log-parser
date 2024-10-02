@@ -186,10 +186,10 @@ export function echidnaLogsToFunctions(
 
         const sender = senderMatch ? senderMatch[1] : null;
         if (vmData.roll && block) {
-          returnData += `\n     vm.roll(${block});`;
+          returnData += `\n     vm.roll(block.number + ${block});`;
         }
         if (vmData.time && time) {
-          returnData += `\n     vm.warp(${time});`;
+          returnData += `\n     vm.warp(block.timestamp + ${time});`;
         }
         if (vmData.prank && sender) {
           returnData += `\n     vm.prank(${sender});`;
