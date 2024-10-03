@@ -1,0 +1,220 @@
+[1m [1mReading the configuration file at: [1mmedusa.json
+ Compiling targets with crytic-compile
+ Running with a timeout of 3600 seconds
+ Initializing corpus
+ Setting up base chain
+ Initializing and validating corpus call sequences
+ Fuzzing with 10 workers
+ [NOT STARTED] Assertion Test: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe()
+ [NOT STARTED] Assertion Test: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256)
+ [NOT STARTED] Assertion Test: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(uint128)
+ [NOT STARTED] Assertion Test: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_update()
+ [NOT STARTED] Assertion Test: CryticTester.rEFERENCE_RelativeTwapWeightedObserver_setValue(uint256)
+ [NOT STARTED] Assertion Test: CryticTester.rEFERENCE_RelativeTwapWeightedObserver_update()
+ fuzz: elapsed: 0s, calls: 0 (0/sec), seq/s: 0, coverage: 0, shrinking: 0, failures: 0/0
+ fuzz: elapsed: 3s, calls: 645 (214/sec), seq/s: 1, coverage: 9, shrinking: 10, failures: 0/6
+ [FAILED] Assertion Test: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256)
+Test for method "CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256)" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(uint128)(4264047273814876395784809801467831184) (block=14765, time=274879, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000010000)
+2) CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256)(13803492693581127574869515454655751118003680140686680772608650746674251) (block=14868, time=275024, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000010000)
+[Execution Trace]
+ => [call] CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256)(13803492693581127574869515454655751118003680140686680772608650746674251) (addr=0xA647ff3c36cFab592509E13860ab8c4F28781a66, value=0, sender=0x0000000000000000000000000000000000010000)
+ => [call] REFERENCE_RelativeTwapWeightedObserver.observe()() (addr=0x01375317AA980daaBF22f990a378ECCaD9B40dc0, value=0, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+ => [return (0)]
+ => [call] OPTIMIZED_RelativeTwapWeightedObserver.observe()() (addr=0x54919A19522Ce7c842E25735a9cFEcef1c0a06dA, value=0, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+ => [panic: arithmetic underflow]
+ => [event] Log("Optimized fails when standard succeeds")
+ => [panic: assertion failed]
+
+
+ [FAILED] Assertion Test: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe()
+Test for method "CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe()" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(uint128)(2045531652028150195716499930107) (block=14765, time=274879, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000010000)
+2) CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe()() (block=17058, time=318043, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000020000)
+[Execution Trace]
+ => [call] CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe()() (addr=0xA647ff3c36cFab592509E13860ab8c4F28781a66, value=0, sender=0x0000000000000000000000000000000000020000)
+ => [call] OPTIMIZED_RelativeTwapWeightedObserver.observe()() (addr=0x54919A19522Ce7c842E25735a9cFEcef1c0a06dA, value=0, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+ => [return (145987645879866195515719250963)]
+ => [call] REFERENCE_RelativeTwapWeightedObserver.observe()() (addr=0x01375317AA980daaBF22f990a378ECCaD9B40dc0, value=0, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+ => [return (0)]
+ => [event] Log("must match")
+ => [panic: assertion failed]
+
+
+ fuzz: elapsed: 6s, calls: 9263 (2872/sec), seq/s: 30, coverage: 10, shrinking: 3, failures: 9/98
+ fuzz: elapsed: 9s, calls: 65369 (18701/sec), seq/s: 186, coverage: 10, shrinking: 2, failures: 10/658
+ fuzz: elapsed: 12s, calls: 128918 (21182/sec), seq/s: 212, coverage: 10, shrinking: 0, failures: 12/1297
+ fuzz: elapsed: 15s, calls: 201539 (24206/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/2022
+ fuzz: elapsed: 18s, calls: 274913 (24457/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/2754
+ fuzz: elapsed: 21s, calls: 345633 (23572/sec), seq/s: 235, coverage: 10, shrinking: 0, failures: 12/3462
+ fuzz: elapsed: 24s, calls: 418999 (24453/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/4196
+ fuzz: elapsed: 27s, calls: 491779 (24244/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/4925
+ fuzz: elapsed: 30s, calls: 564855 (24357/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/5654
+ fuzz: elapsed: 33s, calls: 638222 (24454/sec), seq/s: 245, coverage: 10, shrinking: 0, failures: 12/6390
+ fuzz: elapsed: 36s, calls: 711346 (24373/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/7119
+ fuzz: elapsed: 39s, calls: 784404 (24352/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/7852
+ fuzz: elapsed: 42s, calls: 857723 (24437/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/8584
+ fuzz: elapsed: 45s, calls: 930854 (24376/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/9315
+ fuzz: elapsed: 48s, calls: 1004202 (24447/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/10049
+ fuzz: elapsed: 51s, calls: 1077360 (24385/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/10779
+ fuzz: elapsed: 54s, calls: 1150946 (24382/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/11515
+ fuzz: elapsed: 57s, calls: 1219961 (23004/sec), seq/s: 230, coverage: 10, shrinking: 0, failures: 12/12206
+ fuzz: elapsed: 1m0s, calls: 1292811 (24283/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/12934
+ fuzz: elapsed: 1m3s, calls: 1366021 (24401/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/13666
+ fuzz: elapsed: 1m6s, calls: 1439095 (24356/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/14399
+ fuzz: elapsed: 1m9s, calls: 1512482 (24461/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/15132
+ fuzz: elapsed: 1m12s, calls: 1585372 (24295/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/15860
+ fuzz: elapsed: 1m15s, calls: 1658572 (24398/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/16591
+ fuzz: elapsed: 1m18s, calls: 1730596 (24007/sec), seq/s: 240, coverage: 10, shrinking: 0, failures: 12/17313
+ fuzz: elapsed: 1m21s, calls: 1802564 (23989/sec), seq/s: 239, coverage: 10, shrinking: 0, failures: 12/18031
+ fuzz: elapsed: 1m24s, calls: 1875070 (24167/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/18759
+ fuzz: elapsed: 1m27s, calls: 1947390 (24105/sec), seq/s: 240, coverage: 10, shrinking: 0, failures: 12/19481
+ fuzz: elapsed: 1m30s, calls: 2019847 (24151/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/20206
+ fuzz: elapsed: 1m33s, calls: 2092537 (24227/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/20933
+ fuzz: elapsed: 1m36s, calls: 2165295 (24250/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/21658
+ fuzz: elapsed: 1m39s, calls: 2237522 (24074/sec), seq/s: 240, coverage: 10, shrinking: 0, failures: 12/22381
+ fuzz: elapsed: 1m42s, calls: 2310045 (24172/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/23105
+ fuzz: elapsed: 1m45s, calls: 2382127 (24024/sec), seq/s: 239, coverage: 10, shrinking: 0, failures: 12/23825
+ fuzz: elapsed: 1m48s, calls: 2455064 (24309/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/24560
+ fuzz: elapsed: 1m51s, calls: 2526991 (23975/sec), seq/s: 238, coverage: 10, shrinking: 0, failures: 12/25276
+ fuzz: elapsed: 1m54s, calls: 2599553 (24186/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/26003
+ fuzz: elapsed: 1m57s, calls: 2667770 (22738/sec), seq/s: 227, coverage: 10, shrinking: 0, failures: 12/26685
+ fuzz: elapsed: 2m0s, calls: 2740150 (24123/sec), seq/s: 240, coverage: 10, shrinking: 0, failures: 12/27408
+ fuzz: elapsed: 2m3s, calls: 2812336 (24059/sec), seq/s: 240, coverage: 10, shrinking: 0, failures: 12/28129
+ fuzz: elapsed: 2m6s, calls: 2885676 (24443/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/28864
+ fuzz: elapsed: 2m9s, calls: 2958703 (24341/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/29593
+ fuzz: elapsed: 2m12s, calls: 3031524 (24272/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/30322
+ fuzz: elapsed: 2m15s, calls: 3104141 (24205/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/31049
+ fuzz: elapsed: 2m18s, calls: 3177122 (24321/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/31777
+ fuzz: elapsed: 2m21s, calls: 3249244 (24039/sec), seq/s: 240, coverage: 10, shrinking: 0, failures: 12/32499
+ fuzz: elapsed: 2m24s, calls: 3321492 (24082/sec), seq/s: 240, coverage: 10, shrinking: 0, failures: 12/33222
+ fuzz: elapsed: 2m27s, calls: 3393924 (24143/sec), seq/s: 240, coverage: 10, shrinking: 0, failures: 12/33945
+ fuzz: elapsed: 2m30s, calls: 3466082 (24052/sec), seq/s: 240, coverage: 10, shrinking: 0, failures: 12/34666
+ fuzz: elapsed: 2m33s, calls: 3537966 (23959/sec), seq/s: 239, coverage: 10, shrinking: 0, failures: 12/35386
+ fuzz: elapsed: 2m36s, calls: 3610809 (24280/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/36115
+ fuzz: elapsed: 2m39s, calls: 3683633 (24274/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/36844
+ fuzz: elapsed: 2m42s, calls: 3756919 (24426/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/37576
+ fuzz: elapsed: 2m45s, calls: 3829995 (24288/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/38307
+ fuzz: elapsed: 2m48s, calls: 3903378 (24390/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/39040
+ fuzz: elapsed: 2m51s, calls: 3976048 (24223/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/39766
+ fuzz: elapsed: 2m54s, calls: 4049277 (24409/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/40497
+ fuzz: elapsed: 2m57s, calls: 4117977 (22899/sec), seq/s: 229, coverage: 10, shrinking: 0, failures: 12/41186
+ fuzz: elapsed: 3m0s, calls: 4190944 (24321/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/41916
+ fuzz: elapsed: 3m3s, calls: 4263807 (24286/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/42644
+ fuzz: elapsed: 3m6s, calls: 4336923 (24370/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/43375
+ fuzz: elapsed: 3m9s, calls: 4410153 (24408/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/44109
+ fuzz: elapsed: 3m12s, calls: 4483161 (24333/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/44839
+ fuzz: elapsed: 3m15s, calls: 4556217 (24286/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/45568
+ fuzz: elapsed: 3m18s, calls: 4629422 (24399/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/46302
+ fuzz: elapsed: 3m21s, calls: 4702367 (24314/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/47029
+ fuzz: elapsed: 3m24s, calls: 4775505 (24378/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/47762
+ fuzz: elapsed: 3m27s, calls: 4848408 (24300/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/48491
+ fuzz: elapsed: 3m30s, calls: 4921539 (24376/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/49224
+ fuzz: elapsed: 3m33s, calls: 4994243 (24234/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/49950
+ fuzz: elapsed: 3m36s, calls: 5067437 (24278/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/50681
+ fuzz: elapsed: 3m39s, calls: 5140434 (24330/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/51412
+ fuzz: elapsed: 3m42s, calls: 5213507 (24357/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/52141
+ fuzz: elapsed: 3m45s, calls: 5286540 (24340/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/52871
+ fuzz: elapsed: 3m48s, calls: 5359462 (24305/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/53603
+ fuzz: elapsed: 3m51s, calls: 5432069 (24201/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/54327
+ fuzz: elapsed: 3m54s, calls: 5504722 (24216/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/55056
+ fuzz: elapsed: 3m57s, calls: 5573538 (22934/sec), seq/s: 228, coverage: 10, shrinking: 0, failures: 12/55742
+ fuzz: elapsed: 4m0s, calls: 5646230 (24225/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/56469
+ fuzz: elapsed: 4m3s, calls: 5718915 (24228/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/57197
+ fuzz: elapsed: 4m6s, calls: 5792028 (24370/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/57927
+ fuzz: elapsed: 4m9s, calls: 5864776 (24248/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/58654
+ fuzz: elapsed: 4m12s, calls: 5937805 (24341/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/59385
+ fuzz: elapsed: 4m15s, calls: 6010346 (24179/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/60109
+ fuzz: elapsed: 4m18s, calls: 6083987 (24545/sec), seq/s: 246, coverage: 10, shrinking: 0, failures: 12/60848
+ fuzz: elapsed: 4m21s, calls: 6156892 (24300/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/61576
+ fuzz: elapsed: 4m24s, calls: 6229928 (24345/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/62306
+ fuzz: elapsed: 4m27s, calls: 6303167 (24411/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/63037
+ fuzz: elapsed: 4m30s, calls: 6376012 (24279/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/63767
+ fuzz: elapsed: 4m33s, calls: 6448480 (24155/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/64491
+ fuzz: elapsed: 4m36s, calls: 6521288 (24267/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/65218
+ fuzz: elapsed: 4m39s, calls: 6594005 (24237/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/65945
+ fuzz: elapsed: 4m42s, calls: 6666989 (24327/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/66676
+ fuzz: elapsed: 4m45s, calls: 6739868 (24292/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/67405
+ fuzz: elapsed: 4m48s, calls: 6812705 (24277/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/68134
+ fuzz: elapsed: 4m51s, calls: 6885460 (24250/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/68862
+ fuzz: elapsed: 4m54s, calls: 6958616 (24336/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/69593
+ fuzz: elapsed: 4m57s, calls: 7027585 (22988/sec), seq/s: 229, coverage: 10, shrinking: 0, failures: 12/70283
+ fuzz: elapsed: 5m0s, calls: 7100453 (24288/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/71011
+ fuzz: elapsed: 5m3s, calls: 7173663 (24401/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/71743
+ fuzz: elapsed: 5m6s, calls: 7246170 (24168/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/72467
+ fuzz: elapsed: 5m9s, calls: 7318729 (24185/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/73193
+ fuzz: elapsed: 5m12s, calls: 7391910 (24392/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/73925
+ fuzz: elapsed: 5m15s, calls: 7464370 (24151/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/74650
+ fuzz: elapsed: 5m18s, calls: 7537176 (24268/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/75378
+ fuzz: elapsed: 5m21s, calls: 7610021 (24281/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/76108
+ fuzz: elapsed: 5m24s, calls: 7683410 (24458/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/76841
+ fuzz: elapsed: 5m27s, calls: 7755887 (24158/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/77565
+ fuzz: elapsed: 5m30s, calls: 7829005 (24372/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/78297
+ fuzz: elapsed: 5m33s, calls: 7902076 (24185/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/79027
+ fuzz: elapsed: 5m36s, calls: 7975053 (24325/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/79757
+ fuzz: elapsed: 5m39s, calls: 8047808 (24250/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/80484
+ fuzz: elapsed: 5m42s, calls: 8121112 (24434/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/81219
+ fuzz: elapsed: 5m45s, calls: 8194247 (24377/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/81949
+ fuzz: elapsed: 5m48s, calls: 8267350 (24366/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/82680
+ fuzz: elapsed: 5m51s, calls: 8339725 (24124/sec), seq/s: 240, coverage: 10, shrinking: 0, failures: 12/83403
+ fuzz: elapsed: 5m54s, calls: 8412571 (24280/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/84132
+ fuzz: elapsed: 5m57s, calls: 8480921 (22781/sec), seq/s: 227, coverage: 10, shrinking: 0, failures: 12/84816
+ fuzz: elapsed: 6m0s, calls: 8553203 (24008/sec), seq/s: 239, coverage: 10, shrinking: 0, failures: 12/85538
+ fuzz: elapsed: 6m3s, calls: 8626078 (24289/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/86268
+ fuzz: elapsed: 6m6s, calls: 8698870 (24262/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/86996
+ fuzz: elapsed: 6m9s, calls: 8772077 (24400/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/87727
+ fuzz: elapsed: 6m12s, calls: 8844682 (24200/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/88452
+ fuzz: elapsed: 6m15s, calls: 8917473 (24263/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/89181
+ fuzz: elapsed: 6m18s, calls: 8990320 (24280/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/89910
+ fuzz: elapsed: 6m21s, calls: 9063205 (24293/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/90639
+ fuzz: elapsed: 6m24s, calls: 9136364 (24367/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/91371
+ fuzz: elapsed: 6m27s, calls: 9209523 (24385/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/92101
+ fuzz: elapsed: 6m30s, calls: 9282413 (24296/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/92832
+ fuzz: elapsed: 6m33s, calls: 9355528 (24370/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/93561
+ fuzz: elapsed: 6m36s, calls: 9428682 (24383/sec), seq/s: 244, coverage: 10, shrinking: 0, failures: 12/94294
+ fuzz: elapsed: 6m39s, calls: 9501282 (24199/sec), seq/s: 241, coverage: 10, shrinking: 0, failures: 12/95019
+ fuzz: elapsed: 6m42s, calls: 9574438 (24359/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/95749
+ fuzz: elapsed: 6m45s, calls: 9647249 (24270/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/96479
+ fuzz: elapsed: 6m48s, calls: 9720262 (24335/sec), seq/s: 242, coverage: 10, shrinking: 0, failures: 12/97207
+ fuzz: elapsed: 6m51s, calls: 9793422 (24260/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/97940
+ fuzz: elapsed: 6m54s, calls: 9866591 (24294/sec), seq/s: 243, coverage: 10, shrinking: 0, failures: 12/98673
+ Fuzzer stopped, test results follow below ...
+ [PASSED] Assertion Test: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(uint128)
+ [PASSED] Assertion Test: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_update()
+ [PASSED] Assertion Test: CryticTester.rEFERENCE_RelativeTwapWeightedObserver_setValue(uint256)
+ [PASSED] Assertion Test: CryticTester.rEFERENCE_RelativeTwapWeightedObserver_update()
+ [FAILED] Assertion Test: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe()
+Test for method "CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe()" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(uint128)(1610413804194235678763502713639493) (block=5724, time=304415, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000030000)
+2) CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe()() (block=47894, time=614111, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000010000)
+[Execution Trace]
+ => [call] CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe()() (addr=0xA647ff3c36cFab592509E13860ab8c4F28781a66, value=0, sender=0x0000000000000000000000000000000000010000)
+ => [call] OPTIMIZED_RelativeTwapWeightedObserver.observe()() (addr=0x54919A19522Ce7c842E25735a9cFEcef1c0a06dA, value=0, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+ => [panic: arithmetic underflow]
+ => [call] REFERENCE_RelativeTwapWeightedObserver.observe()() (addr=0x01375317AA980daaBF22f990a378ECCaD9B40dc0, value=0, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+ => [return (0)]
+ => [event] Log("must match")
+ => [event] Log("must match revert")
+ => [panic: assertion failed]
+
+
+ [FAILED] Assertion Test: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256)
+Test for method "CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256)" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(uint128)(1047280702439890668493234363767124) (block=14765, time=274879, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000010000)
+2) CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256)(113078212145816597093331039817747043770091800996436911851104313201291329996) (block=18891, time=635249, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000010000)
+[Execution Trace]
+ => [call] CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256)(113078212145816597093331039817747043770091800996436911851104313201291329996) (addr=0xA647ff3c36cFab592509E13860ab8c4F28781a66, value=0, sender=0x0000000000000000000000000000000000010000)
+ => [call] REFERENCE_RelativeTwapWeightedObserver.observe()() (addr=0x01375317AA980daaBF22f990a378ECCaD9B40dc0, value=0, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+ => [return (0)]
+ => [call] OPTIMIZED_RelativeTwapWeightedObserver.observe()() (addr=0x54919A19522Ce7c842E25735a9cFEcef1c0a06dA, value=0, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+ => [panic: arithmetic underflow]
+ => [event] Log("Optimized fails when standard succeeds")
+ => [panic: assertion failed]
+
+
+ Test summary: 4 test(s) passed, 2 test(s) failed
+ Coverage report saved to file: medusa/coverage_report.html

@@ -165,10 +165,8 @@ export function getFunctionCallsWithVM(
   logs: string,
   vmData?: VmParsingData
 ): string[] {
-  const pattern: RegExp =
-    /([\w.]+)\(([^()]*(?:\([^()]*\)[^()]*)*)\)\(?([^()]*)\)?\s+\(block=\d*,\s*time=\d*,\s*gas=\d*,\s*gasprice=\d*,\s*value=\d*,\s*sender=0x[0-9a-fA-F]{40}\)/gm;
+  const pattern: RegExp =/(?<=\.)[\w]+\(([^()]*(?:\([^()]*\)[^()]*)*)\)\(?([^()]*)\)?\s+\(block=\d*,\s*time=\d*,\s*gas=\d*,\s*gasprice=\d*,\s*value=\d*,\s*sender=0x[0-9a-fA-F]{40}\)/gm
   const matches: RegExpMatchArray | null = logs.match(pattern);
-
   const functionCalls = matches?.map((entry) => {
     let returnData = "";
     let cleanedData = "";
@@ -177,7 +175,6 @@ export function getFunctionCallsWithVM(
     cleanedData += formatAddress(splittedEntry);
     // Format bytes by adding hex"".
     cleanedData = formatBytes(cleanedData);
-    const pattern = /(\w+\.\w+)\([^)]+\)\(([^)]*)\)/g;
     const patternArrayParams = /\(([^()]+)\)/;
     const emptyArrayPattern = /\(\[\]\)/;
 
@@ -188,9 +185,9 @@ export function getFunctionCallsWithVM(
 
       // Remove the extra '([])' from the second set of parentheses
       cleanedData = cleanedData.replace(emptyArrayPattern, '');
-    } else {
+    } else if (cleanedData.includes("()()")) {
       // For common cases like: check_liquidation_solvency()();
-      cleanedData = cleanedData.replace(pattern, "$1($2)");
+      cleanedData = cleanedData.replace("()()", "()");
     }
 
     if (vmData) {

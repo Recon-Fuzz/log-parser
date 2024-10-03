@@ -270,4 +270,24 @@ describe("Testing fuzz results for", () => {
       });
     });
   });
+  describe("Medusa fuzzer - 5 - it should not include CryticTester and double () ()", () => {
+    // Ex: CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe()();
+    const datamedusa = fs.readFileSync(
+      "./tests/test_data/medusa-5.txt",
+      "utf8"
+    );
+    const jobStatsmedusa = processLogs(datamedusa, Fuzzer.MEDUSA);
+    test("It should format correctly", () => {
+      jobStatsmedusa.brokenProperties.forEach((el) => {
+        const vmData = {
+          roll: false,
+          time: false,
+          prank: false,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        expect(format.includes("CryticTester")).toBe(false);
+        expect(!format.includes("()()")).toBe(true);
+      });
+    });
+  });
 });
