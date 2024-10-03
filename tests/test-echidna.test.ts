@@ -85,13 +85,19 @@ describe("Testing fuzz results for", () => {
     test("broken property should have the correct length", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(jobStatsEchidna.failed);
     })
-    jobStatsEchidna.brokenProperties.forEach((el) => {
+    jobStatsEchidna.brokenProperties.forEach((el, index) => {
       const vmData = {
-        roll: false,
-        time: false,
+        roll: true,
+        time: true,
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      if (index === 0) { // take a random one to test
+        test("it should include block.number and block.timestamp", () => {
+          expect(format.includes("block.number")).toBe(true);
+          expect(format.includes("block.timestamp")).toBe(true);
+        });
+      }
       test("it should have the correct format", () => {
         testFormat(format);
       })
