@@ -9,3 +9,4 @@ export {processMedusa,
 export { VmParsingData, FuzzingResults, BrokenProperty, PropertyAndSequence, Fuzzer } from "./types/types";
 export { correctAllChecksums, formatAddress, formatBytes } from "./utils/utils";
 export { processLogs } from "./main";
+export { generateJobMD } from "./reportBuilder/reportBuilder";
