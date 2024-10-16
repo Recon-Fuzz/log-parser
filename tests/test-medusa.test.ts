@@ -290,4 +290,27 @@ describe("Testing fuzz results for", () => {
       });
     });
   });
+  describe("Medusa fuzzer - 6 - it should format correctly", () => {
+    // Ex:    governance_allocateLQTY_clamped_single_initiative(uint8,uint96,uint96)(123, 18044524858584422064056176436, 0);
+    const datamedusa = fs.readFileSync(
+      "./tests/test_data/medusa-6.txt",
+      "utf8"
+    );
+    const jobStatsmedusa = processLogs(datamedusa, Fuzzer.MEDUSA);
+    test("It should format correctly", () => {
+      jobStatsmedusa.brokenProperties.forEach((el) => {
+        const vmData = {
+          roll: false,
+          time: false,
+          prank: false,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        expect(format.includes("CryticTester")).toBe(false);
+        expect(!format.includes("()()")).toBe(true);
+        expect(format.includes("(uint8,uint96,uint96)")).toBe(false);
+        expect(format.includes("(uint8)")).toBe(false);
+        expect(format.includes('(hex"address")')).toBe(false);
+      });
+    });
+  });
 });
