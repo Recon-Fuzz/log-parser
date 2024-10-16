@@ -1,0 +1,29 @@
+⇾ [FAILED] Assertion Test: CryticTester.property_sum_of_lqty_global_initiatives_matches()
+Test for method "CryticTester.property_sum_of_lqty_global_initiatives_matches()" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) CryticTester.governance_snapshotVotesForInitiative(address)(0xebf183f418e567ae6f3c8a65348d4e911494b15d) (block=154914, time=1601394, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000020000)
+2) CryticTester.helper_deployInitiative()() (block=226030, time=2825607, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000010000)
+3) CryticTester.helper_deployInitiative()() (block=362536, time=5266990, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000030000)
+4) CryticTester.helper_deployInitiative()() (block=370389, time=5688858, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000020000)
+5) CryticTester.governance_depositLQTY(uint88)(2487932362399248554464474) (block=1019834, time=11345101, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000030000)
+6) CryticTester.governance_registerInitiative(uint8)(179) (block=1066066, time=11617394, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000020000)
+7) CryticTester.helper_deployInitiative()() (block=1190765, time=12796132, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000010000)
+8) CryticTester.governance_allocateLQTY_clamped_single_initiative(uint8,uint96,uint96)(123, 18044524858584422064056176436, 0) (block=1190789, time=12796172, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000020000)
+9) CryticTester.governance_unregisterInitiative(uint8)(183) (block=1197572, time=13274707, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000030000)
+10) CryticTester.property_sum_of_lqty_global_initiatives_matches()() (block=1233358, time=13742197, gas=12500000, gasprice=1, value=0, sender=0x0000000000000000000000000000000000020000)
+[Execution Trace]
+ => [call] CryticTester.property_sum_of_lqty_global_initiatives_matches()() (addr=0xA647ff3c36cFab592509E13860ab8c4F28781a66, value=0, sender=0x0000000000000000000000000000000000020000)
+         => [call] Governance.globalState()() (addr=0x9491F0Dfb965BC45570dd449801432599F0542a0, value=<nil>, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+                 => [return (0, 0)]
+         => [call] Governance.initiativeStates(address)(0x1a4652fe54709a39bf1ddda84ef325f7abda5a69) (addr=0x9491F0Dfb965BC45570dd449801432599F0542a0, value=<nil>, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+                 => [return (0, 0, 0, 0, 0)]
+         => [call] Governance.initiativeStates(address)(0x587be02d13c624e65b3d98c33fdf3eea13aaaf97) (addr=0x9491F0Dfb965BC45570dd449801432599F0542a0, value=<nil>, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+                 => [return (0, 0, 0, 0, 0)]
+         => [call] Governance.initiativeStates(address)(0x51d51e848cf1252b8d3ded7532c7f2bd405301a9) (addr=0x9491F0Dfb965BC45570dd449801432599F0542a0, value=<nil>, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+                 => [return (0, 0, 0, 0, 0)]
+         => [call] Governance.initiativeStates(address)(0x9c6a6b0ec78aa6e4b9bebd9dcee3f2b071377d07) (addr=0x9491F0Dfb965BC45570dd449801432599F0542a0, value=<nil>, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+                 => [return (2039366465071547079810988, 0, 11345101, 0, 0)]
+         => [call] Governance.initiativeStates(address)(0x574dc8e657cb00098ca1831c02434353cc65abad) (addr=0x9491F0Dfb965BC45570dd449801432599F0542a0, value=<nil>, sender=0xA647ff3c36cFab592509E13860ab8c4F28781a66)
+                 => [return (0, 0, 0, 0, 0)]
+         => [event] Log("Global vs SUM(Initiatives_lqty) must match")
+         => [panic: assertion failed]

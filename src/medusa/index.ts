@@ -188,6 +188,9 @@ export function getFunctionCallsWithVM(
     } else if (cleanedData.includes("()()")) {
       // For common cases like: check_liquidation_solvency()();
       cleanedData = cleanedData.replace("()()", "()");
+    } else if (/\([^\(\)]*\)\([^\(\)]*\)/.test(cleanedData)) {
+      // If there are two sets of parentheses, remove the first set and its contents
+      cleanedData = cleanedData.replace(/\([^\(\)]*\)(?=\([^\(\)]*\))/, '');
     }
 
     if (vmData) {
