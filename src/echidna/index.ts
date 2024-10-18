@@ -65,8 +65,8 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       (line === "" && echidnaTraceLogger) ||
       line.includes("Saved reproducer") ||
       line.includes("Traces:") ||
-      line.includes("[") || 
-      line.includes("]")
+      (line.includes("[") && !line.includes("(["))||
+      (line.includes("]") && !line.includes("])"))
     ) {
       echidnaTraceLogger = false;
       echidnaSequenceLogger = false;
@@ -83,10 +83,8 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       }
       currentBrokenPropertyEchidna = "";
     }
-
     if (echidnaSequenceLogger || echidnaTraceLogger) {
       jobStats.traces.push(line);
-
       const existingProperty = jobStats.brokenProperties.find(
         (el) => el.brokenProperty === currentBrokenPropertyEchidna
       );
