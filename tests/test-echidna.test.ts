@@ -169,6 +169,34 @@ describe("Testing fuzz results for", () => {
       expect(jobStatsEchidna.failed).toBe(29);
     })
   });
+  describe("Echidna fuzzer - 5", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-5.txt",
+      "utf8"
+    );
+
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    jobStatsEchidna.brokenProperties.forEach((el, i) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      if (el.brokenProperty === "property_sum_of_user_voting_weights") {
+        expect(format.includes("governance_allocateLQTY([")).toBe(true);
+      }
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
+  });
 });
 
 // Make sure we don't have multiple functions in the same broken prop function
