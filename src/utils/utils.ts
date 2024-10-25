@@ -94,3 +94,22 @@ function convertToEthereumAddress(rawBytes: string) {
 
   return ethereumAddress;
 }
+
+export const parseTimestamp = (log: string): Date | null => {
+  const timestampRegex = /\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{2})\]/;
+  const match = log.match(timestampRegex);
+  if (match) {
+    return new Date(match[1].replace(" ", "T"));
+  } else {
+    return null;
+  }
+};
+
+export const formatTimeDifference = (diffSeconds: number): string => {
+  const hours = Math.floor(diffSeconds / 3600);
+  const minutes = Math.floor((diffSeconds % 3600) / 60);
+  const seconds = Math.floor(diffSeconds % 60);
+
+  const formattedTime = `${hours > 0 ? `${hours}h` : ""}${minutes > 0 ? `${minutes}m` : ""}${seconds}s`;
+  return formattedTime;
+};

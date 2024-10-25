@@ -11,7 +11,7 @@ describe("Testing fuzz results for", () => {
     );
     const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
     test("Echidna fuzzing duration", () => {
-      expect(jobStatsEchidna.duration).toBe("20000462/20000000");
+      expect(jobStatsEchidna.duration).toBe("3h7m21s");
     });
 
     test("Echidna coverage", () => {
@@ -66,7 +66,7 @@ describe("Testing fuzz results for", () => {
     );
     const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
     test("Duration should be correct", () => {
-      expect(jobStatsEchidna.duration).toBe("1000511/1000000");
+      expect(jobStatsEchidna.duration).toBe("1h36s");
     })
     test("Coverage should be correct", () => {
       expect(jobStatsEchidna.coverage).toBe(42586);
@@ -116,6 +116,9 @@ describe("Testing fuzz results for", () => {
     );
 
     const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    test("Duration should be correct", () => {
+      expect(jobStatsEchidna.duration).toBe("1h1m23s");
+    })
     jobStatsEchidna.brokenProperties.forEach((el) => {
       const vmData = {
         roll: false,
@@ -145,6 +148,9 @@ describe("Testing fuzz results for", () => {
     );
 
     const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    test("Duration should be correct", () => {
+      expect(jobStatsEchidna.duration).toBe("15m54s");
+    })
     jobStatsEchidna.brokenProperties.forEach((el, i) => {
       const vmData = {
         roll: false,
