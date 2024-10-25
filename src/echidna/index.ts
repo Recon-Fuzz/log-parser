@@ -1,5 +1,5 @@
 import { FuzzingResults, VmParsingData } from "../types/types";
-import { correctAllChecksums } from "../utils/utils";
+import { correctAllChecksums, formatTimeDifference, parseTimestamp } from "../utils/utils";
 
 //////////////////////////////////////
 //          ECHIDNA                 //
@@ -8,6 +8,7 @@ let echidnaTraceLogger = false;
 let echidnaSequenceLogger = false;
 let currentBrokenPropertyEchidna = "";
 let prevLine = "";
+let firstTimestamp: Date;
 /**
  * The processEchidna function processes log lines to extract job statistics and traces for fuzzing results.
  * @param {string} line - The `processEchidna` function processes a line of text
@@ -17,7 +18,23 @@ let prevLine = "";
  * various properties to store information related to the fuzzing job being
  * processed.
  */
+
+
+
 export function processEchidna(line: string, jobStats: FuzzingResults): void {
+  if (line.includes("Compiling ")) {
+    firstTimestamp = parseTimestamp(line) as Date;
+  }
+
+  if (firstTimestamp) {
+    const currentTimestamp = parseTimestamp(line);
+    if (currentTimestamp) {
+      const diffMilliseconds = currentTimestamp.getTime() - firstTimestamp.getTime();
+      const diffSeconds = diffMilliseconds / 1000;
+      jobStats.duration = formatTimeDifference(parseInt(diffSeconds.toFixed(2)))
+    }
+  }
+
   if (line.includes(": passing") || line.includes(": failed!")) {
     jobStats.results.push(line);
   }
@@ -28,12 +45,8 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
     jobStats.failed++;
   }
   if (line.includes("[status] tests:")) {
-    const durationMatch = line.match(/fuzzing: (\d+\/\d+)/);
     const coverageMatch = line.match(/cov: (\d+)/);
 
-    if (durationMatch) {
-      jobStats.duration = durationMatch[1];
-    }
     if (coverageMatch) {
       jobStats.coverage = +coverageMatch[1];
     }
