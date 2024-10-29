@@ -228,7 +228,13 @@ describe("Testing fuzz results for", () => {
         expect(format.includes("vm.warp(block.timestamp + 43315);")).toBe(true);
         expect(format.includes("vm.warp(block.timestamp + 32304);")).toBe(true);
         expect(format.includes("vm.warp(block.timestamp + 37820);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 896);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 58181);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 69439);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 16204);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 37200);")).toBe(true);
       }
+      console.log(format)
       test("it should have the correct format", () => {
         testFormat(format);
       })
