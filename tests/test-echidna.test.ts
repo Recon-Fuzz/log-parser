@@ -218,21 +218,34 @@ describe("Testing fuzz results for", () => {
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
       if (i === 0) {
-        expect(format.includes("vm.warp(block.timestamp + 1);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 613397);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 1);")).toBe(true);
       } else if (i === 1) {
-        expect(format.includes("vm.warp(block.timestamp + 92437);")).toBe(true);
-        expect(format.includes("vm.warp(block.timestamp + 201);")).toBe(true);
-        expect(format.includes("vm.warp(block.timestamp + 23276);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 198541);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 92437);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 358061);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 201);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 83001);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 23276);")).toBe(true);
       } else if (i ===2 ) {
-        expect(format.includes("vm.warp(block.timestamp + 69439);")).toBe(true);
-        expect(format.includes("vm.warp(block.timestamp + 43315);")).toBe(true);
-        expect(format.includes("vm.warp(block.timestamp + 32304);")).toBe(true);
-        expect(format.includes("vm.warp(block.timestamp + 37820);")).toBe(true);
-        expect(format.includes("vm.warp(block.timestamp + 896);")).toBe(true);
-        expect(format.includes("vm.warp(block.timestamp + 58181);")).toBe(true);
-        expect(format.includes("vm.warp(block.timestamp + 69439);")).toBe(true);
-        expect(format.includes("vm.warp(block.timestamp + 16204);")).toBe(true);
-        expect(format.includes("vm.warp(block.timestamp + 37200);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 562840);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 43315);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 835858);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 69439);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 867);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 32304);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 322316);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 37820);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 555653);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 896);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 273544);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 58181);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 835858);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 69439);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 927126);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 16204);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 488787);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 37200);")).toBe(true);
       }
       console.log(format)
       test("it should have the correct format", () => {

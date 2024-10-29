@@ -103,10 +103,14 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       );
 
       if (line.includes("*wait* ")) {
-        const regex = /(?<=Block delay:\s*)\d+/;
+        const regex = /Time delay:\s*(\d+)\s*seconds\s*Block delay:\s*(\d+)/;
         const match = line.match(regex);
+
         if (match) {
-          line = `    vm.warp(block.timestamp + ${match[0]});`;
+          const timeDelay = match[1];
+          const blockDelay = match[2];
+          line = `    vm.warp(block.timestamp + ${timeDelay});
+    vm.roll(block.number + ${blockDelay});`;
         }
       }
       if (!existingProperty) {
@@ -122,9 +126,16 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
 
     }
   }
-
   prevLine = line;
 }
+
+
+// Wait is vm.warp(block.timestamp + SECONDS)
+// wait Time delay: 179265 seconds Block delay: 1
+// Becomes
+
+// vm.warp(block.timestamp + 179265);
+// vm.roll(block.number + 1);
 
 // Replace brokenProp() by brokenProp
 // Also account to brokenProp(uint256) to brokenProp
