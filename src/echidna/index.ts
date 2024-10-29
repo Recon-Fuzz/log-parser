@@ -101,8 +101,15 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       const existingProperty = jobStats.brokenProperties.find(
         (el) => el.brokenProperty === currentBrokenPropertyEchidna
       );
-      if (!line.includes("*wait* ")) {
-        if (!existingProperty) {
+
+      if (line.includes("*wait* ")) {
+        const regex = /(?<=Block delay:\s*)\d+/;
+        const match = line.match(regex);
+        if (match) {
+          line = `    vm.warp(block.timestamp + ${match[0]});`;
+        }
+      }
+      if (!existingProperty) {
           jobStats.brokenProperties.push({
             brokenProperty: currentBrokenPropertyEchidna,
             sequence: `${line}\n`,
@@ -112,7 +119,7 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
             existingProperty.sequence += `${line}\n`;
           }
         }
-      }
+
     }
   }
 
@@ -167,7 +174,7 @@ export function echidnaLogsToFunctions(
         .replace("{,", "{")
         .replace("{:", "{")
         .replace(/public \{ shrinking \d*\/\d*:\n/, "public {\n")
-        .replace(/\w+\./g, "");
+        .replace(/\b(?!vm\.|block\.)\w+\./g, "");
       updated += `\n}`;
       return updated;
     })
@@ -179,7 +186,6 @@ export function echidnaLogsToFunctions(
       }
       let returnData = "";
       let cleanedData = line;
-
       if (line.split(" from")[0].includes("0x")) {
         const startLine = line.split(" from")[0];
         const endLine = line.split(" from")[1];
@@ -208,7 +214,7 @@ export function echidnaLogsToFunctions(
         if (cleanedData === "}") {
           returnData += `\n ${cleanedData}`;
         } else {
-          returnData += `\n     ${cleanedData.split(";")[0]};`;
+          returnData += `\n ${cleanedData.split(";")[0]};`;
         }
       } else {
         returnData = `  ${cleanedData.split(";")[0]};`;
