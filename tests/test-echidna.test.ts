@@ -203,6 +203,61 @@ describe("Testing fuzz results for", () => {
       });
     });
   });
+  describe("Echidna fuzzer - Should parse *wait* correctly", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-6.txt",
+      "utf8"
+    );
+
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    jobStatsEchidna.brokenProperties.forEach((el, i) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      if (i === 0) {
+        expect(format.includes("vm.warp(block.timestamp + 613397);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 1);")).toBe(true);
+      } else if (i === 1) {
+        expect(format.includes("vm.warp(block.timestamp + 198541);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 92437);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 358061);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 201);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 83001);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 23276);")).toBe(true);
+      } else if (i ===2 ) {
+        expect(format.includes("vm.warp(block.timestamp + 562840);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 43315);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 835858);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 69439);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 867);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 32304);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 322316);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 37820);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 555653);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 896);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 273544);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 58181);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 835858);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 69439);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 927126);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 16204);")).toBe(true);
+        expect(format.includes("vm.warp(block.timestamp + 488787);")).toBe(true);
+        expect(format.includes("vm.roll(block.number + 37200);")).toBe(true);
+      }
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
+  });
 });
 
 // Make sure we don't have multiple functions in the same broken prop function
