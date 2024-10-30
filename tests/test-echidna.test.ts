@@ -48,8 +48,7 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-      console.log(format)
-      test("it should have the correct format", () => {
+     test("it should have the correct format", () => {
         testFormat(format);
       })
       test("it should have clean traces", () => {
@@ -218,6 +217,8 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      console.log(format)
+
       if (i === 0) {
         expect(format.includes("vm.warp(block.timestamp + 613397);")).toBe(true);
         expect(format.includes("vm.roll(block.number + 1);")).toBe(true);

@@ -109,8 +109,8 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
         if (match) {
           const timeDelay = match[1];
           const blockDelay = match[2];
-          line = `    vm.warp(block.timestamp + ${timeDelay});
-    vm.roll(block.number + ${blockDelay});`;
+          line = `vm.warp(block.timestamp + ${timeDelay});
+vm.roll(block.number + ${blockDelay});`;
         }
       }
       if (!existingProperty) {
