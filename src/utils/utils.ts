@@ -82,7 +82,7 @@ export function processTraceLogs(logs: string[]): string[] {
     result.push(currentItem.trim());
   }
 
-  return result;
+  return result.filter(el => el !== "");
 }
 
 function convertToEthereumAddress(rawBytes: string) {
@@ -110,6 +110,8 @@ export const formatTimeDifference = (diffSeconds: number): string => {
   const minutes = Math.floor((diffSeconds % 3600) / 60);
   const seconds = Math.floor(diffSeconds % 60);
 
-  const formattedTime = `${hours > 0 ? `${hours}h` : ""}${minutes > 0 ? `${minutes}m` : ""}${seconds}s`;
+  const formattedTime = `${hours > 0 ? `${hours}h` : ""}${
+    minutes > 0 ? `${minutes}m` : ""
+  }${seconds}s`;
   return formattedTime;
 };
