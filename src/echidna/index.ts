@@ -129,14 +129,6 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   prevLine = line;
 }
 
-
-// Wait is vm.warp(block.timestamp + SECONDS)
-// wait Time delay: 179265 seconds Block delay: 1
-// Becomes
-
-// vm.warp(block.timestamp + 179265);
-// vm.roll(block.number + 1);
-
 // Replace brokenProp() by brokenProp
 // Also account to brokenProp(uint256) to brokenProp
 function cleanUpBrokenPropertyName(brokenProp: string): string {
