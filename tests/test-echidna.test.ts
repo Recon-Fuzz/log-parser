@@ -258,6 +258,25 @@ describe("Testing fuzz results for", () => {
       });
     });
   });
+  describe("Echidna fuzzer - Should parse the number of tests correctly", () => {
+    const dataEchidna1 = fs.readFileSync(
+      "./tests/test_data/echidna.txt",
+      "utf8"
+    );
+    const jobStatsEchidna1 = processLogs(dataEchidna1, Fuzzer.ECHIDNA);
+    test("It should have the right number of tests", () => {
+      expect(jobStatsEchidna1.numberOfTests).toBe(20000462);
+    });
+
+    const dataEchidna2 = fs.readFileSync(
+      "./tests/test_data/echidna-2.txt",
+      "utf8"
+    );
+    const jobStatsEchidna2 = processLogs(dataEchidna2, Fuzzer.ECHIDNA);
+    test("It should have the right number of tests", () => {
+      expect(jobStatsEchidna2.numberOfTests).toBe(1000511);
+    });
+  })
 });
 
 // Make sure we don't have multiple functions in the same broken prop function

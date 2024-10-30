@@ -32,9 +32,16 @@ export function processMedusa(line: string, jobStats: FuzzingResults): void {
     jobStats.duration =
       captureFuzzingDuration(line.replace("fuzz: elapsed:", "")) ?? ""; // TODO 0XSI - fix this
     const coverageMatch = line.match(/coverage: (\d+)/);
+    const numberOfTestsMatch = line.match( /calls:\s(\d+)/);
     if (coverageMatch) {
       jobStats.coverage = +coverageMatch[1];
     }
+
+
+    if (numberOfTestsMatch) {
+      jobStats.numberOfTests = parseInt(numberOfTestsMatch[1]);
+    }
+
   } else if (line.includes("Test summary:")) {
     const passedMatch = line.match(/(\d+ test\(s\) passed)/);
     const failedMatch = line.match(/(\d+ test\(s\) failed)/);

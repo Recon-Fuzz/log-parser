@@ -43,13 +43,13 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   }
   if (line.includes("[status] tests:")) {
     const coverageMatch = line.match(/cov: (\d+)/);
-    const numberOfTests = line.match(/fuzzing: (\d+\/\d+)/);
+    const numberOfTestsMatch = line.match(/fuzzing: (\d+\/\d+)/);
 
     if (coverageMatch) {
       jobStats.coverage = +coverageMatch[1];
     }
-    if (numberOfTests) {
-      const splitted = numberOfTests[1].split("/");
+    if (numberOfTestsMatch) {
+      const splitted = numberOfTestsMatch[1].split("/");
       jobStats.numberOfTests = parseInt(splitted[0]);
     }
   } else {
