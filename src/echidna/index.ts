@@ -25,7 +25,7 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   if (line.includes("Compiling ")) {
     firstTimestamp = parseTimestamp(line) as Date;
   }
-
+  line = line.trim();
   if (firstTimestamp) {
     const currentTimestamp = parseTimestamp(line);
     if (currentTimestamp) {
@@ -217,7 +217,7 @@ export function echidnaLogsToFunctions(
         if (cleanedData === "}") {
           returnData += `\n ${cleanedData}`;
         } else {
-          returnData += `\n ${cleanedData.split(";")[0]};`;
+          returnData += `\n    ${cleanedData.split(";")[0]};`;
         }
       } else {
         returnData = `  ${cleanedData.split(";")[0]};`;
