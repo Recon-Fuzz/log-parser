@@ -18,9 +18,6 @@ let firstTimestamp: Date;
  * various properties to store information related to the fuzzing job being
  * processed.
  */
-
-
-
 export function processEchidna(line: string, jobStats: FuzzingResults): void {
   if (line.includes("Compiling ")) {
     firstTimestamp = parseTimestamp(line) as Date;
@@ -46,9 +43,14 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   }
   if (line.includes("[status] tests:")) {
     const coverageMatch = line.match(/cov: (\d+)/);
+    const numberOfTests = line.match(/fuzzing: (\d+\/\d+)/);
 
     if (coverageMatch) {
       jobStats.coverage = +coverageMatch[1];
+    }
+    if (numberOfTests) {
+      const splitted = numberOfTests[1].split("/");
+      jobStats.numberOfTests = parseInt(splitted[0]);
     }
   } else {
     const sequenceMatch = line.includes("Call sequence");
