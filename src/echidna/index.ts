@@ -25,7 +25,7 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   if (line.includes("Compiling ")) {
     firstTimestamp = parseTimestamp(line) as Date;
   }
-
+  line = line.trim();
   if (firstTimestamp) {
     const currentTimestamp = parseTimestamp(line);
     if (currentTimestamp) {
@@ -109,8 +109,8 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
         if (match) {
           const timeDelay = match[1];
           const blockDelay = match[2];
-          line = `    vm.warp(block.timestamp + ${timeDelay});
-    vm.roll(block.number + ${blockDelay});`;
+          line = `vm.warp(block.timestamp + ${timeDelay});
+vm.roll(block.number + ${blockDelay});`;
         }
       }
       if (!existingProperty) {
@@ -217,7 +217,7 @@ export function echidnaLogsToFunctions(
         if (cleanedData === "}") {
           returnData += `\n ${cleanedData}`;
         } else {
-          returnData += `\n ${cleanedData.split(";")[0]};`;
+          returnData += `\n    ${cleanedData.split(";")[0]};`;
         }
       } else {
         returnData = `  ${cleanedData.split(";")[0]};`;

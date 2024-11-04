@@ -37,7 +37,7 @@ describe("Testing fuzz results for", () => {
     });
     test("All traces for broken properties should start with 'test for method' and end with ---End Trace---", () => {
       jobStatsEchidna.brokenProperties.forEach((el) => {
-        expect(el.sequence.startsWith("  Call sequence:\n")).toBe(true);
+        expect(el.sequence.startsWith("Call sequence:\n")).toBe(true);
         expect(el.sequence.endsWith("---End Trace---\n")).toBe(true);
       });
     });
@@ -48,7 +48,7 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
-      test("it should have the correct format", () => {
+     test("it should have the correct format", () => {
         testFormat(format);
       })
       test("it should have clean traces", () => {
@@ -217,6 +217,8 @@ describe("Testing fuzz results for", () => {
         prank: false,
       };
       const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      console.log(format)
+
       if (i === 0) {
         expect(format.includes("vm.warp(block.timestamp + 613397);")).toBe(true);
         expect(format.includes("vm.roll(block.number + 1);")).toBe(true);
