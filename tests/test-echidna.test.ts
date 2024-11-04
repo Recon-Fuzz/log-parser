@@ -260,6 +260,37 @@ describe("Testing fuzz results for", () => {
       });
     });
   });
+  describe("Echidna fuzzer - Handle  No Transaction issues", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-7.txt",
+      "utf8"
+    );
+
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    jobStatsEchidna.brokenProperties.forEach((el, i) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(el.sequence, "", el.brokenProperty, vmData);
+      test("it should have the correct format", () => {
+        testFormat(format);
+      })
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      })
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
+    test("It shouldn't parse the prop with ' No Transaction ' ", () => {
+      jobStatsEchidna.brokenProperties.forEach((el) => {
+        expect(el.sequence.includes("No transaction")).toBe(false);
+      });
+      expect(jobStatsEchidna.brokenProperties.length).toBe(1);
+    });
+  });
 });
 
 // Make sure we don't have multiple functions in the same broken prop function

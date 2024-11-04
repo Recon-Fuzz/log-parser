@@ -44,6 +44,20 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   if (line.includes(": failed!")) {
     jobStats.failed++;
   }
+  // If Echidna logs have the "no transactions" message, we shouldn't keep that in the traces
+  if (line.includes("(no transactions)") && (prevLine.includes("Call sequence"))) {
+    echidnaSequenceLogger = false;
+    const existingProperty = jobStats.brokenProperties.find(
+      (el) => el.brokenProperty === currentBrokenPropertyEchidna
+    );
+    if (existingProperty) {
+      jobStats.brokenProperties = jobStats.brokenProperties.filter(
+        (el) => el.brokenProperty !== currentBrokenPropertyEchidna
+      );
+    }
+    currentBrokenPropertyEchidna = "";
+    echidnaTraceLogger = false;
+  }
   if (line.includes("[status] tests:")) {
     const coverageMatch = line.match(/cov: (\d+)/);
 
