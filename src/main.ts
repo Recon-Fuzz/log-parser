@@ -26,9 +26,8 @@ export const processLogs = (logs: string, tool: Fuzzer): FuzzingResults => {
     traces: [],
     brokenProperties: [],
   };
-
-  const lines = logs.split("\n");
-
+  const unescapedLogs = logs.replace(/\\n/g, '\n');
+  const lines = unescapedLogs.split('\n');
   lines.forEach((line) => {
     if (tool === Fuzzer.MEDUSA) {
       processMedusa(line, jobStats);
@@ -40,3 +39,10 @@ export const processLogs = (logs: string, tool: Fuzzer): FuzzingResults => {
   jobStats.traces = processTraceLogs(jobStats.traces);
   return jobStats;
 };
+
+
+// Call sequence:
+// EchidnaForkTester.asserts_GENERAL_17() from: 0x0000000000000000000000000000000000030000 Time delay: 38059 seconds Block delay: 257
+// EchidnaForkTester.asserts_test_fail() from: 0x0000000000000000000000000000000000020000 Time delay: 469057 seconds Block delay: 1424
+
+// ---End Trace---
