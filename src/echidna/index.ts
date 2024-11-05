@@ -18,9 +18,6 @@ let firstTimestamp: Date;
  * various properties to store information related to the fuzzing job being
  * processed.
  */
-
-
-
 export function processEchidna(line: string, jobStats: FuzzingResults): void {
   if (line.includes("Compiling ")) {
     firstTimestamp = parseTimestamp(line) as Date;
@@ -34,7 +31,9 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       jobStats.duration = formatTimeDifference(parseInt(diffSeconds.toFixed(2)))
     }
   }
-
+  if (line.includes(": max value:")) {
+    currentBrokenPropertyEchidna = line.split(": max value")[0];
+  }
   if (line.includes(": passing") || line.includes(": failed!")) {
     jobStats.results.push(line);
   }
@@ -43,6 +42,20 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   }
   if (line.includes(": failed!")) {
     jobStats.failed++;
+  }
+  // If Echidna logs have the "no transactions" message, we shouldn't keep that in the traces
+  if (line.includes("(no transactions)") && (prevLine.includes("Call sequence"))) {
+    echidnaSequenceLogger = false;
+    const existingProperty = jobStats.brokenProperties.find(
+      (el) => el.brokenProperty === currentBrokenPropertyEchidna
+    );
+    if (existingProperty) {
+      jobStats.brokenProperties = jobStats.brokenProperties.filter(
+        (el) => el.brokenProperty !== currentBrokenPropertyEchidna
+      );
+    }
+    currentBrokenPropertyEchidna = "";
+    echidnaTraceLogger = false;
   }
   if (line.includes("[status] tests:")) {
     const coverageMatch = line.match(/cov: (\d+)/);
@@ -62,6 +75,13 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
           }
         } else {
           currentBrokenPropertyEchidna = prevLine.split(": failed!")[0];
+        }
+      } else {
+        if (prevLine.includes("falsified!")) {
+          const fasifieldMatch = prevLine.match(/Test\s+(.*?)\s+falsified!/);
+          if (fasifieldMatch) {
+            currentBrokenPropertyEchidna = fasifieldMatch[1];
+          }
         }
       }
     }
@@ -132,7 +152,9 @@ vm.roll(block.number + ${blockDelay});`;
 // Replace brokenProp() by brokenProp
 // Also account to brokenProp(uint256) to brokenProp
 function cleanUpBrokenPropertyName(brokenProp: string): string {
-  return brokenProp.replace(/\(.*?\)/g, "");
+  //TODO 0XSI
+  const cleanedUpProp = brokenProp.split(": max value")[0];
+  return cleanedUpProp.replace(/\(.*?\)/g, "");
 }
 
 /**

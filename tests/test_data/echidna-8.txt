@@ -1,0 +1,1 @@
+Call sequence:\nEchidnaForkTester.asserts_GENERAL_17() from: 0x0000000000000000000000000000000000030000 Time delay: 38059 seconds Block delay: 257\nEchidnaForkTester.asserts_test_fail() from: 0x0000000000000000000000000000000000020000 Time delay: 469057 seconds Block delay: 1424\n\n---End Trace---\n
