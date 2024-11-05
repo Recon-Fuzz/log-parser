@@ -463,6 +463,56 @@ describe("Testing fuzz results for", () => {
       ).toBe(true);
     });
   });
+  describe("Echidna fuzzer - 8 - should parse correctly \\n in the logs", () => {
+
+    /*
+    Call sequence:\nEchidnaForkTester.asserts_GENERAL_17() from: 0x0000000000000000000000000000000000030000 Time delay: 38059 seconds Block delay: 257\nEchidnaForkTester.asserts_test_fail() from: 0x0000000000000000000000000000000000020000 Time delay: 469057 seconds Block delay: 1424\n\n---End Trace---\n
+    --> transaltes to
+
+    Call sequence:
+    EchidnaForkTester.asserts_GENERAL_17() from: 0x0000000000000000000000000000000000030000 Time delay: 38059 seconds Block delay: 257
+    EchidnaForkTester.asserts_test_fail() from: 0x0000000000000000000000000000000000020000 Time delay: 469057 seconds Block delay: 1424
+
+    ---End Trace---
+    */
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-8.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+
+    test("it should have the correct broken properties", () => {
+      expect(jobStatsEchidna.brokenProperties.length).toBe(1);
+      // No broken prop passed
+      expect(
+        jobStatsEchidna.brokenProperties[0].brokenProperty ===
+          ""
+      ).toBe(true);
+    });
+    jobStatsEchidna.brokenProperties.forEach((el, i) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(
+        el.sequence,
+        "",
+        el.brokenProperty,
+        vmData
+      );
+      test("it should have the correct format", () => {
+        testFormat(format);
+      });
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      });
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+    });
+
+  })
 });
 
 // Make sure we don't have multiple functions in the same broken prop function
