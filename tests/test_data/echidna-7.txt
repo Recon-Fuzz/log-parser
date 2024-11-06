@@ -1,0 +1,242 @@
+2024-11-03 16:02:42.17] [status] tests: 0/8, fuzzing: 5908934/50000000, values: [32782204017082344187579518,0,0,0,309481537388968425963126636,0,0,0], cov: 44531, corpus: 44
+optimize_property_sum_of_initatives_matches_total_votes_insolvency: max value: 32782204017082344187579518
+
+  Call sequence:
+    CryticTester.property_shouldNeverRevertgetTotalVotesAndState() from: 0x0000000000000000000000000000000000010000 Time delay: 79261 seconds Block delay: 16206
+    CryticTester.property_viewCalculateVotingThreshold() from: 0x0000000000000000000000000000000000020000 Time delay: 579337 seconds Block delay: 5029
+    CryticTester.governance_depositLQTY_2(154028978158449827523276539) from: 0x0000000000000000000000000000000000010000 Time delay: 276994 seconds Block delay: 1862
+    CryticTester.governance_allocateLQTY([2158778573, 154742504910672534362389538, 153950290804089962090706174, 140329054130776839653658835, 164969, 131288158264455768765378690, -4123494384, 3527056776, 106474465394180231001311472, 15000000000000000000000, -521, 69850687772338869149596470, -92, 29145961736280278576349174, 10000000000000000, -309485009821345068724781056, 125498901469807936348603772, -309485009821345068724781056, 304, 19082884039650392351780863, 18, -100000000, 119433603697826958116565072, 92007040372604663083301407, -309485009821345068724781056, 70097738804704144111880495, 121, -309485009821345068724781056, 154742504910672534362390125, 10855196071396667148356050],[84751904881350418184049736, -154742504910672534362390526, 94403541360425220772808711, 231772, -65534, 64243546904222911660518763, -309485009821345068724781056, 74524940852314248451070560, 246072, 148327145521876234113745071, 134441474047014557951032384, 144663431225162995836402801, 106685347443912411312699172, 150594281692509433957070082, 108696096377900722449701586, -309485009821345068724781056, -309485009821345068724781056]) from: 0x0000000000000000000000000000000000020000 Time delay: 379552 seconds Block delay: 37821
+    CryticTester.property_BI08() from: 0x0000000000000000000000000000000000030000 Time delay: 38059 seconds Block delay: 11
+    CryticTester.clamped_claimBribes(59) from: 0x0000000000000000000000000000000000020000 Time delay: 255 seconds Block delay: 57011
+    CryticTester.governance_depositLQTY_2(2) from: 0x0000000000000000000000000000000000030000 Time delay: 322144 seconds Block delay: 17154
+    CryticTester.property_BI08() from: 0x0000000000000000000000000000000000020000 Time delay: 98094 seconds Block delay: 4809
+    CryticTester.property_shouldNeverRevertgetTotalVotesAndState() from: 0x0000000000000000000000000000000000030000 Time delay: 577015 seconds Block delay: 46536
+    CryticTester.governance_depositLQTY(262322195659734805072413361) from: 0x0000000000000000000000000000000000020000 Time delay: 332369 seconds Block delay: 1362
+    CryticTester.property_sum_of_lqty_initiative_user_matches() from: 0x0000000000000000000000000000000000030000 Time delay: 65536 seconds Block delay: 33497
+    CryticTester.check_claim_soundness() from: 0x0000000000000000000000000000000000010000 Time delay: 58 seconds Block delay: 43905
+    CryticTester.property_shouldNeverRevertSnapshotAndState(236) from: 0x0000000000000000000000000000000000020000 Time delay: 178398 seconds Block delay: 55752
+    CryticTester.property_BI09() from: 0x0000000000000000000000000000000000020000 Time delay: 149578 seconds Block delay: 3751
+    CryticTester.depositMustFailOnNonZeroAlloc(122) from: 0x0000000000000000000000000000000000020000 Time delay: 322370 seconds Block delay: 50537
+    CryticTester.governance_allocateLQTY_clamped_single_initiative(130,93,0) from: 0x0000000000000000000000000000000000010000 Time delay: 57804 seconds Block delay: 55724
+    CryticTester.property_shouldNeverRevertgetInitiativeState(100) from: 0x0000000000000000000000000000000000020000 Time delay: 322357 seconds Block delay: 45819
+    CryticTester.governance_claimForInitiativeFuzzTest(103) from: 0x0000000000000000000000000000000000030000 Time delay: 365091 seconds Block delay: 21439
+    CryticTester.property_BI09() from: 0x0000000000000000000000000000000000010000 Time delay: 304335 seconds Block delay: 2821
+    CryticTester.property_GV_09() from: 0x0000000000000000000000000000000000030000 Time delay: 407567 seconds Block delay: 53011
+    CryticTester.property_shouldNeverRevertsecondsWithinEpoch() from: 0x0000000000000000000000000000000000020000 Time delay: 471291 seconds Block delay: 4847
+    CryticTester.initiative_depositBribe(264474546884491357117362731710371217215,254135392087517085278822988830747111655,215,17) from: 0x0000000000000000000000000000000000020000 Time delay: 262143 seconds Block delay: 15505
+    CryticTester.governance_registerInitiative(11) from: 0x0000000000000000000000000000000000020000 Time delay: 513169 seconds Block delay: 13
+    CryticTester.property_BI09() from: 0x0000000000000000000000000000000000010000 Time delay: 61359 seconds Block delay: 60460
+    CryticTester.check_claimable_solvency() from: 0x0000000000000000000000000000000000020000 Time delay: 400 seconds Block delay: 27250
+    CryticTester.property_GV_09() from: 0x0000000000000000000000000000000000030000 Time delay: 73444 seconds Block delay: 38703
+    CryticTester.governance_allocateLQTY_clamped_single_initiative_2nd_user(70,49906617260552605762047230770,1000000) from: 0x0000000000000000000000000000000000020000 Time delay: 523 seconds Block delay: 3162
+    CryticTester.governance_claimFromStakingV1(252) from: 0x0000000000000000000000000000000000010000 Time delay: 407567 seconds Block delay: 27174
+    CryticTester.check_realized_claiming_solvency() from: 0x0000000000000000000000000000000000030000 Time delay: 472846 seconds Block delay: 2821
+    CryticTester.property_BI05() from: 0x0000000000000000000000000000000000030000 Time delay: 357863 seconds Block delay: 4094
+    CryticTester.governance_allocateLQTY_clamped_single_initiative(32,34961718036134411610099238296,133) from: 0x0000000000000000000000000000000000020000 Time delay: 282472 seconds Block delay: 48072
+    CryticTester.property_shouldNeverRevertgetTotalVotesAndState() from: 0x0000000000000000000000000000000000030000 Time delay: 604762 seconds Block delay: 5016
+    CryticTester.check_skip_consistecy(190) from: 0x0000000000000000000000000000000000020000 Time delay: 322143 seconds Block delay: 32958
+    CryticTester.governance_allocateLQTY_clamped_single_initiative_2nd_user(194,63,44042324661291034963457523227) from: 0x0000000000000000000000000000000000020000 Time delay: 124202 seconds Block delay: 51878
+    CryticTester.property_sum_of_lqty_global_user_matches() from: 0x0000000000000000000000000000000000010000 Time delay: 344203 seconds Block delay: 10978
+    CryticTester.property_GV_09() from: 0x0000000000000000000000000000000000010000 Time delay: 440284 seconds Block delay: 50417
+    CryticTester.property_shouldGetTotalVotesAndState() from: 0x0000000000000000000000000000000000020000 Time delay: 326329 seconds Block delay: 4901
+    CryticTester.property_shouldNeverRevertgetLatestVotingThreshold() from: 0x0000000000000000000000000000000000030000 Time delay: 577014 seconds Block delay: 15504
+    CryticTester.property_BI09() from: 0x0000000000000000000000000000000000010000 Time delay: 482394 seconds Block delay: 4841
+    CryticTester.property_shouldNeverRevertgetInitiativeState_arbitrary(0x1fffffffe) from: 0x0000000000000000000000000000000000030000 Time delay: 379005 seconds Block delay: 57313
+    CryticTester.governance_claimForInitiative(92) from: 0x0000000000000000000000000000000000010000 Time delay: 322198 seconds Block delay: 48887
+    CryticTester.property_BI07() from: 0x0000000000000000000000000000000000010000 Time delay: 57803 seconds Block delay: 6295
+    CryticTester.clamped_claimBribes(33) from: 0x0000000000000000000000000000000000030000 Time delay: 322069 seconds Block delay: 13868
+    CryticTester.property_alloc_deposit_reset_is_idempotent(200,1999999999999999999,9831763698359078767883274571,99380824833012099680917693) from: 0x0000000000000000000000000000000000010000 Time delay: 80212 seconds Block delay: 15513
+    CryticTester.governance_claimForInitiative(0) from: 0x0000000000000000000000000000000000020000 Time delay: 496936 seconds Block delay: 3662
+    CryticTester.property_global_ts_is_always_greater_than_start() from: 0x0000000000000000000000000000000000030000 Time delay: 153540 seconds Block delay: 25985
+    CryticTester.property_sum_of_user_voting_weights_strict() from: 0x0000000000000000000000000000000000020000 Time delay: 94683 seconds Block delay: 65
+    CryticTester.governance_depositLQTY_2(10000000000000000) from: 0x0000000000000000000000000000000000030000 Time delay: 534786 seconds Block delay: 28997
+    CryticTester.initiative_depositBribe(94743225334330175067115104350172538975,339738377640345403697157401104375502017,63360,37) from: 0x0000000000000000000000000000000000020000 Time delay: 128966 seconds Block delay: 5216
+    CryticTester.check_claim_soundness() from: 0x0000000000000000000000000000000000010000 Time delay: 137558 seconds Block delay: 3599
+    CryticTester.property_shouldNeverRevertgetInitiativeState(102) from: 0x0000000000000000000000000000000000010000 Time delay: 586022 seconds Block delay: 88
+    CryticTester.property_shouldNeverRevertsecondsWithinEpoch() from: 0x0000000000000000000000000000000000030000 Time delay: 33 seconds Block delay: 24966
+    CryticTester.property_BI02() from: 0x0000000000000000000000000000000000030000 Time delay: 385871 seconds Block delay: 15504
+    CryticTester.governance_claimForInitiative(170) from: 0x0000000000000000000000000000000000010000 Time delay: 338920 seconds Block delay: 1862
+    CryticTester.property_shouldNeverRevertcalculateVotingThreshold() from: 0x0000000000000000000000000000000000030000 Time delay: 102110 seconds Block delay: 4987
+    CryticTester.governance_unregisterInitiative(182) from: 0x0000000000000000000000000000000000020000 Time delay: 322216 seconds Block delay: 60268
+    CryticTester.property_shouldNeverRevertsecondsWithinEpoch() from: 0x0000000000000000000000000000000000010000 Time delay: 352709 seconds Block delay: 45693
+    CryticTester.property_sum_of_user_voting_weights_strict() from: 0x0000000000000000000000000000000000020000 Time delay: 417307 seconds Block delay: 8907
+    CryticTester.helper_deployInitiative() from: 0x0000000000000000000000000000000000030000 Time delay: 486890 seconds Block delay: 39518
+    CryticTester.property_alloc_deposit_reset_is_idempotent(86,34630418746493929544746664202,65565596280218207006265461316,499999999999999999999) from: 0x0000000000000000000000000000000000030000 Time delay: 288562 seconds Block delay: 125
+    CryticTester.clamped_claimBribes(134) from: 0x0000000000000000000000000000000000020000 Time delay: 472846 seconds Block delay: 6666
+    CryticTester.property_sum_of_user_voting_weights_strict() from: 0x0000000000000000000000000000000000030000 Time delay: 359581 seconds Block delay: 40000
+    CryticTester.governance_depositLQTY_2(0) from: 0x0000000000000000000000000000000000030000 Time delay: 488787 seconds Block delay: 60450
+    CryticTester.property_sum_of_user_initiative_allocations() from: 0x0000000000000000000000000000000000010000 Time delay: 92959 seconds Block delay: 2363
+    CryticTester.property_BI09() from: 0x0000000000000000000000000000000000030000 Time delay: 193410 seconds Block delay: 8192
+    CryticTester.governance_registerInitiative(53) from: 0x0000000000000000000000000000000000020000 Time delay: 320326 seconds Block delay: 3501
+    CryticTester.property_sum_of_user_voting_weights_bounded() from: 0x0000000000000000000000000000000000010000 Time delay: 481079 seconds Block delay: 98
+    CryticTester.governance_registerInitiative(49) from: 0x0000000000000000000000000000000000020000 Time delay: 130097 seconds Block delay: 16986
+    CryticTester.depositTsIsRational(96505857) from: 0x0000000000000000000000000000000000020000 Time delay: 187040 seconds Block delay: 55394
+    CryticTester.governance_claimForInitiative(44) from: 0x0000000000000000000000000000000000010000 Time delay: 566552 seconds Block delay: 39520
+    CryticTester.helper_deployInitiative() from: 0x0000000000000000000000000000000000020000 Time delay: 161 seconds Block delay: 39519
+    CryticTester.property_initiative_ts_matches_user_when_non_zero() from: 0x0000000000000000000000000000000000010000 Time delay: 356013 seconds Block delay: 129
+    CryticTester.property_global_ts_is_always_greater_than_start() from: 0x0000000000000000000000000000000000010000 Time delay: 143976 seconds Block delay: 208
+    CryticTester.property_BI02() from: 0x0000000000000000000000000000000000010000 Time delay: 264015 seconds Block delay: 184
+    CryticTester.governance_allocateLQTY_clamped_single_initiative_2nd_user(220,44427865740410136309018159090,0) from: 0x0000000000000000000000000000000000010000 Time delay: 385871 seconds Block delay: 38156
+
+Traces:
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mepoch() [1m(/recon/test/recon/BeforeAfter.sol:30)
+  (30)
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mgetInitiativeState(0x3f85D0b6119B38b7E6B119F7550290fec4BE0e3c) [1m(/recon/test/recon/BeforeAfter.sol:34)
+ call [1mMockERC20Tester::balanceOf(address)(0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945) [1m<no source map>
+    (2000000000000000000)
+ emit SnapshotVotes(votes=136067109600000000000000000000000000, forEpoch=29) [1m<no source map>
+ emit SnapshotVotesForInitiative(initiative=0x3f85D0b6119B38b7E6B119F7550290fec4BE0e3c, votes=136067109600000000000000000000000000, forEpoch=29) [1m<no source map>
+  (3, 27, 0)
+call 0x3f85D0b6119B38b7E6B119F7550290fec4BE0e3c::[1mclaimedBribeAtEpoch([1mCryticTester, 30) [1m(/recon/test/recon/BeforeAfter.sol:37)
+  (false)
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mgetInitiativeState(0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5) [1m(/recon/test/recon/BeforeAfter.sol:34)
+ emit SnapshotVotesForInitiative(initiative=0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5, votes=0, forEpoch=29) [1m<no source map>
+  (2, 26, 0)
+call 0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5::[1mclaimedBribeAtEpoch([1mCryticTester, 30) [1m(/recon/test/recon/BeforeAfter.sol:37)
+  (false)
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mgetInitiativeState(0x492934308E98b590A626666B703A6dDf2120e85e) [1m(/recon/test/recon/BeforeAfter.sol:34)
+ emit SnapshotVotesForInitiative(initiative=0x492934308E98b590A626666B703A6dDf2120e85e, votes=0, forEpoch=29) [1m<no source map>
+  (0, 0, 0)
+call 0x492934308E98b590A626666B703A6dDf2120e85e::[1mclaimedBribeAtEpoch([1mCryticTester, 30) [1m(/recon/test/recon/BeforeAfter.sol:37)
+  (false)
+call [1mMockERC20Tester::balanceOf(address)([1mCryticTester) [1m(/recon/test/recon/BeforeAfter.sol:41)
+  (3989482945717688227325027)
+call [1mMockERC20Tester::balanceOf(address)([1mCryticTester) [1m(/recon/test/recon/BeforeAfter.sol:42)
+  (96706600788274595908149115)
+call [1mMockERC20Tester::balanceOf(address)([1mCryticTester) [1m(/recon/test/recon/BeforeAfter.sol:41)
+  (3989482945717688227325027)
+call [1mMockERC20Tester::balanceOf(address)([1mCryticTester) [1m(/recon/test/recon/BeforeAfter.sol:42)
+  (96706600788274595908149115)
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mderiveUserProxyAddress(0x537C8f3d3E18dF5517a58B3fB9D9143697996802) [1m(/recon/test/recon/targets/GovernanceTargets.sol:73)
+  (0xfC2d562A926072073EC39830488E6654651EDd0D)
+call 0xfC2d562A926072073EC39830488E6654651EDd0D::[1mstaked() [1m(/recon/test/recon/targets/GovernanceTargets.sol:73)
+ delegatecall 0x7968492D65C920DA318F06D3C8488b11CB011a6D::[1mstaked() [1m<no source map>
+   call 0xee35211C4D9126D520bBfeaf3cFee5FE7B86F221::[1mstakes(0xfC2d562A926072073EC39830488E6654651EDd0D) [1m<no source map>
+      (154028978168449827523276541)
+    (154028978168449827523276541)
+  (154028978168449827523276541)
+call [1mHEVM::[1mprank(0x537C8f3d3E18dF5517a58B3fB9D9143697996802) [1m(/recon/test/recon/targets/GovernanceTargets.sol:84)
+  0x
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mallocateLQTY([0x3f85D0b6119B38b7E6B119F7550290fec4BE0e3c, 0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5, 0x492934308E98b590A626666B703A6dDf2120e85e], [0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5], [67520027896585982314515282], [0]) [1m(/recon/test/recon/targets/GovernanceTargets.sol:85)
+ emit AllocateLQTY(user=0x537C8f3d3E18dF5517a58B3fB9D9143697996802, initiative=0x3f85D0b6119B38b7E6B119F7550290fec4BE0e3c, deltaVoteLQTY=0, deltaVetoLQTY=0, atEpoch=30) [1m<no source map>
+ call 0x3f85D0b6119B38b7E6B119F7550290fec4BE0e3c::0x3d0fb773000000000000000000000000000000000000000000000000000000000000001e000000000000000000000000537c8f3d3e18df5517a58b3fb9d9143697996802000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001d6e50d5e1b145770b736cba212f7c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e000000000000000000000000000000000000000000000000000000000000005d000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001d750f69d77acf86edc0afc00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001b [1m<no source map>
+   emit ModifyTotalLQTYAllocation(epoch=30, totalLQTYAllocated=93, averageTimestamp=152950872000000000000000000000000000) [1m<no source map>
+   emit ModifyLQTYAllocation(user=0x537C8f3d3E18dF5517a58B3fB9D9143697996802, epoch=30, lqtyAllocated=0, averageTimestamp=152814078400065367751703116627652476) [1m<no source map>
+    0x
+ emit AllocateLQTY(user=0x537C8f3d3E18dF5517a58B3fB9D9143697996802, initiative=0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5, deltaVoteLQTY=0, deltaVetoLQTY=0, atEpoch=30) [1m<no source map>
+ call 0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5::0x3d0fb773000000000000000000000000000000000000000000000000000000000000001e000000000000000000000000537c8f3d3e18df5517a58b3fb9d9143697996802000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001d6e50d5e1b145770b736cba212f7c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a [1m<no source map>
+   emit ModifyTotalLQTYAllocation(epoch=30, totalLQTYAllocated=0, averageTimestamp=0) [1m<no source map>
+   emit ModifyLQTYAllocation(user=0x537C8f3d3E18dF5517a58B3fB9D9143697996802, epoch=30, lqtyAllocated=0, averageTimestamp=152814078400065367751703116627652476) [1m<no source map>
+    0x
+ emit AllocateLQTY(user=0x537C8f3d3E18dF5517a58B3fB9D9143697996802, initiative=0x492934308E98b590A626666B703A6dDf2120e85e, deltaVoteLQTY=0, deltaVetoLQTY=0, atEpoch=30) [1m<no source map>
+ call 0x492934308E98b590A626666B703A6dDf2120e85e::0x3d0fb773000000000000000000000000000000000000000000000000000000000000001e000000000000000000000000537c8f3d3e18df5517a58b3fb9d9143697996802000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001d6e50d5e1b145770b736cba212f7c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 [1m<no source map>
+   emit ModifyTotalLQTYAllocation(epoch=30, totalLQTYAllocated=0, averageTimestamp=0) [1m<no source map>
+   emit ModifyLQTYAllocation(user=0x537C8f3d3E18dF5517a58B3fB9D9143697996802, epoch=30, lqtyAllocated=0, averageTimestamp=152814078400065367751703116627652476) [1m<no source map>
+    0x
+ emit AllocateLQTY(user=0x537C8f3d3E18dF5517a58B3fB9D9143697996802, initiative=0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5, deltaVoteLQTY=67520027896585982314515282, deltaVetoLQTY=0, atEpoch=30) [1m<no source map>
+ call 0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5::0x3d0fb773000000000000000000000000000000000000000000000000000000000000001e000000000000000000000000537c8f3d3e18df5517a58b3fb9d914369799680200000000000000000000000000000000000000000037d9ec0bed314359ff8b5200000000000000000000000000000000001d6e50d5e1b145770b736cba212f7c00000000000000000000000000000000000000000037d9ec0bed314359ff8b520000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000037d9ec0bed314359ff8b52000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001d6e50d5e1b145770b736cba212f7c0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a [1m<no source map>
+   emit ModifyTotalLQTYAllocation(epoch=30, totalLQTYAllocated=67520027896585982314515282, averageTimestamp=152814078400065367751703116627652476) [1m<no source map>
+   emit ModifyLQTYAllocation(user=0x537C8f3d3E18dF5517a58B3fB9D9143697996802, epoch=30, lqtyAllocated=67520027896585982314515282, averageTimestamp=152814078400065367751703116627652476) [1m<no source map>
+    0x
+ call 0xee35211C4D9126D520bBfeaf3cFee5FE7B86F221::[1mstakes(0xfC2d562A926072073EC39830488E6654651EDd0D) [1m<no source map>
+    (154028978168449827523276541)
+  0x
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mepoch() [1m(/recon/test/recon/BeforeAfter.sol:47)
+  (30)
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mgetInitiativeState(0x3f85D0b6119B38b7E6B119F7550290fec4BE0e3c) [1m(/recon/test/recon/BeforeAfter.sol:51)
+  (3, 27, 0)
+call 0x3f85D0b6119B38b7E6B119F7550290fec4BE0e3c::[1mclaimedBribeAtEpoch([1mCryticTester, 30) [1m(/recon/test/recon/BeforeAfter.sol:54)
+  (false)
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mgetInitiativeState(0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5) [1m(/recon/test/recon/BeforeAfter.sol:51)
+  (2, 26, 0)
+call 0xd5F051401ca478B34C80D0B5A119e437Dc6D9df5::[1mclaimedBribeAtEpoch([1mCryticTester, 30) [1m(/recon/test/recon/BeforeAfter.sol:54)
+  (false)
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mgetInitiativeState(0x492934308E98b590A626666B703A6dDf2120e85e) [1m(/recon/test/recon/BeforeAfter.sol:51)
+  (0, 0, 0)
+call 0x492934308E98b590A626666B703A6dDf2120e85e::[1mclaimedBribeAtEpoch([1mCryticTester, 30) [1m(/recon/test/recon/BeforeAfter.sol:54)
+  (false)
+call [1mMockERC20Tester::balanceOf(address)([1mCryticTester) [1m(/recon/test/recon/BeforeAfter.sol:58)
+  (3989482945717688227325027)
+call [1mMockERC20Tester::balanceOf(address)([1mCryticTester) [1m(/recon/test/recon/BeforeAfter.sol:59)
+  (96706600788274595908149115)
+call [1mMockERC20Tester::balanceOf(address)([1mCryticTester) [1m(/recon/test/recon/BeforeAfter.sol:58)
+  (3989482945717688227325027)
+call [1mMockERC20Tester::balanceOf(address)([1mCryticTester) [1m(/recon/test/recon/BeforeAfter.sol:59)
+  (96706600788274595908149115)
+
+optimize_max_sum_of_user_voting_weights_insolvent: max value: 0
+Call sequence:
+(no transactions)
+optimize_max_sum_of_user_voting_weights_underpaying: max value: 0
+Call sequence:
+(no transactions)
+optimize_property_sum_of_lqty_global_user_matches_insolvency: max value: 0
+Call sequence:
+(no transactions)
+optimize_max_claim_underpay: max value: 309481537388968425963126636
+
+  Call sequence:
+    CryticTester.property_shouldNeverRevertcalculateVotingThreshold() from: 0x0000000000000000000000000000000000030000 Time delay: 145692 seconds Block delay: 55018
+    CryticTester.property_BI02() from: 0x0000000000000000000000000000000000020000 Time delay: 45381 seconds Block delay: 10980
+    CryticTester.check_claim_soundness() from: 0x0000000000000000000000000000000000020000 Time delay: 322199 seconds Block delay: 24217
+    CryticTester.property_shouldNeverRevertgetLatestVotingThreshold() from: 0x0000000000000000000000000000000000010000 Time delay: 258199 seconds Block delay: 15986
+    CryticTester.property_global_ts_is_always_greater_than_start() from: 0x0000000000000000000000000000000000010000 Time delay: 490339 seconds Block delay: 20124
+    CryticTester.property_shouldNeverRevertepoch() from: 0x0000000000000000000000000000000000020000 Time delay: 101231 seconds Block delay: 4718
+    CryticTester.property_sum_of_user_initiative_allocations() from: 0x0000000000000000000000000000000000030000 Time delay: 499806 seconds Block delay: 5985
+    CryticTester.governance_claimForInitiative(14) from: 0x0000000000000000000000000000000000020000 Time delay: 1023 seconds Block delay: 24153
+    CryticTester.clamped_claimBribes(97) from: 0x0000000000000000000000000000000000030000 Time delay: 474684 seconds Block delay: 17601
+    CryticTester.check_claimable_solvency() from: 0x0000000000000000000000000000000000030000 Time delay: 282472 seconds Block delay: 56142
+    CryticTester.check_unregisterable_consistecy(162) from: 0x0000000000000000000000000000000000030000 Time delay: 512439 seconds Block delay: 47266
+    CryticTester.property_initiative_ts_matches_user_when_non_zero() from: 0x0000000000000000000000000000000000020000 Time delay: 578991 seconds Block delay: 36532
+    CryticTester.check_realized_claiming_solvency() from: 0x0000000000000000000000000000000000010000 Time delay: 348184 seconds Block delay: 58
+    CryticTester.property_GV_09() from: 0x0000000000000000000000000000000000030000 Time delay: 417307 seconds Block delay: 128
+    CryticTester.property_sum_of_initatives_matches_total_votes_bounded() from: 0x0000000000000000000000000000000000020000 Time delay: 537638 seconds Block delay: 11351
+    CryticTester.governance_withdrawLQTY(16385) from: 0x0000000000000000000000000000000000010000 Time delay: 91643 seconds Block delay: 41527
+    CryticTester.governance_allocateLQTY_clamped_single_initiative_2nd_user(0,0,2) from: 0x0000000000000000000000000000000000030000 Time delay: 318198 seconds Block delay: 2
+    CryticTester.property_shouldNeverRevertgetLatestVotingThreshold() from: 0x0000000000000000000000000000000000020000 Time delay: 322345 seconds Block delay: 56918
+    CryticTester.property_alloc_deposit_reset_is_idempotent(87,56807554079117328487688555343,837791721,106131726247805888453361858) from: 0x0000000000000000000000000000000000020000 Time delay: 272375 seconds Block delay: 209
+    CryticTester.property_shouldNeverRevertgetInitiativeSnapshotAndState(151) from: 0x0000000000000000000000000000000000010000 Time delay: 471568 seconds Block delay: 4985
+    CryticTester.governance_depositLQTY(2) from: 0x0000000000000000000000000000000000030000 Time delay: 567594 seconds Block delay: 41906
+    CryticTester.property_GV01() from: 0x0000000000000000000000000000000000030000 Time delay: 424230 seconds Block delay: 38703
+    CryticTester.withdrwaMustFailOnNonZeroAcc(33540520) from: 0x0000000000000000000000000000000000010000 Time delay: 95 seconds Block delay: 36507
+    CryticTester.property_shouldNeverRevertsecondsWithinEpoch() from: 0x0000000000000000000000000000000000010000 Time delay: 239375 seconds Block delay: 25919
+    CryticTester.property_BI07() from: 0x0000000000000000000000000000000000020000 Time delay: 264572 seconds Block delay: 14019
+    CryticTester.property_GV01() from: 0x0000000000000000000000000000000000020000 Time delay: 510171 seconds Block delay: 3906
+    CryticTester.property_sum_of_votes_in_bribes_match() from: 0x0000000000000000000000000000000000010000 Time delay: 311771 seconds Block delay: 44390
+    CryticTester.helper_accrueBold(309443329288724603870000007) from: 0x0000000000000000000000000000000000020000 Time delay: 276463 seconds Block delay: 48
+    CryticTester.governance_withdrawLQTY(125) from: 0x0000000000000000000000000000000000030000 Time delay: 322319 seconds Block delay: 124
+    CryticTester.check_warmup_unregisterable_consistency(123) from: 0x0000000000000000000000000000000000030000 Time delay: 321510 seconds Block delay: 49161
+    CryticTester.property_sum_of_user_voting_weights_strict() from: 0x0000000000000000000000000000000000030000 Time delay: 136779 seconds Block delay: 23722
+    CryticTester.clamped_claimBribes(238) from: 0x0000000000000000000000000000000000020000 Time delay: 35 seconds Block delay: 27175
+    CryticTester.governance_allocateLQTY([28230719623632965883744854, -1, 2000000000000000001, -309485009821345068724781056, -309485009821345068724781056, -309485009821345068724781056, -309485009821345068724781056, 63929115630356043244973575, -208, 64664120209397314934153772, 154742504910672534362389934, -309485009821345068724781056, 1000135831883853852075, -309485009821345068724781056, 18446744073709551614, -112, -209, -309485009821345068724781056, 1025, 860670870913860479184753, 85313910888176328607875417, 34999, 4369999, 1000000, 66835488478308597253368867, -309485009821345068724781056, 150710351286808820423389855, -3570988006, 18988371397828401796207429, 1209599, 18943109964809074097088173],[8263935178926102634561118, -887271, 140501360007679663010917434, -309485009821345068724781056, -309485009821345068724781056, -309485009821345068724781056, 46478416228966875360469304, -309485009821345068724781056, 143314071687544920882786252, 81177209949910019659221883, -309485009821345068724781056, -309485009821345068724781056, 10339002586445377164813928, -309485009821345068724781056, 132010928807277733166476994, -4100097, 68, 842, 32766, 878, 69, -4100096]) from: 0x0000000000000000000000000000000000020000 Time delay: 562085 seconds Block delay: 37749
+    CryticTester.property_GV01() from: 0x0000000000000000000000000000000000030000 Time delay: 309839 seconds Block delay: 14434
+    CryticTester.check_claimable_solvency() from: 0x0000000000000000000000000000000000020000 Time delay: 382797 seconds Block delay: 48521
+    CryticTester.property_GV_09() from: 0x0000000000000000000000000000000000020000 Time delay: 224280 seconds Block delay: 45626
+    CryticTester.property_shouldNeverRevertgetTotalVotesAndState() from: 0x0000000000000000000000000000000000020000 Time delay: 103032 seconds Block delay: 32303
+    CryticTester.property_BI03() from: 0x0000000000000000000000000000000000030000 Time delay: 92 seconds Block delay: 59745
+    CryticTester.property_resetting_never_reverts() from: 0x0000000000000000000000000000000000010000 Time delay: 578619 seconds Block delay: 51877
+    CryticTester.property_BI08() from: 0x0000000000000000000000000000000000010000 Time delay: 83000 seconds Block delay: 21115
+    CryticTester.helper_accrueBold(80438025525120526965768221) from: 0x0000000000000000000000000000000000030000 Time delay: 112 seconds Block delay: 11412
+    CryticTester.property_ensure_user_alloc_cannot_dos() from: 0x0000000000000000000000000000000000020000 Time delay: 549138 seconds Block delay: 5045
+
+Traces:
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mlqtyAllocatedByUserToInitiative([1mCryticTester, 0x3f85D0b6119B38b7E6B119F7550290fec4BE0e3c) [1m(/recon/test/recon/properties/GovernanceProperties.sol:467)
+  (0, 0, 20)
+call 0x7C276DcAab99BD16163c1bcce671CaD6A1ec0945::[1mlqtyAllocatedByUserToInitiative(0x537C8f3d3E18dF5517a58B3fB9D9143697996802, 0x3f85D0b6119B38b7E6B119F7550290fec4BE0e3c) [1m(/recon/test/recon/properties/GovernanceProperties.sol:467)
+  (0, 0, 0)
+
+optimize_property_sum_of_lqty_global_user_matches_underpaying: max value: 0
+Call sequence:
+(no transactions)
+optimize_max_claim_insolvent: max value: 0
+Call sequence:
+(no transactions)
+optimize_property_sum_of_initatives_matches_total_votes_underpaying: max value: 0
+Call sequence:
+(no transactions)
+
+
+Unique instructions: 44531
+Unique codehashes: 8
+Corpus size: 44
+Seed: 2340083052265240970
