@@ -481,6 +481,7 @@ describe("Testing fuzz results for", () => {
     test("It should have the right number of tests", () => {
       expect(jobStatsEchidna2.numberOfTests).toBe(1000511);
     });
+  });
   describe("Echidna fuzzer - 8 - should parse correctly \\n in the logs", () => {
 
     /*
