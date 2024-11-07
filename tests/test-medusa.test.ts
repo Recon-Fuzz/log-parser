@@ -313,4 +313,17 @@ describe("Testing fuzz results for", () => {
       });
     });
   });
+  describe("Medusa fuzzzer - Should parse the number of tests correctly ", () => {
+    const dataMedusa1 = fs.readFileSync("./tests/test_data/medusa.txt", "utf8");
+    const jobStatsMedusa1 = processLogs(dataMedusa1, Fuzzer.MEDUSA);
+    test("It should have the right number of tests", () => {
+      expect(jobStatsMedusa1.numberOfTests).toBe(220728379);
+    });
+
+    const dataMedusa2 = fs.readFileSync("./tests/test_data/medusa-2.txt", "utf8");
+    const jobStatsMedusa2 = processLogs(dataMedusa2, Fuzzer.MEDUSA);
+    test("It should have the right number of tests", () => {
+      expect(jobStatsMedusa2.numberOfTests).toBe(107754);
+    });
+  })
 });

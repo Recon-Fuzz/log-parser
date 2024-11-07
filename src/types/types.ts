@@ -12,6 +12,7 @@ export interface FuzzingResults {
   results: string[];
   traces: string[];
   brokenProperties: BrokenProperty[];
+  numberOfTests: number;
 }
 
 export interface BrokenProperty {

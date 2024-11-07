@@ -25,6 +25,7 @@ export const processLogs = (logs: string, tool: Fuzzer): FuzzingResults => {
     results: [],
     traces: [],
     brokenProperties: [],
+    numberOfTests: 0,
   };
   const unescapedLogs = logs.replace(/\\n/g, '\n');
   const lines = unescapedLogs.split('\n');

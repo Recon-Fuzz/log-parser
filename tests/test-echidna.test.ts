@@ -463,6 +463,25 @@ describe("Testing fuzz results for", () => {
       ).toBe(true);
     });
   });
+  describe("Echidna fuzzer - Should parse the number of tests correctly", () => {
+    const dataEchidna1 = fs.readFileSync(
+      "./tests/test_data/echidna.txt",
+      "utf8"
+    );
+    const jobStatsEchidna1 = processLogs(dataEchidna1, Fuzzer.ECHIDNA);
+    test("It should have the right number of tests", () => {
+      expect(jobStatsEchidna1.numberOfTests).toBe(20000462);
+    });
+
+    const dataEchidna2 = fs.readFileSync(
+      "./tests/test_data/echidna-2.txt",
+      "utf8"
+    );
+    const jobStatsEchidna2 = processLogs(dataEchidna2, Fuzzer.ECHIDNA);
+    test("It should have the right number of tests", () => {
+      expect(jobStatsEchidna2.numberOfTests).toBe(1000511);
+    });
+  });
   describe("Echidna fuzzer - 8 - should parse correctly \\n in the logs", () => {
 
     /*

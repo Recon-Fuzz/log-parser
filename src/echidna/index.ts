@@ -59,9 +59,14 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   }
   if (line.includes("[status] tests:")) {
     const coverageMatch = line.match(/cov: (\d+)/);
+    const numberOfTestsMatch = line.match(/fuzzing: (\d+\/\d+)/);
 
     if (coverageMatch) {
       jobStats.coverage = +coverageMatch[1];
+    }
+    if (numberOfTestsMatch) {
+      const splitted = numberOfTestsMatch[1].split("/");
+      jobStats.numberOfTests = parseInt(splitted[0]);
     }
   } else {
     const sequenceMatch = line.includes("Call sequence");
