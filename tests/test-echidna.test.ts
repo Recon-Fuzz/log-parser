@@ -1,7 +1,11 @@
 import fs from "fs";
 import { processLogs } from "../src/main";
 import { Fuzzer, FuzzingResults } from "../src/types/types";
-import { echidnaLogsToFunctions, echidnaShrunkAndProcess } from "../src/echidna";
+import {
+  echidnaLogsToFunctions,
+  echidnaShrunkAndProcess,
+} from "../src/echidna";
+import { generateJobMD } from "../src/reportBuilder/reportBuilder";
 
 describe("Testing fuzz results for", () => {
   describe("Echidna fuzzer - 1 ", () => {
@@ -483,7 +487,6 @@ describe("Testing fuzz results for", () => {
     });
   });
   describe("Echidna fuzzer - 8 - should parse correctly \\n in the logs", () => {
-
     /*
     Call sequence:\nEchidnaForkTester.asserts_GENERAL_17() from: 0x0000000000000000000000000000000000030000 Time delay: 38059 seconds Block delay: 257\nEchidnaForkTester.asserts_test_fail() from: 0x0000000000000000000000000000000000020000 Time delay: 469057 seconds Block delay: 1424\n\n---End Trace---\n
     --> transaltes to
@@ -503,10 +506,9 @@ describe("Testing fuzz results for", () => {
     test("it should have the correct broken properties", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(1);
       // No broken prop passed
-      expect(
-        jobStatsEchidna.brokenProperties[0].brokenProperty ===
-          ""
-      ).toBe(true);
+      expect(jobStatsEchidna.brokenProperties[0].brokenProperty === "").toBe(
+        true
+      );
     });
     jobStatsEchidna.brokenProperties.forEach((el, i) => {
       const vmData = {
@@ -530,7 +532,7 @@ describe("Testing fuzz results for", () => {
         expect(format.includes(el.brokenProperty)).toBe(true);
       });
     });
-  })
+  });
   describe("Echidna fuzzer - 9 - shrunkun ogs", () => {
     const dataEchidna = fs.readFileSync(
       "./tests/test_data/echidna-9.txt",
@@ -541,14 +543,13 @@ describe("Testing fuzz results for", () => {
     test("it should have the correct broken properties", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(2);
     });
-    console.log("jobStatsEchidna", jobStatsEchidna)
-
+    console.log("jobStatsEchidna", jobStatsEchidna);
 
     const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
-    console.log("updatedData", updatedData)
+    console.log("updatedData", updatedData);
 
     testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
-  })
+  });
 
   describe("Echidna fuzzer - 10 - shrunkun ogs", () => {
     const dataEchidna = fs.readFileSync(
@@ -560,25 +561,32 @@ describe("Testing fuzz results for", () => {
     test("it should have the correct broken properties", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(1);
     });
-    console.log("jobStatsEchidna", jobStatsEchidna)
-
+    console.log("jobStatsEchidna", jobStatsEchidna);
+    console.log("Report ======");
+    const report = generateJobMD(Fuzzer.ECHIDNA, dataEchidna, "org", "repo", "ref");
+    console.log(report)
 
     const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
-    console.log("updatedData", updatedData)
+    console.log("updatedData", updatedData);
 
     testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
-  })
+  });
 });
 
-function testEchidnaUnshrunkingLogs(data1: FuzzingResults, data2: FuzzingResults) {
-  test("It should account for the new parsed properties" , () => {
-    expect(data1.duration).toBe(data2.duration);
-    expect(data1.coverage).toBe(data2.coverage);
-    expect(data1.failed).toBe(data2.failed);
-    expect(data1.passed).toBe(data2.passed);
-    expect(data1.results).toBe(data2.results);
-    expect(data1.brokenProperties.length).toBeLessThanOrEqual(data2.brokenProperties.length);
-    expect(data1.numberOfTests).toBe(data2.numberOfTests);
+function testEchidnaUnshrunkingLogs(
+  prevFuzzResult: FuzzingResults,
+  currentFuzzResult: FuzzingResults
+) {
+  test("It should account for the new parsed properties", () => {
+    expect(prevFuzzResult.duration).toBe(currentFuzzResult.duration);
+    expect(prevFuzzResult.coverage).toBe(currentFuzzResult.coverage);
+    expect(prevFuzzResult.failed).toBe(currentFuzzResult.failed);
+    expect(prevFuzzResult.passed).toBe(currentFuzzResult.passed);
+    expect(prevFuzzResult.results).toBe(currentFuzzResult.results);
+    expect(prevFuzzResult.brokenProperties.length).toBeLessThanOrEqual(
+      currentFuzzResult.brokenProperties.length
+    );
+    expect(prevFuzzResult.numberOfTests).toBe(currentFuzzResult.numberOfTests);
   });
 }
 

@@ -1,6 +1,11 @@
 import { processLogs } from "../main";
 import { Fuzzer, FuzzingResults, VmParsingData } from "../types/types";
-import { correctAllChecksums, formatTimeDifference, parseTimestamp, processTraceLogs } from "../utils/utils";
+import {
+  correctAllChecksums,
+  formatTimeDifference,
+  parseTimestamp,
+  processTraceLogs,
+} from "../utils/utils";
 
 //////////////////////////////////////
 //          ECHIDNA                 //
@@ -27,9 +32,12 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   if (firstTimestamp) {
     const currentTimestamp = parseTimestamp(line);
     if (currentTimestamp) {
-      const diffMilliseconds = currentTimestamp.getTime() - firstTimestamp.getTime();
+      const diffMilliseconds =
+        currentTimestamp.getTime() - firstTimestamp.getTime();
       const diffSeconds = diffMilliseconds / 1000;
-      jobStats.duration = formatTimeDifference(parseInt(diffSeconds.toFixed(2)))
+      jobStats.duration = formatTimeDifference(
+        parseInt(diffSeconds.toFixed(2))
+      );
     }
   }
   if (line.includes(": max value:")) {
@@ -45,7 +53,10 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
     jobStats.failed++;
   }
   // If Echidna logs have the "no transactions" message, we shouldn't keep that in the traces
-  if (line.includes("(no transactions)") && (prevLine.includes("Call sequence"))) {
+  if (
+    line.includes("(no transactions)") &&
+    prevLine.includes("Call sequence")
+  ) {
     echidnaSequenceLogger = false;
     const existingProperty = jobStats.brokenProperties.find(
       (el) => el.brokenProperty === currentBrokenPropertyEchidna
@@ -104,7 +115,7 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       (line === "" && echidnaTraceLogger) ||
       line.includes("Saved reproducer") ||
       line.includes("Traces:") ||
-      (line.includes("[") && !line.includes("(["))||
+      (line.includes("[") && !line.includes("([")) ||
       (line.includes("]") && !line.includes("])"))
     ) {
       echidnaTraceLogger = false;
@@ -140,16 +151,15 @@ vm.roll(block.number + ${blockDelay});`;
         }
       }
       if (!existingProperty) {
-          jobStats.brokenProperties.push({
-            brokenProperty: currentBrokenPropertyEchidna,
-            sequence: `${line}\n`,
-          });
-        } else {
-          if (!existingProperty.sequence.includes("---End Trace---")) {
-            existingProperty.sequence += `${line}\n`;
-          }
+        jobStats.brokenProperties.push({
+          brokenProperty: currentBrokenPropertyEchidna,
+          sequence: `${line}\n`,
+        });
+      } else {
+        if (!existingProperty.sequence.includes("---End Trace---")) {
+          existingProperty.sequence += `${line}\n`;
         }
-
+      }
     }
   }
   prevLine = line;
@@ -197,7 +207,7 @@ export function echidnaLogsToFunctions(
           "Call sequence",
           `function ${
             brokenProp
-              ? `test_${brokenProp}${`_`+prefix}`
+              ? `test_${brokenProp}${`_` + prefix}`
               : `test_prefix_${i}_${prefix}`
           }() public {`
         )
@@ -255,7 +265,26 @@ export function echidnaLogsToFunctions(
     .join("\n");
 }
 
-export const echidnaShrunkAndProcess = (logs: string, previousJobStats: FuzzingResults): FuzzingResults => {
+/**
+ * The function `echidnaShrunkAndProcess` processes logs from a fuzzing job,
+ * shrinks them, and updates the job statistics accordingly.
+ * @param {string} logs - The `logs` parameter in the `echidnaShrunkAndProcess`
+ * function represents the logs generated during the fuzzing process. These logs
+ * contain information about the execution of the fuzzer, test results, coverage,
+ * errors, and other relevant details.
+ * @param {FuzzingResults} previousJobStats - The `previousJobStats` parameter in
+ * the `echidnaShrunkAndProcess` function represents the results of a previous
+ * fuzzing job. It contains various statistics and data related to the previous
+ * job, such as the duration of the job, coverage achieved, number of failed and
+ * passed tests,
+ * @returns The function `echidnaShrunkAndProcess` returns a `FuzzingResults`
+ * object that contains updated statistics and logs after processing the provided
+ * logs and previous job statistics.
+ */
+export const echidnaShrunkAndProcess = (
+  logs: string,
+  previousJobStats: FuzzingResults
+): FuzzingResults => {
   const newJobStats: FuzzingResults = {
     duration: "",
     coverage: 0,
@@ -276,8 +305,10 @@ export const echidnaShrunkAndProcess = (logs: string, previousJobStats: FuzzingR
   } else if (logs.includes("Killed (thread killed). Stopping")) {
     stoppperLine = "Killed (thread killed). Stopping";
     // Add condition for shrunken logs
+  } else {
+    return previousJobStats;
   }
-  console.log("shrinkin those fuckers");
+
   // Split the logs to keep the unshunken logs
   const [_, ...remainingLogs] = logs.split(stoppperLine);
   const shrunkenLogsRaw = remainingLogs.join(stoppperLine);
@@ -291,6 +322,5 @@ export const echidnaShrunkAndProcess = (logs: string, previousJobStats: FuzzingR
   newJobStats.brokenProperties = shrunkenLogs.brokenProperties;
   newJobStats.numberOfTests = previousJobStats.numberOfTests;
 
-  // isSecondPassComplete = false;
   return newJobStats;
 };
