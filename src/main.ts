@@ -1,5 +1,5 @@
 import { Fuzzer, type FuzzingResults } from "./types/types";
-import { processEchidna } from "./echidna/index"
+import { processEchidna } from "./echidna/index";
 import { processMedusa } from "./medusa/index";
 import { processTraceLogs } from "./utils/utils";
 
@@ -16,6 +16,7 @@ import { processTraceLogs } from "./utils/utils";
  * information about the fuzzing job, such as duration, coverage, number of failed
  * and passed tests, results, traces, and broken properties.
  */
+
 export const processLogs = (logs: string, tool: Fuzzer): FuzzingResults => {
   const jobStats: FuzzingResults = {
     duration: "",
@@ -27,8 +28,8 @@ export const processLogs = (logs: string, tool: Fuzzer): FuzzingResults => {
     brokenProperties: [],
     numberOfTests: 0,
   };
-  const unescapedLogs = logs.replace(/\\n/g, '\n');
-  const lines = unescapedLogs.split('\n');
+  const unescapedLogs = logs.replace(/\\n/g, "\n");
+  const lines = unescapedLogs.split("\n");
   lines.forEach((line) => {
     if (tool === Fuzzer.MEDUSA) {
       processMedusa(line, jobStats);
@@ -40,10 +41,3 @@ export const processLogs = (logs: string, tool: Fuzzer): FuzzingResults => {
   jobStats.traces = processTraceLogs(jobStats.traces);
   return jobStats;
 };
-
-
-// Call sequence:
-// EchidnaForkTester.asserts_GENERAL_17() from: 0x0000000000000000000000000000000000030000 Time delay: 38059 seconds Block delay: 257
-// EchidnaForkTester.asserts_test_fail() from: 0x0000000000000000000000000000000000020000 Time delay: 469057 seconds Block delay: 1424
-
-// ---End Trace---

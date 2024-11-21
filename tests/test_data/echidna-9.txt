@@ -1,0 +1,118 @@
+[2024-11-21 03:26:57.67] Compiling .... Done! (4.8389619s)
+Analyzing contract: /recon/test/recon/CryticTester.sol:CryticTester
+[2024-11-21 03:27:03.04] Running slither on .... Done! (6.192233809s)
+Loaded 0 transaction sequences from echidna/reproducers
+Loaded 0 transaction sequences from echidna/coverage
+[2024-11-21 03:27:09.26] [Worker 2] Test oPTIMIZED_RelativeTwapWeightedObserver_observe() falsified!
+  Call sequence:
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(589833349873724599847994584) from: 0x0000000000000000000000000000000000030000 Time delay: 437838 seconds Block delay: 4462
+CryticTester.rEFERENCE_RelativeTwapWeightedObserver_setValue(553) from: 0x0000000000000000000000000000000000020000 Time delay: 297507 seconds Block delay: 2196
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe() from: 0x0000000000000000000000000000000000010000
+
+[2024-11-21 03:27:09.26] [Worker 8] Test oPTIMIZED_RelativeTwapWeightedObserver_observe() falsified!
+  Call sequence:
+CryticTester.rEFERENCE_RelativeTwapWeightedObserver_update() from: 0x0000000000000000000000000000000000020000 Time delay: 82671 seconds Block delay: 23275
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_update() from: 0x0000000000000000000000000000000000020000 Time delay: 198598 seconds Block delay: 32147
+CryticTester.rEFERENCE_RelativeTwapWeightedObserver_setValue(97316828774745832501752246323970116448211946623682552637499189659327974280740) from: 0x0000000000000000000000000000000000030000 Time delay: 48282 seconds Block delay: 50499
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(31) from: 0x0000000000000000000000000000000000030000 Time delay: 447588 seconds Block delay: 5054
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe() from: 0x0000000000000000000000000000000000030000 Time delay: 376096 seconds Block delay: 45819
+
+[2024-11-21 03:27:09.26] [Worker 6] Test oPTIMIZED_RelativeTwapWeightedObserver_observe() falsified!
+  Call sequence:
+CryticTester.rEFERENCE_RelativeTwapWeightedObserver_update() Time delay: 297507 seconds Block delay: 59982
+CryticTester.rEFERENCE_RelativeTwapWeightedObserver_setValue(32) Time delay: 82671 seconds Block delay: 38350
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(76748265205858000514564756610016568961) Time delay: 136394 seconds Block delay: 60470
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe() Time delay: 19029 seconds Block delay: 38100
+
+[2024-11-21 03:27:09.26] [Worker 6] Test oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256) falsified!
+  Call sequence:
+CryticTester.rEFERENCE_RelativeTwapWeightedObserver_update() from: 0x0000000000000000000000000000000000030000 Time delay: 297507 seconds Block delay: 59982
+CryticTester.rEFERENCE_RelativeTwapWeightedObserver_setValue(32) from: 0x0000000000000000000000000000000000030000 Time delay: 82671 seconds Block delay: 38350
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(76748265205858000514564756610016568961) from: 0x0000000000000000000000000000000000030000 Time delay: 136394 seconds Block delay: 60470
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe() from: 0x0000000000000000000000000000000000030000 Time delay: 19029 seconds Block delay: 38100
+CryticTester.rEFERENCE_RelativeTwapWeightedObserver_update() from: 0x0000000000000000000000000000000000020000 Time delay: 358061 seconds Block delay: 11826
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(13107416050833366785024623943462956419335817300393950770248085602383186940346) from: 0x0000000000000000000000000000000000030000
+
+[2024-11-21 03:27:09.27] [Worker 9] Test oPTIMIZED_RelativeTwapWeightedObserver_observe() falsified!
+  Call sequence:
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_update() from: 0x0000000000000000000000000000000000010000 Time delay: 526194 seconds Block delay: 27404
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_setValue(111484494589690488160692260596124309892) from: 0x0000000000000000000000000000000000020000 Time delay: 525476 seconds Block delay: 1
+CryticTester.rEFERENCE_RelativeTwapWeightedObserver_setValue(645326474426547203313410069153905908525362434350) from: 0x0000000000000000000000000000000000010000 Time delay: 448552 seconds Block delay: 16144
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(966) from: 0x0000000000000000000000000000000000010000 Time delay: 481485 seconds Block delay: 15369
+CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe() from: 0x0000000000000000000000000000000000020000 Time delay: 117472 seconds Block delay: 32
+
+[2024-11-21 03:27:09.28]  Saved reproducer to echidna/reproducers-unshrunk/6160780746513145940.txt
+[2024-11-21 03:27:09.28]  Saved reproducer to echidna/reproducers-unshrunk/2766075985919694388.txt
+[2024-11-21 03:27:09.28]  Saved reproducer to echidna/reproducers-unshrunk/2728558300775761110.txt
+[2024-11-21 03:27:09.28]  Saved reproducer to echidna/reproducers-unshrunk/3611138497386635135.txt
+[2024-11-21 03:27:09.28]  Saved reproducer to echidna/reproducers-unshrunk/7115313505297345560.txt
+[2024-11-21 03:27:09.32] [Worker 3] New coverage: 2751 instr, 3 contracts, 1 seqs in corpus
+[2024-11-21 03:27:09.32] [Worker 1] New coverage: 2751 instr, 3 contracts, 2 seqs in corpus
+[2024-11-21 03:27:09.32] [Worker 8] New coverage: 2751 instr, 3 contracts, 3 seqs in corpus
+[2024-11-21 03:27:09.32] [Worker 2] New coverage: 2751 instr, 3 contracts, 4 seqs in corpus
+[2024-11-21 03:27:09.32] [Worker 6] New coverage: 2751 instr, 3 contracts, 5 seqs in corpus
+[2024-11-21 03:27:09.36] [Worker 5] New coverage: 2751 instr, 3 contracts, 6 seqs in corpus
+[2024-11-21 03:27:09.38] [Worker 7] New coverage: 2751 instr, 3 contracts, 7 seqs in corpus
+[2024-11-21 03:27:09.41] [Worker 4] New coverage: 2751 instr, 3 contracts, 8 seqs in corpus
+[2024-11-21 03:27:09.47] [Worker 0] New coverage: 2751 instr, 3 contracts, 9 seqs in corpus
+[2024-11-21 03:27:09.64]  Saved reproducer to echidna/coverage/286388500327930676.txt
+[2024-11-21 03:27:09.88]  Saved reproducer to echidna/coverage/5077059295592281825.txt
+[2024-11-21 03:27:10.18]  Saved reproducer to echidna/coverage/5142399511071456574.txt
+[2024-11-21 03:27:10.44]  Saved reproducer to echidna/coverage/5159323068091353813.txt
+[2024-11-21 03:27:10.67]  Saved reproducer to echidna/coverage/2088458467077718296.txt
+[2024-11-21 03:27:10.97]  Saved reproducer to echidna/coverage/2386328593822740898.txt
+[2024-11-21 03:27:11.27]  Saved reproducer to echidna/coverage/7495594893831441780.txt
+[2024-11-21 03:27:11.60]  Saved reproducer to echidna/coverage/6594177131132201229.txt
+[2024-11-21 03:27:11.74] [Worker 5] Test limit reached. Stopping.
+[2024-11-21 03:27:11.85] [Worker 7] Test limit reached. Stopping.
+[2024-11-21 03:27:11.87] [Worker 3] Test limit reached. Stopping.
+[2024-11-21 03:27:11.89]  Saved reproducer to echidna/coverage/3314561131064424856.txt
+[2024-11-21 03:27:11.93] [Worker 0] Test limit reached. Stopping.
+[2024-11-21 03:27:12.22] [Worker 2] Test limit reached. Stopping.
+[2024-11-21 03:27:12.24] [status] tests: 2/7, fuzzing: 37877/50000, values: [], cov: 2751, corpus: 9
+[2024-11-21 03:27:12.32] [Worker 8] Test limit reached. Stopping.
+[2024-11-21 03:27:12.50] [Worker 1] Test limit reached. Stopping.
+[2024-11-21 03:27:12.76] [Worker 4] Test limit reached. Stopping.
+[2024-11-21 03:27:15.01] [Worker 6] Test limit reached. Stopping.
+[2024-11-21 03:27:15.25] [status] tests: 2/7, fuzzing: 45767/50000, values: [], cov: 2751, corpus: 9
+[2024-11-21 03:27:16.62] [Worker 9] Test limit reached. Stopping.
+[2024-11-21 03:27:16.62] [status] tests: 2/7, fuzzing: 50549/50000, values: [], cov: 2751, corpus: 9
+oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(uint256): failed!
+  Call sequence:
+    *wait* Time delay: 1 seconds Block delay: 1
+    CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observeGasGrief(2276)
+
+Traces:
+call [1mREFERENCE_RelativeTwapWeightedObserver::observe()() [1m(/recon/test/recon/TargetFunctions.sol:38)
+  (0)
+call [1mOPTIMIZED_RelativeTwapWeightedObserver::observe()() [1m(/recon/test/recon/TargetFunctions.sol:40)
+ [91merror OutOfGas 0 3 [1m<source not found>
+emit Log(Optimized fails when standard succeeds) [1m(/recon/lib/chimera/src/CryticAsserts.sol:35)
+
+oPTIMIZED_RelativeTwapWeightedObserver_setValue(uint128): passing
+oPTIMIZED_RelativeTwapWeightedObserver_observe(): failed!
+  Call sequence:
+    CryticTester.rEFERENCE_RelativeTwapWeightedObserver_setValue(605327)
+    CryticTester.oPTIMIZED_RelativeTwapWeightedObserver_observe() Time delay: 1 seconds Block delay: 1
+
+Traces:
+call [1mOPTIMIZED_RelativeTwapWeightedObserver::observe()() [1m(/recon/test/recon/TargetFunctions.sol:21)
+  (0)
+call [1mREFERENCE_RelativeTwapWeightedObserver::observe()() [1m(/recon/test/recon/TargetFunctions.sol:27)
+  (1)
+emit Log(must match) [1m(/recon/lib/chimera/src/CryticAsserts.sol:35)
+
+oPTIMIZED_RelativeTwapWeightedObserver_update(): passing
+rEFERENCE_RelativeTwapWeightedObserver_setValue(uint256): passing
+rEFERENCE_RelativeTwapWeightedObserver_update(): passing
+AssertionFailed(..): passing
+
+
+Unique instructions: 2751
+Unique codehashes: 3
+Corpus size: 9
+Seed: 1608273650483099587
+
+[2024-11-21 03:27:16.62] Saving test reproducers... Done! (0.000651575s)
+[2024-11-21 03:27:16.62] Saving corpus... Done! (0.864726475s)
+[2024-11-21 03:27:17.49] Saving coverage... Done! (0.181826379s)

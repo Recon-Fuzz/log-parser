@@ -1,7 +1,7 @@
 import fs from "fs";
 import { processLogs } from "../src/main";
-import { Fuzzer } from "../src/types/types";
-import { echidnaLogsToFunctions } from "../src/echidna";
+import { Fuzzer, FuzzingResults } from "../src/types/types";
+import { echidnaLogsToFunctions, echidnaShrunkAndProcess } from "../src/echidna";
 
 describe("Testing fuzz results for", () => {
   describe("Echidna fuzzer - 1 ", () => {
@@ -530,9 +530,57 @@ describe("Testing fuzz results for", () => {
         expect(format.includes(el.brokenProperty)).toBe(true);
       });
     });
+  })
+  describe("Echidna fuzzer - 9 - shrunkun ogs", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-9.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
 
+    test("it should have the correct broken properties", () => {
+      expect(jobStatsEchidna.brokenProperties.length).toBe(2);
+    });
+    console.log("jobStatsEchidna", jobStatsEchidna)
+
+
+    const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
+    console.log("updatedData", updatedData)
+
+    testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
+  })
+
+  describe("Echidna fuzzer - 10 - shrunkun ogs", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-10.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+
+    test("it should have the correct broken properties", () => {
+      expect(jobStatsEchidna.brokenProperties.length).toBe(1);
+    });
+    console.log("jobStatsEchidna", jobStatsEchidna)
+
+
+    const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
+    console.log("updatedData", updatedData)
+
+    testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
   })
 });
+
+function testEchidnaUnshrunkingLogs(data1: FuzzingResults, data2: FuzzingResults) {
+  test("It should account for the new parsed properties" , () => {
+    expect(data1.duration).toBe(data2.duration);
+    expect(data1.coverage).toBe(data2.coverage);
+    expect(data1.failed).toBe(data2.failed);
+    expect(data1.passed).toBe(data2.passed);
+    expect(data1.results).toBe(data2.results);
+    expect(data1.brokenProperties.length).toBeLessThanOrEqual(data2.brokenProperties.length);
+    expect(data1.numberOfTests).toBe(data2.numberOfTests);
+  });
+}
 
 // Make sure we don't have multiple functions in the same broken prop function
 function testFormat(format: string) {

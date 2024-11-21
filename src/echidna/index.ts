@@ -1,5 +1,6 @@
-import { FuzzingResults, VmParsingData } from "../types/types";
-import { correctAllChecksums, formatTimeDifference, parseTimestamp } from "../utils/utils";
+import { processLogs } from "../main";
+import { Fuzzer, FuzzingResults, VmParsingData } from "../types/types";
+import { correctAllChecksums, formatTimeDifference, parseTimestamp, processTraceLogs } from "../utils/utils";
 
 //////////////////////////////////////
 //          ECHIDNA                 //
@@ -253,3 +254,43 @@ export function echidnaLogsToFunctions(
     })
     .join("\n");
 }
+
+export const echidnaShrunkAndProcess = (logs: string, previousJobStats: FuzzingResults): FuzzingResults => {
+  const newJobStats: FuzzingResults = {
+    duration: "",
+    coverage: 0,
+    failed: 0,
+    passed: 0,
+    results: [],
+    traces: [],
+    brokenProperties: [],
+    numberOfTests: 0,
+  };
+
+  let stoppperLine = "";
+
+  // If the runner simply reached the test limit, we can expect to see this:
+  if (logs.includes("Test limit reached. Stopping.")) {
+    stoppperLine = "Test limit reached. Stopping.";
+    // If the runner was killed, we can expect to see this:
+  } else if (logs.includes("Killed (thread killed). Stopping")) {
+    stoppperLine = "Killed (thread killed). Stopping";
+    // Add condition for shrunken logs
+  }
+  console.log("shrinkin those fuckers");
+  // Split the logs to keep the unshunken logs
+  const [_, ...remainingLogs] = logs.split(stoppperLine);
+  const shrunkenLogsRaw = remainingLogs.join(stoppperLine);
+  const shrunkenLogs = processLogs(shrunkenLogsRaw, Fuzzer.ECHIDNA);
+  newJobStats.duration = previousJobStats.duration;
+  newJobStats.coverage = previousJobStats.coverage;
+  newJobStats.failed = previousJobStats.failed;
+  newJobStats.passed = previousJobStats.passed;
+  newJobStats.results = previousJobStats.results;
+  newJobStats.traces = shrunkenLogs.brokenProperties.map((el) => el.sequence);
+  newJobStats.brokenProperties = shrunkenLogs.brokenProperties;
+  newJobStats.numberOfTests = previousJobStats.numberOfTests;
+
+  // isSecondPassComplete = false;
+  return newJobStats;
+};
