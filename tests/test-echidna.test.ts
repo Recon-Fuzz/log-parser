@@ -415,6 +415,10 @@ describe("Testing fuzz results for", () => {
           "property_sum_of_lqty_global_user_matches"
       ).toBe(true);
     });
+
+    const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
+
+    testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
   });
   describe("Echidna fuzzer - Handle  No Transaction issues", () => {
     const dataEchidna = fs.readFileSync(
