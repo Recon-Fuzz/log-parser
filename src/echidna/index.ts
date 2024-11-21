@@ -4,7 +4,6 @@ import {
   correctAllChecksums,
   formatTimeDifference,
   parseTimestamp,
-  processTraceLogs,
 } from "../utils/utils";
 
 //////////////////////////////////////
@@ -306,7 +305,7 @@ export const echidnaShrunkAndProcess = (
   // Split the logs to keep the unshunken logs
   const [_, ...remainingLogs] = logs.split(stoppperLine);
   const shrunkenLogsRaw = remainingLogs.join(stoppperLine);
-  const shrunkenLogs = processLogs(shrunkenLogsRaw, Fuzzer.ECHIDNA);
+  const updatedJobStats = processLogs(shrunkenLogsRaw, Fuzzer.ECHIDNA);
   // This won't be completely parsed in the shrunken logs data so we use the previous data
   newJobStats.duration = previousJobStats.duration;
   newJobStats.coverage = previousJobStats.coverage;
@@ -315,8 +314,8 @@ export const echidnaShrunkAndProcess = (
   newJobStats.results = previousJobStats.results;
   newJobStats.numberOfTests = previousJobStats.numberOfTests;
   // This is what we care about and need to use the updated data
-  newJobStats.traces = shrunkenLogs.brokenProperties.map((el) => el.sequence);
-  newJobStats.brokenProperties = shrunkenLogs.brokenProperties;
+  newJobStats.traces = updatedJobStats.brokenProperties.map((el) => el.sequence);
+  newJobStats.brokenProperties = updatedJobStats.brokenProperties;
 
   return newJobStats;
 };
