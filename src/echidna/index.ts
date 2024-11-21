@@ -206,7 +206,7 @@ export function echidnaLogsToFunctions(
           "Call sequence",
           `function ${
             brokenProp
-              ? `test_${brokenProp}${`_` + prefix}`
+              ? `test_${brokenProp}${`_`+prefix}`
               : `test_prefix_${i}_${prefix}`
           }() public {`
         )
