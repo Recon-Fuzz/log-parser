@@ -1,7 +1,11 @@
 import fs from "fs";
 import { processLogs } from "../src/main";
-import { Fuzzer } from "../src/types/types";
-import { echidnaLogsToFunctions } from "../src/echidna";
+import { Fuzzer, FuzzingResults } from "../src/types/types";
+import {
+  echidnaLogsToFunctions,
+  echidnaShrunkAndProcess,
+} from "../src/echidna";
+import { generateJobMD } from "../src/reportBuilder/reportBuilder";
 
 describe("Testing fuzz results for", () => {
   describe("Echidna fuzzer - 1 ", () => {
@@ -259,6 +263,8 @@ describe("Testing fuzz results for", () => {
           "borrower_openTrove"
       ).toBe(true);
     });
+    const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
+    testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
   });
   describe("Echidna fuzzer - 5", () => {
     const dataEchidna = fs.readFileSync(
@@ -483,7 +489,6 @@ describe("Testing fuzz results for", () => {
     });
   });
   describe("Echidna fuzzer - 8 - should parse correctly \\n in the logs", () => {
-
     /*
     Call sequence:\nEchidnaForkTester.asserts_GENERAL_17() from: 0x0000000000000000000000000000000000030000 Time delay: 38059 seconds Block delay: 257\nEchidnaForkTester.asserts_test_fail() from: 0x0000000000000000000000000000000000020000 Time delay: 469057 seconds Block delay: 1424\n\n---End Trace---\n
     --> transaltes to
@@ -503,10 +508,9 @@ describe("Testing fuzz results for", () => {
     test("it should have the correct broken properties", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(1);
       // No broken prop passed
-      expect(
-        jobStatsEchidna.brokenProperties[0].brokenProperty ===
-          ""
-      ).toBe(true);
+      expect(jobStatsEchidna.brokenProperties[0].brokenProperty === "").toBe(
+        true
+      );
     });
     jobStatsEchidna.brokenProperties.forEach((el, i) => {
       const vmData = {
@@ -530,9 +534,56 @@ describe("Testing fuzz results for", () => {
         expect(format.includes(el.brokenProperty)).toBe(true);
       });
     });
+  });
+  describe("Echidna fuzzer - 9 - shrunkun logs", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-9.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
 
-  })
+    test("it should have the correct broken properties", () => {
+      expect(jobStatsEchidna.brokenProperties.length).toBe(2);
+    });
+
+    const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
+
+    testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
+  });
+
+  describe("Echidna fuzzer - 10 - shrunkun logs", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-10.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+
+    test("it should have the correct broken properties", () => {
+      expect(jobStatsEchidna.brokenProperties.length).toBe(1);
+    });
+
+    const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
+
+    testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
+  });
 });
+
+function testEchidnaUnshrunkingLogs(
+  prevFuzzResult: FuzzingResults,
+  currentFuzzResult: FuzzingResults
+) {
+  test("It should account for the new parsed properties", () => {
+    expect(prevFuzzResult.duration).toBe(currentFuzzResult.duration);
+    expect(prevFuzzResult.coverage).toBe(currentFuzzResult.coverage);
+    expect(prevFuzzResult.failed).toBe(currentFuzzResult.failed);
+    expect(prevFuzzResult.passed).toBe(currentFuzzResult.passed);
+    expect(prevFuzzResult.results).toBe(currentFuzzResult.results);
+    expect(prevFuzzResult.brokenProperties.length).toBeLessThanOrEqual(
+      currentFuzzResult.brokenProperties.length
+    );
+    expect(prevFuzzResult.numberOfTests).toBe(currentFuzzResult.numberOfTests);
+  });
+}
 
 // Make sure we don't have multiple functions in the same broken prop function
 function testFormat(format: string) {

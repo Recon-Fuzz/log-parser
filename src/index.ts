@@ -1,4 +1,4 @@
-export {processEchidna, echidnaLogsToFunctions } from "./echidna/index";
+export {processEchidna, echidnaLogsToFunctions, echidnaShrunkAndProcess } from "./echidna/index";
 export {processMedusa,
   getPropertyAndSequenceString,
   getFunctionCallsWithVM,

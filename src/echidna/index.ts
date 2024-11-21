@@ -1,5 +1,10 @@
-import { FuzzingResults, VmParsingData } from "../types/types";
-import { correctAllChecksums, formatTimeDifference, parseTimestamp } from "../utils/utils";
+import { processLogs } from "../main";
+import { Fuzzer, FuzzingResults, VmParsingData } from "../types/types";
+import {
+  correctAllChecksums,
+  formatTimeDifference,
+  parseTimestamp,
+} from "../utils/utils";
 
 //////////////////////////////////////
 //          ECHIDNA                 //
@@ -26,9 +31,12 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
   if (firstTimestamp) {
     const currentTimestamp = parseTimestamp(line);
     if (currentTimestamp) {
-      const diffMilliseconds = currentTimestamp.getTime() - firstTimestamp.getTime();
+      const diffMilliseconds =
+        currentTimestamp.getTime() - firstTimestamp.getTime();
       const diffSeconds = diffMilliseconds / 1000;
-      jobStats.duration = formatTimeDifference(parseInt(diffSeconds.toFixed(2)))
+      jobStats.duration = formatTimeDifference(
+        parseInt(diffSeconds.toFixed(2))
+      );
     }
   }
   if (line.includes(": max value:")) {
@@ -44,7 +52,10 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
     jobStats.failed++;
   }
   // If Echidna logs have the "no transactions" message, we shouldn't keep that in the traces
-  if (line.includes("(no transactions)") && (prevLine.includes("Call sequence"))) {
+  if (
+    line.includes("(no transactions)") &&
+    prevLine.includes("Call sequence")
+  ) {
     echidnaSequenceLogger = false;
     const existingProperty = jobStats.brokenProperties.find(
       (el) => el.brokenProperty === currentBrokenPropertyEchidna
@@ -103,7 +114,7 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       (line === "" && echidnaTraceLogger) ||
       line.includes("Saved reproducer") ||
       line.includes("Traces:") ||
-      (line.includes("[") && !line.includes("(["))||
+      (line.includes("[") && !line.includes("([")) ||
       (line.includes("]") && !line.includes("])"))
     ) {
       echidnaTraceLogger = false;
@@ -139,16 +150,15 @@ vm.roll(block.number + ${blockDelay});`;
         }
       }
       if (!existingProperty) {
-          jobStats.brokenProperties.push({
-            brokenProperty: currentBrokenPropertyEchidna,
-            sequence: `${line}\n`,
-          });
-        } else {
-          if (!existingProperty.sequence.includes("---End Trace---")) {
-            existingProperty.sequence += `${line}\n`;
-          }
+        jobStats.brokenProperties.push({
+          brokenProperty: currentBrokenPropertyEchidna,
+          sequence: `${line}\n`,
+        });
+      } else {
+        if (!existingProperty.sequence.includes("---End Trace---")) {
+          existingProperty.sequence += `${line}\n`;
         }
-
+      }
     }
   }
   prevLine = line;
@@ -253,3 +263,59 @@ export function echidnaLogsToFunctions(
     })
     .join("\n");
 }
+
+/**
+ * The function `echidnaShrunkAndProcess` processes logs from a fuzzing job,
+ * shrinks them, and updates the job statistics accordingly.
+ * @param {string} logs - The `logs` parameter in the `echidnaShrunkAndProcess`
+ * function represents the logs generated during the fuzzing process.
+ * @param {FuzzingResults} previousJobStats - The previous jobStats from the first parsing
+ * @returns The function `echidnaShrunkAndProcess` returns a `FuzzingResults`
+ * object that contains updated stats and logs after processing the provided
+ * logs and previous job statistics.
+ */
+export const echidnaShrunkAndProcess = (
+  logs: string,
+  previousJobStats: FuzzingResults
+): FuzzingResults => {
+  const newJobStats: FuzzingResults = {
+    duration: "",
+    coverage: 0,
+    failed: 0,
+    passed: 0,
+    results: [],
+    traces: [],
+    brokenProperties: [],
+    numberOfTests: 0,
+  };
+
+  let stoppperLine = "";
+
+  // If the runner simply reached the test limit, we can expect to see this:
+  if (logs.includes("Test limit reached. Stopping.")) {
+    stoppperLine = "Test limit reached. Stopping.";
+    // If the runner was killed, we can expect to see this:
+  } else if (logs.includes("Killed (thread killed). Stopping")) {
+    stoppperLine = "Killed (thread killed). Stopping";
+    // Add condition for shrunken logs
+  } else {
+    return previousJobStats;
+  }
+
+  // Split the logs to keep the unshunken logs
+  const [_, ...remainingLogs] = logs.split(stoppperLine);
+  const shrunkenLogsRaw = remainingLogs.join(stoppperLine);
+  const updatedJobStats = processLogs(shrunkenLogsRaw, Fuzzer.ECHIDNA);
+  // This won't be completely parsed in the shrunken logs data so we use the previous data
+  newJobStats.duration = previousJobStats.duration;
+  newJobStats.coverage = previousJobStats.coverage;
+  newJobStats.failed = previousJobStats.failed;
+  newJobStats.passed = previousJobStats.passed;
+  newJobStats.results = previousJobStats.results;
+  newJobStats.numberOfTests = previousJobStats.numberOfTests;
+  // This is what we care about and need to use the updated data
+  newJobStats.traces = updatedJobStats.brokenProperties.map((el) => el.sequence);
+  newJobStats.brokenProperties = updatedJobStats.brokenProperties;
+
+  return newJobStats;
+};

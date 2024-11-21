@@ -1,16 +1,19 @@
-import { echidnaLogsToFunctions } from "../echidna";
+import { echidnaLogsToFunctions, echidnaShrunkAndProcess } from "../echidna";
 import { processLogs } from "../main";
 import { medusaLogsToFunctions } from "../medusa";
 import { Fuzzer, FuzzingResults, VmParsingData } from "../types/types";
 
-export const generateJobMD = async (
+export const generateJobMD = (
   fuzzer: Fuzzer,
   logs: string,
   orgName: string,
   repoName: string,
   ref: string,
 ) => {
-  const data = processLogs(logs, fuzzer);
+  let data = processLogs(logs, fuzzer);
+  if (fuzzer === Fuzzer.ECHIDNA) {
+    data = echidnaShrunkAndProcess(logs, data);
+  }
   const md = markdownShell(
     orgName,
     repoName,
