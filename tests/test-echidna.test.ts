@@ -533,7 +533,7 @@ describe("Testing fuzz results for", () => {
       });
     });
   });
-  describe("Echidna fuzzer - 9 - shrunkun ogs", () => {
+  describe("Echidna fuzzer - 9 - shrunkun logs", () => {
     const dataEchidna = fs.readFileSync(
       "./tests/test_data/echidna-9.txt",
       "utf8"
@@ -543,15 +543,13 @@ describe("Testing fuzz results for", () => {
     test("it should have the correct broken properties", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(2);
     });
-    console.log("jobStatsEchidna", jobStatsEchidna);
 
     const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
-    console.log("updatedData", updatedData);
 
     testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
   });
 
-  describe("Echidna fuzzer - 10 - shrunkun ogs", () => {
+  describe("Echidna fuzzer - 10 - shrunkun logs", () => {
     const dataEchidna = fs.readFileSync(
       "./tests/test_data/echidna-10.txt",
       "utf8"
@@ -561,13 +559,8 @@ describe("Testing fuzz results for", () => {
     test("it should have the correct broken properties", () => {
       expect(jobStatsEchidna.brokenProperties.length).toBe(1);
     });
-    console.log("jobStatsEchidna", jobStatsEchidna);
-    console.log("Report ======");
-    const report = generateJobMD(Fuzzer.ECHIDNA, dataEchidna, "org", "repo", "ref");
-    console.log(report)
 
     const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
-    console.log("updatedData", updatedData);
 
     testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
   });

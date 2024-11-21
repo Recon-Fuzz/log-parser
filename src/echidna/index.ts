@@ -269,16 +269,10 @@ export function echidnaLogsToFunctions(
  * The function `echidnaShrunkAndProcess` processes logs from a fuzzing job,
  * shrinks them, and updates the job statistics accordingly.
  * @param {string} logs - The `logs` parameter in the `echidnaShrunkAndProcess`
- * function represents the logs generated during the fuzzing process. These logs
- * contain information about the execution of the fuzzer, test results, coverage,
- * errors, and other relevant details.
- * @param {FuzzingResults} previousJobStats - The `previousJobStats` parameter in
- * the `echidnaShrunkAndProcess` function represents the results of a previous
- * fuzzing job. It contains various statistics and data related to the previous
- * job, such as the duration of the job, coverage achieved, number of failed and
- * passed tests,
+ * function represents the logs generated during the fuzzing process.
+ * @param {FuzzingResults} previousJobStats - The previous jobStats from the first parsing
  * @returns The function `echidnaShrunkAndProcess` returns a `FuzzingResults`
- * object that contains updated statistics and logs after processing the provided
+ * object that contains updated stats and logs after processing the provided
  * logs and previous job statistics.
  */
 export const echidnaShrunkAndProcess = (
@@ -313,14 +307,16 @@ export const echidnaShrunkAndProcess = (
   const [_, ...remainingLogs] = logs.split(stoppperLine);
   const shrunkenLogsRaw = remainingLogs.join(stoppperLine);
   const shrunkenLogs = processLogs(shrunkenLogsRaw, Fuzzer.ECHIDNA);
+  // This won't be completely parsed in the shrunken logs data so we use the previous data
   newJobStats.duration = previousJobStats.duration;
   newJobStats.coverage = previousJobStats.coverage;
   newJobStats.failed = previousJobStats.failed;
   newJobStats.passed = previousJobStats.passed;
   newJobStats.results = previousJobStats.results;
+  newJobStats.numberOfTests = previousJobStats.numberOfTests;
+  // This is what we care about and need to use the updated data
   newJobStats.traces = shrunkenLogs.brokenProperties.map((el) => el.sequence);
   newJobStats.brokenProperties = shrunkenLogs.brokenProperties;
-  newJobStats.numberOfTests = previousJobStats.numberOfTests;
 
   return newJobStats;
 };
