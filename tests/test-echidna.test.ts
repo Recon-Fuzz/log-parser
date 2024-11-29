@@ -566,6 +566,37 @@ describe("Testing fuzz results for", () => {
 
     testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
   });
+  describe("Echidna fuzzer - 11 - hex parsing", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-11.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    jobStatsEchidna.brokenProperties.forEach((el, i) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(
+        el.sequence,
+        "",
+        el.brokenProperty,
+        vmData
+      );
+    });
+
+    test("it should have the correct broken properties", () => {
+      expect(jobStatsEchidna.brokenProperties.length).toBe(1);
+    });
+    // test("it should have the correct broken properties", () => {
+    //   expect(jobStatsEchidna.brokenProperties.length).toBe(1);
+    // });
+
+    // const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
+
+    // testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
+  });
 });
 
 function testEchidnaUnshrunkingLogs(

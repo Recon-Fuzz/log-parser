@@ -196,7 +196,7 @@ export function echidnaLogsToFunctions(
   vmData?: VmParsingData
 ): string {
   const callSequenceMatches =
-    input.match(/Call sequence(?=:|,)(?=shrinking .*:)?(.+?)\n\n/gs) || [];
+    input.match(/Call sequence:[\s\S]+?(?=---End Trace---|\n\n(?!CryticTester))/g) || [];
   return callSequenceMatches
     .map((test: string, i: number) => {
       let updated = test
