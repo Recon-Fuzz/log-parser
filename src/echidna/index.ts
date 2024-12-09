@@ -4,6 +4,7 @@ import {
   correctAllChecksums,
   formatTimeDifference,
   parseTimestamp,
+  shouldParseLine,
 } from "../utils/utils";
 
 //////////////////////////////////////
@@ -114,8 +115,7 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       (line === "" && echidnaTraceLogger) ||
       line.includes("Saved reproducer") ||
       line.includes("Traces:") ||
-      (line.includes("[") && !line.includes("([")) ||
-      (line.includes("]") && !line.includes("])"))
+      shouldParseLine(line)
     ) {
       echidnaTraceLogger = false;
       echidnaSequenceLogger = false;
@@ -172,6 +172,42 @@ function cleanUpBrokenPropertyName(brokenProp: string): string {
   return cleanedUpProp.replace(/\(.*?\)/g, "");
 }
 
+
+function parseSpecialChars(match: string): string {
+  try {
+    // Remove quotes
+    const content = match.slice(1, -1);
+
+    // Convert special sequences
+    const parsed = content.replace(/\\([0-7]{1,3}|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|['"\\bfnrtv])/g,
+      (_, esc) => {
+        // Hex
+        if (esc.startsWith('x')) {
+          return String.fromCharCode(parseInt(esc.slice(1), 16));
+        }
+        // Octal
+        if (/^[0-7]/.test(esc)) {
+          return String.fromCharCode(parseInt(esc, 8));
+        }
+        // Control chars
+        const ctrl: {[key: string]: string} = {
+          'n': '\n', 'r': '\r', 't': '\t',
+          'b': '\b', 'f': '\f', 'v': '\v',
+          '\\': '\\', '"': '"', "'": "'"
+        };
+        return ctrl[esc] || esc;
+    });
+
+    // Convert to hex string
+    const buf = Buffer.from(parsed, 'binary');
+    return `hex"${buf.toString('hex')}"`;
+
+  } catch (e) {
+    console.error('Failed to parse special chars:', e);
+    return match; // Return original on error
+  }
+}
+
 /**
  * echidnaLogsToFunctions function converts echidna logs into Solidity functions with
  * specified prefixes and additional VM data.
@@ -195,13 +231,23 @@ export function echidnaLogsToFunctions(
   brokenProp?: string,
   vmData?: VmParsingData
 ): string {
-  const callSequenceMatches =
-    input.match(/Call sequence(?=:|,)(?=shrinking .*:)?(.+?)\n\n/gs) || [];
+  // Modified regex to capture call sequences more reliably
+  const regex = /Call sequence:[\s\S]+?(?=\[\d{4}|$)/g;
+  const callSequenceMatches = input.match(regex);
+  if (!callSequenceMatches) {
+    return '';
+  }
+  // Rest of the function remains the same
   return callSequenceMatches
     .map((test: string, i: number) => {
       let updated = test
+        .replace("---End Trace---", "")
         .trim()
         .replace(/\)/g, ");")
+        .replace(/"[^"]*"/g, (match) => {
+          return parseSpecialChars(match);
+        })
+        // Handle special character strings in arguments
         .replace(
           "Call sequence",
           `function ${

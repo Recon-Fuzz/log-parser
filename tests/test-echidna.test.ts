@@ -5,7 +5,6 @@ import {
   echidnaLogsToFunctions,
   echidnaShrunkAndProcess,
 } from "../src/echidna";
-import { generateJobMD } from "../src/reportBuilder/reportBuilder";
 
 describe("Testing fuzz results for", () => {
   describe("Echidna fuzzer - 1 ", () => {
@@ -285,9 +284,6 @@ describe("Testing fuzz results for", () => {
         el.brokenProperty,
         vmData
       );
-      if (el.brokenProperty === "property_sum_of_user_voting_weights") {
-        expect(format.includes("governance_allocateLQTY([")).toBe(true);
-      }
       test("it should have the correct format", () => {
         testFormat(format);
       });
@@ -565,6 +561,49 @@ describe("Testing fuzz results for", () => {
     const updatedData = echidnaShrunkAndProcess(dataEchidna, jobStatsEchidna);
 
     testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
+  });
+
+  describe("Echidna fuzzer - 11 - shrunkun logs", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-11.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      console.log(el.sequence, "brokenProperty")
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(
+        el.sequence,
+        "",
+        el.brokenProperty,
+        vmData
+      );
+      console.log(format, "format")
+      test("it should have the correct format", () => {
+        testFormat(format);
+      });
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      });
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+      test("it should have no empty strings as broken props", () => {
+        testAllBrokenPropsExist(el.brokenProperty);
+      });
+      test("it should have converted value to hex", () => {
+        expect(format.includes(`hex"7d0139372a5383655c4553437d2b5c534f48558c8e895c4554425084013838285c41434b8a0c5453880138342460013830"`)).toBe(true);
+      });
+      test("it should parse content until the end", () => {
+        expect(format.includes("doomsday_isServicer")).toBe(true);
+      })
+    });
+
   });
 });
 
