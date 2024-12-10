@@ -172,39 +172,73 @@ function cleanUpBrokenPropertyName(brokenProp: string): string {
   return cleanedUpProp.replace(/\(.*?\)/g, "");
 }
 
-
+// Porting over python code : https://github.com/crytic/fuzz-utils/blob/45092386bc3965ab978ee5e917b50c658638611a/fuzz_utils/utils/encoding.py#L45-L86
 function parseSpecialChars(match: string): string {
   try {
-    // Remove quotes
-    const content = match.slice(1, -1);
+    // Remove surrounding quotes
+    const s = match.slice(1, -1);
+    const resultBytes: number[] = [];
 
-    // Convert special sequences
-    const parsed = content.replace(/\\([0-7]{1,3}|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|['"\\bfnrtv])/g,
-      (_, esc) => {
-        // Hex
-        if (esc.startsWith('x')) {
-          return String.fromCharCode(parseInt(esc.slice(1), 16));
+    // ASCII escape mappings (similar to Python's ascii_escape_map)
+    const asciiEscapeMap: { [key: string]: number[] } = {
+      '\\SOH': [1], '\\SO': [14], '\\EOT': [4],
+      '\\DLE': [16], '\\DC1': [17], '\\DC2': [18],
+      '\\DC3': [19], '\\DC4': [20], '\\SYN': [22],
+      '\\ETB': [23], '\\ESC': [27], '\\FS': [28],
+      '\\GS': [29], '\\RS': [30], '\\US': [31]
+    };
+
+    // Process string character by character
+    let i = 0;
+    while (i < s.length) {
+      // Check for escape sequence
+      if (s[i] === '\\') {
+        let matched = false;
+
+        // Check known escape sequences
+        for (const [seq, bytes] of Object.entries(asciiEscapeMap)) {
+          if (s.startsWith(seq, i)) {
+            resultBytes.push(...bytes);
+            i += seq.length;
+            matched = true;
+            break;
+          }
         }
-        // Octal
-        if (/^[0-7]/.test(esc)) {
-          return String.fromCharCode(parseInt(esc, 8));
+
+        if (!matched) {
+          // Check for decimal escape (like \160)
+          const decMatch = s.slice(i).match(/^\\(\d{1,3})/);
+          if (decMatch) {
+            const decimalValue = parseInt(decMatch[1], 10);
+            resultBytes.push(decimalValue);
+            i += decMatch[0].length;
+          } else {
+            // Handle octal escapes
+            const octMatch = s.slice(i).match(/^\\([0-7]{1,3})/);
+            if (octMatch) {
+              const octalValue = parseInt(octMatch[1], 8);
+              resultBytes.push(octalValue);
+              i += octMatch[0].length;
+            } else {
+              // Skip unknown escape
+              i++;
+            }
+          }
         }
-        // Control chars
-        const ctrl: {[key: string]: string} = {
-          'n': '\n', 'r': '\r', 't': '\t',
-          'b': '\b', 'f': '\f', 'v': '\v',
-          '\\': '\\', '"': '"', "'": "'"
-        };
-        return ctrl[esc] || esc;
-    });
+      } else {
+        // Normal character
+        resultBytes.push(s.charCodeAt(i));
+        i++;
+      }
+    }
 
     // Convert to hex string
-    const buf = Buffer.from(parsed, 'binary');
-    return `hex"${buf.toString('hex')}"`;
+    const hexString = Buffer.from(resultBytes).toString('hex');
+    return `hex"${hexString}"`;
 
   } catch (e) {
     console.error('Failed to parse special chars:', e);
-    return match; // Return original on error
+    return match;
   }
 }
 

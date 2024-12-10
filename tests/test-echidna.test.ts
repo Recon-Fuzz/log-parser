@@ -597,7 +597,7 @@ describe("Testing fuzz results for", () => {
         testAllBrokenPropsExist(el.brokenProperty);
       });
       test("it should have converted value to hex", () => {
-        expect(format.includes(`hex"7d0139372a5383655c4553437d2b5c534f48558c8e895c4554425084013838285c41434b8a0c5453880138342460013830"`)).toBe(true);
+        expect(format.includes(`hex"cef7e40e306ceee4c4"`)).toBe(true);
       });
       test("it should parse content until the end", () => {
         expect(format.includes("doomsday_isServicer")).toBe(true);
