@@ -4,6 +4,7 @@ import {
   correctAllChecksums,
   formatTimeDifference,
   parseTimestamp,
+  parseHexValue,
 } from "../utils/utils";
 
 //////////////////////////////////////
@@ -224,12 +225,19 @@ export function echidnaLogsToFunctions(
       if (line.startsWith("function")) {
         return line;
       }
+
       let returnData = "";
       let cleanedData = line;
       if (line.split(" from")[0].includes("0x")) {
         const startLine = line.split(" from")[0];
         const endLine = line.split(" from")[1];
         cleanedData = correctAllChecksums(startLine) + endLine;
+      }
+
+      if (line.includes(" Value: ")) {
+        console.log("init line: ", line);
+        cleanedData = parseHexValue(line);
+        console.log("clean: ", cleanedData);
       }
 
       if (vmData) {
