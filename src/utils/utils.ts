@@ -1,4 +1,4 @@
-import { toChecksumAddress } from "ethereumjs-util";
+import { toChecksumAddress, bufferToInt, toBuffer } from "ethereumjs-util";
 
 export function captureFuzzingDuration(line: string): string | null {
   const pattern = /\b(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?\b/;
@@ -34,6 +34,23 @@ export function formatAddress(input: string): string {
     cleanedData += `\n   ${input};`;
   }
   return cleanedData;
+}
+
+export function parseHexValue(input: string): string {
+  const value = input.split(" Value: ")[1];
+  const fnCall = input.split("(");
+  try {
+    // Remove 0x prefix if present
+    const cleanHex = value.slice(2);
+    // Convert to buffer
+    const buffer = toBuffer(`0x${cleanHex}`);
+    // Convert buffer to integer
+    const valueNumber = bufferToInt(buffer);
+    return `${fnCall[0]}{value: ${valueNumber}}(${fnCall[1].split(" Value: ")[0]}`;
+  } catch (e) {
+    console.error('Failed to parse hex value:', e);
+    return "";
+  }
 }
 
 export function formatBytes(input: string) {

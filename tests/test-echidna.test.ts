@@ -566,6 +566,40 @@ describe("Testing fuzz results for", () => {
 
     testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
   });
+  describe("Echidna fuzzer - 11 - parse value", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-11.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+    jobStatsEchidna.brokenProperties.forEach((el, i) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(
+        el.sequence,
+        "",
+        el.brokenProperty,
+        vmData
+      );
+      test("it should parse correctly the hex value ", () => {
+        expect(format.includes("Value: ")).toBe(false);
+        expect(format.includes("{value: 10030802758}")).toBe(true);
+        expect(format.includes("{value: 10030802758}(126)")).toBe(true);
+      });
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      });
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+      test("it should have no empty strings as broken props", () => {
+        testAllBrokenPropsExist(el.brokenProperty);
+      });
+    });
+  });
 });
 
 function testEchidnaUnshrunkingLogs(
