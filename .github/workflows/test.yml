@@ -24,3 +24,6 @@ jobs:
 
     - name: Run tests
       run: yarn test
+
+    - name: Run tests with coverage
+      run: yarn test --coverage
