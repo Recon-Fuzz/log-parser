@@ -563,9 +563,9 @@ describe("Testing fuzz results for", () => {
     testEchidnaUnshrunkingLogs(jobStatsEchidna, updatedData);
   });
 
-  describe("Echidna fuzzer - 11 - shrunkun logs", () => {
+  describe("Echidna fuzzer - 12 - shrunkun logs", () => {
     const dataEchidna = fs.readFileSync(
-      "./tests/test_data/echidna-11.txt",
+      "./tests/test_data/echidna-12.txt",
       "utf8"
     );
     const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
