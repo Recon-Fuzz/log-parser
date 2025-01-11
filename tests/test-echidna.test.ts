@@ -606,7 +606,6 @@ describe("Testing fuzz results for", () => {
     const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
 
     jobStatsEchidna.brokenProperties.forEach((el) => {
-      console.log(el.sequence, "brokenProperty");
       const vmData = {
         roll: false,
         time: false,
@@ -618,7 +617,7 @@ describe("Testing fuzz results for", () => {
         el.brokenProperty,
         vmData
       );
-      console.log(format, "format");
+      // console.log(format, "format");
       test("it should have the correct format", () => {
         testFormat(format);
       });
@@ -633,6 +632,7 @@ describe("Testing fuzz results for", () => {
       });
       test("it should have converted value to hex", () => {
         expect(format.includes(`hex"cef7e40e306ceee4c4"`)).toBe(true);
+        expect(format.includes(`hex"e1f03b8c98d00393cf44a6dc6414a077"`)).toBe(true);
       });
       test("it should parse content until the end", () => {
         expect(format.includes("doomsday_isServicer")).toBe(true);
