@@ -1,0 +1,13 @@
+callWithoutValue(bytes): passing
+check_tokens_growth(): failed!:boom:
+  Call sequence: shrinking 1819/5000:
+    CryticTester.bro() Value: 0x255e1e746
+    CryticTester.bro2(126) Value: 0x255e1e746
+    CryticTester.check_tokens_growth()
+
+Traces:
+call 0x004E9C3EF86bc1ca1f0bB5C7662861Ee93350568::balanceOf(CryticTester) (/Users/personal/Desktop/Consulting/cerberus/test/recon/Setup.sol:36)
+ ├╴delegatecall 0x51A7f889480c57cbeea81614f7D0bE2B70db6c5e::balanceOf(CryticTester) <no source map>
+ │  └╴← (1)
+ └╴← (1)
+emit Log(«Balance has changed») (/Users/personal/Desktop/Consulting/cerberus/lib/chimera/src/CryticAsserts.sol:39)
