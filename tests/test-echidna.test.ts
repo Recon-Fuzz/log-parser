@@ -597,6 +597,48 @@ describe("Testing fuzz results for", () => {
       });
     });
   });
+
+  describe("Echidna fuzzer - 12 - shrunkun logs", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-12.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      console.log(el.sequence, "brokenProperty");
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(
+        el.sequence,
+        "",
+        el.brokenProperty,
+        vmData
+      );
+      console.log(format, "format");
+      test("it should have the correct format", () => {
+        testFormat(format);
+      });
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      });
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+      test("it should have no empty strings as broken props", () => {
+        testAllBrokenPropsExist(el.brokenProperty);
+      });
+      test("it should have converted value to hex", () => {
+        expect(format.includes(`hex"cef7e40e306ceee4c4"`)).toBe(true);
+      });
+      test("it should parse content until the end", () => {
+        expect(format.includes("doomsday_isServicer")).toBe(true);
+      });
+    });
+  });
 });
 
 function testEchidnaUnshrunkingLogs(
