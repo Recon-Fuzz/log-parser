@@ -4,8 +4,12 @@ import {
   correctAllChecksums,
   formatTimeDifference,
   parseTimestamp,
+  shouldParseLine,
   parseHexValue,
 } from "../utils/utils";
+import { spawnSync } from 'child_process';
+import { join } from 'path';
+
 
 //////////////////////////////////////
 //          ECHIDNA                 //
@@ -115,8 +119,7 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       (line === "" && echidnaTraceLogger) ||
       line.includes("Saved reproducer") ||
       line.includes("Traces:") ||
-      (line.includes("[") && !line.includes("([")) ||
-      (line.includes("]") && !line.includes("])"))
+      shouldParseLine(line)
     ) {
       echidnaTraceLogger = false;
       echidnaSequenceLogger = false;
@@ -173,6 +176,35 @@ function cleanUpBrokenPropertyName(brokenProp: string): string {
   return cleanedUpProp.replace(/\(.*?\)/g, "");
 }
 
+// Porting over python code : https://github.com/crytic/fuzz-utils/blob/45092386bc3965ab978ee5e917b50c658638611a/fuzz_utils/utils/encoding.py#L45-L86
+function parseSpecialChars(match: string): string {
+  try {
+    // Remove quotes for Python input
+    const input = match.slice(1, -1);
+
+    const pythonScript = join(__dirname, '../../pyhtonParseEchidnaBytes.py');
+    const pythonProcess = spawnSync('python3', [pythonScript], {
+      input: input,
+      encoding: 'utf-8'
+    });
+
+    if (pythonProcess.error) {
+      console.error('Python script error:', pythonProcess.error);
+      return match;
+    }
+
+    if (pythonProcess.status !== 0) {
+      console.error('Python script failed:', pythonProcess.stderr);
+      return match;
+    }
+
+    return `hex"${pythonProcess.stdout.trim()}"`;
+  } catch (e) {
+    console.error('Failed to parse special chars:', e);
+    return match;
+  }
+}
+
 /**
  * echidnaLogsToFunctions function converts echidna logs into Solidity functions with
  * specified prefixes and additional VM data.
@@ -196,13 +228,21 @@ export function echidnaLogsToFunctions(
   brokenProp?: string,
   vmData?: VmParsingData
 ): string {
-  const callSequenceMatches =
-    input.match(/Call sequence(?=:|,)(?=shrinking .*:)?(.+?)\n\n/gs) || [];
+  // Modified regex to capture call sequences more reliably
+  const regex = /Call sequence:[\s\S]+?(?=\[\d{4}|$)/g;
+  const callSequenceMatches = input.match(regex);
+  if (!callSequenceMatches) {
+    return '';
+  }
+  // Rest of the function remains the same
   return callSequenceMatches
     .map((test: string, i: number) => {
       let updated = test
+        .replace("---End Trace---", "")
         .trim()
         .replace(/\)/g, ");")
+        .replace(/"[^"]*"/g,  parseSpecialChars)
+        // Handle special character strings in arguments
         .replace(
           "Call sequence",
           `function ${
@@ -235,9 +275,7 @@ export function echidnaLogsToFunctions(
       }
 
       if (line.includes(" Value: ")) {
-        console.log("init line: ", line);
         cleanedData = parseHexValue(line);
-        console.log("clean: ", cleanedData);
       }
 
       if (vmData) {

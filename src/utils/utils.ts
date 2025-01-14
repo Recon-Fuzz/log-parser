@@ -132,3 +132,39 @@ export const formatTimeDifference = (diffSeconds: number): string => {
   }${seconds}s`;
   return formattedTime;
 };
+
+
+export function isInsideQuotes(line: string, pos: number): boolean {
+  let inQuotes = false;
+  let escaped = false;
+
+  for (let i = 0; i < pos; i++) {
+    if (line[i] === '\\') {
+      escaped = !escaped;
+      continue;
+    }
+    if (line[i] === '"' && !escaped) {
+      inQuotes = !inQuotes;
+    }
+    if (escaped) {
+      escaped = false;
+    }
+  }
+  return inQuotes;
+}
+
+export const shouldParseLine = (line: string): boolean => {
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if ((char === '[' || char === ']') && !isInsideQuotes(line, i)) {
+      // Only count brackets not inside quotes and not part of function calls
+      const prevChar = line[i-1];
+      const nextChar = line[i+1];
+      if (!(char === '[' && prevChar === '(') &&
+          !(char === ']' && nextChar === ')')) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
