@@ -631,8 +631,10 @@ describe("Testing fuzz results for", () => {
         testAllBrokenPropsExist(el.brokenProperty);
       });
       test("it should have converted value to hex", () => {
-        expect(format.includes(`hex"cef7e40e306ceee4c4"`)).toBe(true);
-        expect(format.includes(`hex"e1f03b8c98d00393cf44a6dc6414a077"`)).toBe(true);
+        expect(format.includes(`hex"cef7e40e306ceee4c4"`)).toBe(true); // securedLine_revokeConsent
+        expect(format.includes(`hex"7dc52a53cb651baf2b0155d6d8d31750ccbc2806d40c5453d2b82460b4"`)).toBe(true); // activeEscrow_revokeConsent
+        expect(format.includes(`hex"e1f03b8c98d00393cf44a6dc6414a077"`)).toBe(true); // activeEscrow_revokeConsent
+        expect(format.includes(`hex"f14650e26adba55d3c73a44c12c1b670496c"`)).toBe(true); // activeSpigot_pullTokens
       });
       test("it should parse content until the end", () => {
         expect(format.includes("doomsday_isServicer")).toBe(true);

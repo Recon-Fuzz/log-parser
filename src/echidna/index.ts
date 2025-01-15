@@ -6,9 +6,8 @@ import {
   parseTimestamp,
   shouldParseLine,
   parseHexValue,
+  parseSpecialChars,
 } from "../utils/utils";
-import { spawnSync } from 'child_process';
-import { join } from 'path';
 
 
 //////////////////////////////////////
@@ -176,35 +175,6 @@ function cleanUpBrokenPropertyName(brokenProp: string): string {
   return cleanedUpProp.replace(/\(.*?\)/g, "");
 }
 
-// Porting over python code : https://github.com/crytic/fuzz-utils/blob/45092386bc3965ab978ee5e917b50c658638611a/fuzz_utils/utils/encoding.py#L45-L86
-function parseSpecialChars(match: string): string {
-  try {
-    // Remove quotes for Python input
-    const input = match.slice(1, -1);
-
-    const pythonScript = join(__dirname, '../../pyhtonParseEchidnaBytes.py');
-    const pythonProcess = spawnSync('python3', [pythonScript], {
-      input: input,
-      encoding: 'utf-8'
-    });
-
-    if (pythonProcess.error) {
-      console.error('Python script error:', pythonProcess.error);
-      return match;
-    }
-
-    if (pythonProcess.status !== 0) {
-      console.error('Python script failed:', pythonProcess.stderr);
-      return match;
-    }
-
-    return `hex"${pythonProcess.stdout.trim()}"`;
-  } catch (e) {
-    console.error('Failed to parse special chars:', e);
-    return match;
-  }
-}
-
 /**
  * echidnaLogsToFunctions function converts echidna logs into Solidity functions with
  * specified prefixes and additional VM data.
@@ -241,7 +211,7 @@ export function echidnaLogsToFunctions(
         .replace("---End Trace---", "")
         .trim()
         .replace(/\)/g, ");")
-        .replace(/"[^"]*"/g,  parseSpecialChars)
+        .replace(/"[^"]*"/g, parseSpecialChars)
         // Handle special character strings in arguments
         .replace(
           "Call sequence",
