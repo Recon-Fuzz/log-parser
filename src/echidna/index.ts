@@ -18,6 +18,7 @@ let echidnaSequenceLogger = false;
 let currentBrokenPropertyEchidna = "";
 let prevLine = "";
 let firstTimestamp: Date;
+let maxValueOptimization = "";
 /**
  * The processEchidna function processes log lines to extract job statistics and traces for fuzzing results.
  * @param {string} line - The `processEchidna` function processes a line of text
@@ -43,8 +44,10 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
       );
     }
   }
+  // Optimization mode
   if (line.includes(": max value:")) {
     currentBrokenPropertyEchidna = line.split(": max value")[0];
+    maxValueOptimization = line.split(": max value:")[1];
   }
   if (line.includes(": passing") || line.includes(": failed!")) {
     jobStats.results.push(line);
@@ -122,6 +125,10 @@ export function processEchidna(line: string, jobStats: FuzzingResults): void {
     ) {
       echidnaTraceLogger = false;
       echidnaSequenceLogger = false;
+      if (maxValueOptimization !== "") {
+        jobStats.traces.push(`// Max value:${maxValueOptimization}`);
+        maxValueOptimization = "";
+      }
       jobStats.traces.push("---End Trace---");
 
       const existingProperty = jobStats.brokenProperties.find(
@@ -158,6 +165,11 @@ vm.roll(block.number + ${blockDelay});`;
           sequence: `${line}\n`,
         });
       } else {
+        if (maxValueOptimization !== "") {
+          existingProperty.sequence += `// Max value:${maxValueOptimization}\n`
+          // jobStats.traces.push(`// Max value: ${maxValueOptimization}`);
+          maxValueOptimization = "";
+        }
         if (!existingProperty.sequence.includes("---End Trace---")) {
           existingProperty.sequence += `${line}\n`;
         }
