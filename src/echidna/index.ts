@@ -199,7 +199,7 @@ export function echidnaLogsToFunctions(
   vmData?: VmParsingData
 ): string {
   // Modified regex to capture call sequences more reliably
-  const regex = /Call sequence:[\s\S]+?(?=\[\d{4}|$)/g;
+  const regex = /Call sequence[\s\S]+?(?=\[\d{4}|$)/g;
   const callSequenceMatches = input.match(regex);
   if (!callSequenceMatches) {
     return '';
