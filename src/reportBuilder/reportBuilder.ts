@@ -6,20 +6,16 @@ import { Fuzzer, FuzzingResults, VmParsingData } from "../types/types";
 export const generateJobMD = (
   fuzzer: Fuzzer,
   logs: string,
-  orgName: string,
-  repoName: string,
-  ref: string,
+  label: string
 ) => {
   let data = processLogs(logs, fuzzer);
   if (fuzzer === Fuzzer.ECHIDNA) {
     data = echidnaShrunkAndProcess(logs, data);
   }
   const md = markdownShell(
-    orgName,
-    repoName,
-    ref,
     data,
-    fuzzer
+    fuzzer,
+    label,
   );
   return md;
 };
@@ -31,15 +27,12 @@ const vmData: VmParsingData = {
 };
 
 const markdownShell = (
-  orgName: string,
-  repoName: string,
-  branchName: string,
   jobStats: FuzzingResults,
-  fuzzer: string
+  fuzzer: string,
+  label: string
 ): string => {
   return `
-# Recon Recap for ${orgName}/${repoName}/${branchName}
-
+# Recon Recap for ${label}
 
 ## Fuzzer overview
 - Fuzzer: ${fuzzer}
@@ -68,7 +61,7 @@ ${jobStats.brokenProperties
 **${el.brokenProperty}**
 
 ### Sequence
-\`\`\`javascript
+\`\`\`solidity
 ${prepareTrace(fuzzer, el.sequence, el.brokenProperty)}
 \`\`\`
   `;
