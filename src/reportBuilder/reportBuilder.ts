@@ -34,7 +34,6 @@ const markdownShell = (
   return `
 # Recon Recap for ${label}
 
-
 ## Fuzzer overview
 - Fuzzer: ${fuzzer}
 - Duration: ${jobStats.duration}
@@ -62,7 +61,7 @@ ${jobStats.brokenProperties
 **${el.brokenProperty}**
 
 ### Sequence
-\`\`\`javascript
+\`\`\`solidity
 ${prepareTrace(fuzzer, el.sequence, el.brokenProperty)}
 \`\`\`
   `;
