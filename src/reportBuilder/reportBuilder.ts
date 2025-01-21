@@ -57,7 +57,7 @@ ${jobStats.brokenProperties.length > 0 ? "## Broken Properties" : ""}
 ${jobStats.brokenProperties
   .map((el, index) => {
     return `
-### Broken property:
+## Broken property
 **${el.brokenProperty}**
 
 ### Sequence
