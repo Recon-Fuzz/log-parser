@@ -1,0 +1,719 @@
+Loaded 99 transaction sequences from echidna/coverage
+[2025-01-20 10:28:10.65] INFO: Performing RPC: <EVM.Query: fetch contract 0x000000000000000000636F6e736F6c652e6c6f67EmptyBase>
+[2025-01-20 10:28:10.65] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x000000000000000000636F6e736F6c652e6c6f67EmptyBase>
+[2025-01-20 10:28:10.57] [Worker 3] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 0
+[2025-01-20 10:28:10.58] [Worker 10] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 0
+[2025-01-20 10:28:10.58] [Worker 0] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 0
+[2025-01-20 10:28:10.58] [Worker 11] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 0
+[2025-01-20 10:28:10.58] [Worker 2] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 0
+[2025-01-20 10:28:10.58] [Worker 8] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 0
+[2025-01-20 10:28:10.59] [Worker 3] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated: 1
+[2025-01-20 10:28:10.89] INFO: Performing RPC: <EVM.Query: fetch contract 0x00000000000000000000000000000001fffffffEEmptyBase>
+[2025-01-20 10:28:10.97] INFO: Performing RPC: <EVM.Query: fetch contract 0x00000000000000000000000000000001fffffffEEmptyBase>
+[2025-01-20 10:28:10.60] [Worker 0] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated: 1
+[2025-01-20 10:28:11.15] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x00000000000000000000000000000001fffffffEEmptyBase>
+[2025-01-20 10:28:11.16] INFO: Performing RPC: <EVM.Query: fetch contract 0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7EmptyBase>
+[2025-01-20 10:28:11.29] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x00000000000000000000000000000001fffffffEEmptyBase>
+[2025-01-20 10:28:10.60] [Worker 1] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated: 1
+[2025-01-20 10:28:11.65] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7EmptyBase>
+[2025-01-20 10:28:10.60]  Saved reproducer to echidna/reproducers-optimizations/4990851838237184166.txt
+[2025-01-20 10:28:10.60]  Saved reproducer to echidna/reproducers-optimizations/4990851838237184166.txt
+[2025-01-20 10:28:10.60]  Saved reproducer to echidna/reproducers-optimizations/2752603448701789687.txt
+[2025-01-20 10:28:10.61] [Worker 3] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 10000
+[2025-01-20 10:28:10.61] [Worker 3] New coverage: 18740 instr, 8 contracts, 1 seqs in corpus
+[2025-01-20 10:28:10.61]  Saved reproducer to echidna/reproducers-optimizations/4990851838237184166.txt
+[2025-01-20 10:28:10.61]  Saved reproducer to echidna/coverage/4990851838237184166.txt
+[2025-01-20 10:28:10.61] [Worker 0] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 10000
+[2025-01-20 10:28:10.61] [Worker 1] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 10000
+[2025-01-20 10:28:10.62]  Saved reproducer to echidna/reproducers-optimizations/4990851838237184166.txt
+[2025-01-20 10:28:10.62]  Saved reproducer to echidna/reproducers-optimizations/2752603448701789687.txt
+[2025-01-20 10:28:10.64] [Worker 3] Sequence replayed from corpus file 4990851838237184166.txt (1/8)
+[2025-01-20 10:28:10.68] [Worker 12] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 0
+[2025-01-20 10:28:10.70] [Worker 0] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 10000
+[2025-01-20 10:28:10.70] [Worker 4] New coverage: 25374 instr, 8 contracts, 2 seqs in corpus
+[2025-01-20 10:28:10.70] [Worker 4] Sequence replayed from corpus file 989834005130416729.txt (1/8)
+[2025-01-20 10:28:10.72]  Saved reproducer to echidna/reproducers-optimizations/9019071431858454308.txt
+[2025-01-20 10:28:10.72]  Saved reproducer to echidna/coverage/989834005130416729.txt
+[2025-01-20 10:28:10.72] [Worker 1] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated_bps: 10000
+[2025-01-20 10:28:10.74]  Saved reproducer to echidna/reproducers-optimizations/2078493722836837055.txt
+[2025-01-20 10:28:10.74] [Worker 0] New coverage: 28371 instr, 8 contracts, 3 seqs in corpus
+[2025-01-20 10:28:10.74] [Worker 0] Sequence replayed from corpus file 6836526038427472261.txt (1/8)
+[2025-01-20 10:28:10.76]  Saved reproducer to echidna/coverage/6836526038427472261.txt
+[2025-01-20 10:28:10.86] [Worker 0] Sequence replayed from corpus file 989834005130416729.txt (2/8)
+[2025-01-20 10:28:10.94] [Worker 9] New coverage: 33217 instr, 8 contracts, 4 seqs in corpus
+[2025-01-20 10:28:10.94] [Worker 9] Sequence replayed from corpus file 5633917187639530247.txt (1/8)
+[2025-01-20 10:28:10.95] [Worker 0] Sequence replayed from corpus file 694902322638715307.txt (3/8)
+[2025-01-20 10:28:10.96]  Saved reproducer to echidna/coverage/5633917187639530247.txt
+[2025-01-20 10:28:11.05] [Worker 0] New coverage: 33688 instr, 8 contracts, 5 seqs in corpus
+[2025-01-20 10:28:11.06] [Worker 0] Sequence replayed from corpus file 204679668494458531.txt (4/8)
+[2025-01-20 10:28:11.08]  Saved reproducer to echidna/coverage/204679668494458531.txt
+[2025-01-20 10:28:11.20] [Worker 0] Sequence replayed from corpus file 7189206213060014780.txt (5/8)
+[2025-01-20 10:28:11.29] [Worker 0] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated: 19
+[2025-01-20 10:28:11.29]  Saved reproducer to echidna/reproducers-optimizations/6304107720139064584.txt
+[2025-01-20 10:28:11.30] [Worker 0] Sequence replayed from corpus file 6304107720139064584.txt (6/8)
+[2025-01-20 10:28:11.37] [Worker 1] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated: 1632
+[2025-01-20 10:28:11.40]  Saved reproducer to echidna/reproducers-optimizations/1449246675487974608.txt
+[2025-01-20 10:28:11.58] [Worker 1] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated: 12254
+[2025-01-20 10:28:11.59] [Worker 1] New coverage: 35505 instr, 8 contracts, 6 seqs in corpus
+[2025-01-20 10:28:11.60] [Worker 1] Sequence replayed from corpus file 3391692308803124738.txt (1/8)
+[2025-01-20 10:28:11.64]  Saved reproducer to echidna/reproducers-optimizations/3391692308803124738.txt
+[2025-01-20 10:28:11.69]  Saved reproducer to echidna/coverage/3391692308803124738.txt
+[2025-01-20 10:28:11.74] [Worker 1] New coverage: 35513 instr, 8 contracts, 7 seqs in corpus
+[2025-01-20 10:28:11.74] [Worker 1] Sequence replayed from corpus file 8320071234741404129.txt (2/8)
+[2025-01-20 10:28:11.75]  Saved reproducer to echidna/coverage/8320071234741404129.txt
+[2025-01-20 10:28:11.86] [Worker 1] Sequence replayed from corpus file 5731076533078845848.txt (3/8)
+[2025-01-20 10:28:12.11] [Worker 1] Sequence replayed from corpus file 4060913019494541633.txt (4/8)
+[2025-01-20 10:28:12.23] [Worker 0] New coverage: 36618 instr, 8 contracts, 8 seqs in corpus
+[2025-01-20 10:28:12.23] [Worker 0] Sequence replayed from corpus file 5757975778671495030.txt (7/8)
+[2025-01-20 10:28:12.36]  Saved reproducer to echidna/coverage/5757975778671495030.txt
+[2025-01-20 10:28:12.45] [Worker 1] Sequence replayed from corpus file 415451484385556127.txt (5/8)
+[2025-01-20 10:28:12.47] [Worker 0] Sequence replayed from corpus file 5633917187639530247.txt (8/8)
+[2025-01-20 10:28:12.71] [Worker 1] Sequence replayed from corpus file 9037795671869619680.txt (6/8)
+[2025-01-20 10:28:13.13] [Worker 1] Sequence replayed from corpus file 5293257765212911007.txt (7/8)
+[2025-01-20 10:28:13.22] [Worker 1] Sequence replayed from corpus file 2752603448701789687.txt (8/8)
+[2025-01-20 10:28:13.69] [status] tests: 0/3, fuzzing: 0/100000, values: [12254,0,10000], cov: 37015, corpus: 8
+[2025-01-20 10:28:13.87] [Worker 2] New coverage: 37015 instr, 8 contracts, 9 seqs in corpus
+[2025-01-20 10:28:13.88] [Worker 2] Sequence replayed from corpus file 1620528226583750973.txt (1/8)
+[2025-01-20 10:28:13.95]  Saved reproducer to echidna/coverage/1620528226583750973.txt
+[2025-01-20 10:28:14.00] [Worker 2] Sequence replayed from corpus file 3144085286957301398.txt (2/8)
+[2025-01-20 10:28:14.11] [Worker 2] Sequence replayed from corpus file 6355748054261357252.txt (3/8)
+[2025-01-20 10:28:14.25] [Worker 2] Sequence replayed from corpus file 4396566135770050404.txt (4/8)
+[2025-01-20 10:28:14.36] INFO: Performing RPC: <EVM.Query: fetch contract 0xDB25A7b768311dE128BBDa7B8426c3f9C74f3240EmptyBase>
+[2025-01-20 10:28:14.36] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0xDB25A7b768311dE128BBDa7B8426c3f9C74f3240EmptyBase>
+[2025-01-20 10:28:14.36] [Worker 2] Sequence replayed from corpus file 1849441740104939923.txt (5/8)
+[2025-01-20 10:28:14.48] [Worker 2] Sequence replayed from corpus file 7677682918379397424.txt (6/8)
+[2025-01-20 10:28:14.52] [Worker 11] New coverage: 37499 instr, 8 contracts, 10 seqs in corpus
+[2025-01-20 10:28:14.53] [Worker 11] Sequence replayed from corpus file 7325392858392428893.txt (1/8)
+[2025-01-20 10:28:14.89] [Worker 2] Sequence replayed from corpus file 3667755347859493656.txt (7/8)
+[2025-01-20 10:28:14.89]  Saved reproducer to echidna/coverage/7325392858392428893.txt
+[2025-01-20 10:28:15.00] [Worker 2] Sequence replayed from corpus file 101151741416729048.txt (8/8)
+[2025-01-20 10:28:15.09] [Worker 11] Sequence replayed from corpus file 9037795671869619680.txt (2/8)
+[2025-01-20 10:28:15.27] [Worker 7] New coverage: 37535 instr, 8 contracts, 11 seqs in corpus
+[2025-01-20 10:28:15.28] [Worker 7] Sequence replayed from corpus file 353601385351962311.txt (1/8)
+[2025-01-20 10:28:15.32] [Worker 6] New coverage: 37535 instr, 8 contracts, 12 seqs in corpus
+[2025-01-20 10:28:15.32] [Worker 6] Sequence replayed from corpus file 1392283970222250019.txt (1/8)
+[2025-01-20 10:28:15.37] [Worker 10] New coverage: 37535 instr, 8 contracts, 13 seqs in corpus
+[2025-01-20 10:28:15.38] [Worker 10] Sequence replayed from corpus file 1342120971591129695.txt (1/8)
+[2025-01-20 10:28:15.54] [Worker 9] New coverage: 37535 instr, 8 contracts, 14 seqs in corpus
+[2025-01-20 10:28:15.55] [Worker 9] Sequence replayed from corpus file 7071789704518581809.txt (2/8)
+[2025-01-20 10:28:15.55] [Worker 3] New coverage: 37535 instr, 8 contracts, 15 seqs in corpus
+[2025-01-20 10:28:15.56] [Worker 3] Sequence replayed from corpus file 6229521182339236991.txt (2/8)
+[2025-01-20 10:28:15.62] [Worker 1] New coverage: 37539 instr, 8 contracts, 16 seqs in corpus
+[2025-01-20 10:28:15.68]  Saved reproducer to echidna/coverage/353601385351962311.txt
+[2025-01-20 10:28:15.87] [Worker 12] New coverage: 37539 instr, 8 contracts, 17 seqs in corpus
+[2025-01-20 10:28:15.87] [Worker 12] Sequence replayed from corpus file 4994632879638457346.txt (1/8)
+[2025-01-20 10:28:16.10]  Saved reproducer to echidna/coverage/1392283970222250019.txt
+[2025-01-20 10:28:16.41]  Saved reproducer to echidna/coverage/1342120971591129695.txt
+[2025-01-20 10:28:16.42] [Worker 9] Sequence replayed from corpus file 3391692308803124738.txt (3/8)
+[2025-01-20 10:28:16.63]  Saved reproducer to echidna/coverage/7071789704518581809.txt
+[2025-01-20 10:28:16.69] [status] tests: 0/3, fuzzing: 214/100000, values: [12254,0,10000], cov: 37574, corpus: 17
+[2025-01-20 10:28:16.96]  Saved reproducer to echidna/coverage/6229521182339236991.txt
+[2025-01-20 10:28:17.24]  Saved reproducer to echidna/coverage/4168335403690371890.txt
+[2025-01-20 10:28:17.26] INFO: Performing RPC: <EVM.Query: fetch contract 0x3381cD18e2Fb4dB236BF0525938AB6E43Db0440fEmptyBase>
+[2025-01-20 10:28:17.26] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x3381cD18e2Fb4dB236BF0525938AB6E43Db0440fEmptyBase>
+[2025-01-20 10:28:17.46]  Saved reproducer to echidna/coverage/4994632879638457346.txt
+[2025-01-20 10:28:17.73] [Worker 4] New coverage: 37574 instr, 8 contracts, 18 seqs in corpus
+[2025-01-20 10:28:17.74] [Worker 4] Sequence replayed from corpus file 8862784955246443385.txt (2/8)
+[2025-01-20 10:28:18.14]  Saved reproducer to echidna/coverage/8862784955246443385.txt
+[2025-01-20 10:28:18.70] [Worker 5] New coverage: 37574 instr, 8 contracts, 19 seqs in corpus
+[2025-01-20 10:28:19.10] [Worker 10] New coverage: 37574 instr, 8 contracts, 20 seqs in corpus
+[2025-01-20 10:28:19.10] [Worker 10] Sequence replayed from corpus file 8397334560222095652.txt (2/8)
+[2025-01-20 10:28:19.12] [Worker 5] Sequence replayed from corpus file 2165155622618848814.txt (1/8)
+[2025-01-20 10:28:19.34]  Saved reproducer to echidna/coverage/2165155622618848814.txt
+[2025-01-20 10:28:19.55]  Saved reproducer to echidna/coverage/8397334560222095652.txt
+[2025-01-20 10:28:19.75] [status] tests: 0/3, fuzzing: 502/100000, values: [12254,0,10000], cov: 37596, corpus: 20
+[2025-01-20 10:28:19.72] [Worker 11] Sequence replayed from corpus file 5478396076555816292.txt (3/8)
+[2025-01-20 10:28:20.04] [Worker 12] Sequence replayed from corpus file 1163874557624931752.txt (2/8)
+[2025-01-20 10:28:20.34] [Worker 9] New coverage: 37679 instr, 8 contracts, 21 seqs in corpus
+[2025-01-20 10:28:20.35] [Worker 9] Sequence replayed from corpus file 8946889641599529240.txt (4/8)
+[2025-01-20 10:28:20.48]  Saved reproducer to echidna/coverage/8946889641599529240.txt
+[2025-01-20 10:28:20.50] [Worker 3] New coverage: 37679 instr, 8 contracts, 22 seqs in corpus
+[2025-01-20 10:28:20.50] [Worker 9] Sequence replayed from corpus file 5731076533078845848.txt (5/8)
+[2025-01-20 10:28:20.52] [Worker 3] Sequence replayed from corpus file 761754034629866210.txt (3/8)
+[2025-01-20 10:28:20.72] [Worker 13] New coverage: 37679 instr, 8 contracts, 23 seqs in corpus
+[2025-01-20 10:28:20.72]  Saved reproducer to echidna/coverage/761754034629866210.txt
+[2025-01-20 10:28:20.73] [Worker 13] Sequence replayed from corpus file 2511671180667959884.txt (1/8)
+[2025-01-20 10:28:20.91]  Saved reproducer to echidna/coverage/2511671180667959884.txt
+[2025-01-20 10:28:21.35] [Worker 7] New coverage: 37679 instr, 8 contracts, 24 seqs in corpus
+[2025-01-20 10:28:21.35] [Worker 7] Sequence replayed from corpus file 7459852005196808514.txt (2/8)
+[2025-01-20 10:28:21.52]  Saved reproducer to echidna/coverage/7459852005196808514.txt
+[2025-01-20 10:28:21.81] [Worker 4] New coverage: 37685 instr, 8 contracts, 25 seqs in corpus
+[2025-01-20 10:28:21.81] [Worker 4] Sequence replayed from corpus file 8165009580976729712.txt (3/8)
+[2025-01-20 10:28:21.88] INFO: Performing RPC: <EVM.Query: fetch contract 0xD16d567549A2a2a2005aEACf7fB193851603dd70EmptyBase>
+[2025-01-20 10:28:21.88] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0xD16d567549A2a2a2005aEACf7fB193851603dd70EmptyBase>
+[2025-01-20 10:28:22.09]  Saved reproducer to echidna/coverage/8165009580976729712.txt
+[2025-01-20 10:28:22.78] [status] tests: 0/3, fuzzing: 704/100000, values: [12254,0,10000], cov: 37685, corpus: 25
+[2025-01-20 10:28:22.89] [Worker 2] New coverage: 37689 instr, 8 contracts, 26 seqs in corpus
+[2025-01-20 10:28:22.92] [Worker 15] New coverage: 37689 instr, 8 contracts, 27 seqs in corpus
+[2025-01-20 10:28:22.93] [Worker 15] Sequence replayed from corpus file 6111863819841834015.txt (1/4)
+[2025-01-20 10:28:23.04] [Worker 8] New coverage: 37703 instr, 8 contracts, 28 seqs in corpus
+[2025-01-20 10:28:23.05] [Worker 8] Sequence replayed from corpus file 8693932646922712582.txt (1/8)
+[2025-01-20 10:28:23.09]  Saved reproducer to echidna/coverage/69732457770540092.txt
+[2025-01-20 10:28:23.21] [Worker 13] Sequence replayed from corpus file 1679415339745260125.txt (2/8)
+[2025-01-20 10:28:23.72]  Saved reproducer to echidna/coverage/6111863819841834015.txt
+[2025-01-20 10:28:23.75] [Worker 12] Sequence replayed from corpus file 1661752117125368438.txt (3/8)
+[2025-01-20 10:28:23.90]  Saved reproducer to echidna/coverage/8693932646922712582.txt
+[2025-01-20 10:28:24.07] [Worker 11] Sequence replayed from corpus file 8932081746776499581.txt (4/8)
+[2025-01-20 10:28:24.17] [Worker 6] Sequence replayed from corpus file 3134060879077052208.txt (2/8)
+[2025-01-20 10:28:24.26] [Worker 14] New coverage: 37703 instr, 8 contracts, 29 seqs in corpus
+[2025-01-20 10:28:24.27] [Worker 14] Sequence replayed from corpus file 80965372599710489.txt (1/8)
+[2025-01-20 10:28:24.60]  Saved reproducer to echidna/coverage/80965372599710489.txt
+[2025-01-20 10:28:24.92] [Worker 13] Sequence replayed from corpus file 7223829270418542672.txt (3/8)
+[2025-01-20 10:28:25.79] [status] tests: 0/3, fuzzing: 1103/100000, values: [12254,0,10000], cov: 37703, corpus: 29
+[2025-01-20 10:28:25.84] [Worker 12] Sequence replayed from corpus file 1620528226583750973.txt (4/8)
+[2025-01-20 10:28:26.14] INFO: Performing RPC: <EVM.Query: fetch contract 0x00000000000000000000000000000002fFffFffDEmptyBase>
+[2025-01-20 10:28:26.14] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x00000000000000000000000000000002fFffFffDEmptyBase>
+[2025-01-20 10:28:26.17] [Worker 9] Sequence replayed from corpus file 1175411167083559495.txt (6/8)
+[2025-01-20 10:28:27.13] INFO: Performing RPC: <EVM.Query: fetch contract 0x212224D2F2d262cd093eE13240ca4873fcCBbA3CEmptyBase>
+[2025-01-20 10:28:27.13] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x212224D2F2d262cd093eE13240ca4873fcCBbA3CEmptyBase>
+[2025-01-20 10:28:27.10] [Worker 12] Sequence replayed from corpus file 4442115586472536803.txt (5/8)
+[2025-01-20 10:28:27.19] [Worker 10] New coverage: 37703 instr, 8 contracts, 30 seqs in corpus
+[2025-01-20 10:28:27.23] [Worker 10] Sequence replayed from corpus file 4344300327657225577.txt (3/8)
+[2025-01-20 10:28:27.27] [Worker 12] Sequence replayed from corpus file 3144085286957301398.txt (6/8)
+[2025-01-20 10:28:27.40]  Saved reproducer to echidna/coverage/4344300327657225577.txt
+[2025-01-20 10:28:27.40] [Worker 12] Sequence replayed from corpus file 6355748054261357252.txt (7/8)
+[2025-01-20 10:28:27.63] [Worker 12] Sequence replayed from corpus file 4396566135770050404.txt (8/8)
+[2025-01-20 10:28:27.71] [Worker 10] Sequence replayed from corpus file 4060913019494541633.txt (4/8)
+[2025-01-20 10:28:27.97] [Worker 14] Sequence replayed from corpus file 1372451758941803082.txt (2/8)
+[2025-01-20 10:28:27.99] [Worker 15] Sequence replayed from corpus file 2406458870965765178.txt (2/4)
+[2025-01-20 10:28:28.10] [Worker 10] Sequence replayed from corpus file 415451484385556127.txt (5/8)
+[2025-01-20 10:28:28.48] [Worker 5] New coverage: 37703 instr, 8 contracts, 31 seqs in corpus
+[2025-01-20 10:28:28.49] [Worker 5] Sequence replayed from corpus file 6476428067546592007.txt (2/8)
+[2025-01-20 10:28:28.70] [Worker 4] Sequence replayed from corpus file 7590094866429375736.txt (4/8)
+[2025-01-20 10:28:28.82] [status] tests: 0/3, fuzzing: 1305/100000, values: [12254,0,10000], cov: 37703, corpus: 31
+[2025-01-20 10:28:28.88]  Saved reproducer to echidna/coverage/6476428067546592007.txt
+[2025-01-20 10:28:29.11] [Worker 11] Sequence replayed from corpus file 2508962920028811310.txt (5/8)
+[2025-01-20 10:28:29.19] [Worker 9] Sequence replayed from corpus file 2621791425588743631.txt (7/8)
+[2025-01-20 10:28:30.14] [Worker 11] Sequence replayed from corpus file 5293257765212911007.txt (6/8)
+[2025-01-20 10:28:30.99] INFO: Performing RPC: <EVM.Query: fetch contract 0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758EmptyBase>
+[2025-01-20 10:28:30.99] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758EmptyBase>
+[2025-01-20 10:28:31.07] [Worker 15] Sequence replayed from corpus file 8322063686014879384.txt (3/4)
+[2025-01-20 10:28:31.80] [Worker 6] Sequence replayed from corpus file 1310032730504777795.txt (3/8)
+[2025-01-20 10:28:31.83] [status] tests: 0/3, fuzzing: 2134/100000, values: [12254,0,10000], cov: 37703, corpus: 31
+[2025-01-20 10:28:32.53] [Worker 9] Sequence replayed from corpus file 1327463451548914166.txt (8/8)
+[2025-01-20 10:28:32.54] [Worker 13] Sequence replayed from corpus file 1312299682124816711.txt (4/8)
+[2025-01-20 10:28:33.31] [Worker 7] Sequence replayed from corpus file 2405299284577607947.txt (3/8)
+[2025-01-20 10:28:33.62] [Worker 14] Sequence replayed from corpus file 1447214320805927939.txt (3/8)
+[2025-01-20 10:28:33.71] [Worker 14] Sequence replayed from corpus file 4990851838237184166.txt (4/8)
+[2025-01-20 10:28:33.97] [Worker 3] Sequence replayed from corpus file 7896071679918287203.txt (4/8)
+[2025-01-20 10:28:34.12] [Worker 8] Sequence replayed from corpus file 6734208241713975748.txt (2/8)
+[2025-01-20 10:28:34.86] [status] tests: 0/3, fuzzing: 2235/100000, values: [12254,0,10000], cov: 37793, corpus: 32
+[2025-01-20 10:28:34.85] [Worker 10] New coverage: 37793 instr, 8 contracts, 32 seqs in corpus
+[2025-01-20 10:28:34.85] [Worker 10] Sequence replayed from corpus file 7334739005712974432.txt (6/8)
+[2025-01-20 10:28:34.95] INFO: Performing RPC: <EVM.Query: fetch contract 0x2a07706473244BC757E10F2a9E86fB532828afe3EmptyBase>
+[2025-01-20 10:28:34.95] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x2a07706473244BC757E10F2a9E86fB532828afe3EmptyBase>
+[2025-01-20 10:28:35.02] [Worker 3] Sequence replayed from corpus file 6836526038427472261.txt (5/8)
+[2025-01-20 10:28:35.07]  Saved reproducer to echidna/coverage/7334739005712974432.txt
+[2025-01-20 10:28:36.13] [Worker 13] New coverage: 37793 instr, 8 contracts, 33 seqs in corpus
+[2025-01-20 10:28:36.14] [Worker 13] Sequence replayed from corpus file 7861211475678334709.txt (5/8)
+[2025-01-20 10:28:36.56]  Saved reproducer to echidna/coverage/7861211475678334709.txt
+[2025-01-20 10:28:36.87] [Worker 5] Sequence replayed from corpus file 1626249832463744426.txt (3/8)
+[2025-01-20 10:28:36.94] [Worker 4] Sequence replayed from corpus file 2498903223275231775.txt (5/8)
+[2025-01-20 10:28:37.11] [Worker 15] New coverage: 37793 instr, 8 contracts, 34 seqs in corpus
+[2025-01-20 10:28:37.12] [Worker 15] Sequence replayed from corpus file 4395092531082421696.txt (4/4)
+[2025-01-20 10:28:37.26] [Worker 6] Sequence replayed from corpus file 7028174470822476811.txt (4/8)
+[2025-01-20 10:28:37.38] [Worker 6] Sequence replayed from corpus file 6304107720139064584.txt (5/8)
+[2025-01-20 10:28:37.42]  Saved reproducer to echidna/coverage/4395092531082421696.txt
+[2025-01-20 10:28:37.88] [status] tests: 0/3, fuzzing: 3196/100000, values: [12254,0,10000], cov: 37793, corpus: 34
+[2025-01-20 10:28:38.81] [Worker 14] Sequence replayed from corpus file 2506173043297020017.txt (5/8)
+[2025-01-20 10:28:38.90] [Worker 11] Sequence replayed from corpus file 125756493266825030.txt (7/8)
+[2025-01-20 10:28:40.67] [Worker 0] New coverage: 37809 instr, 8 contracts, 35 seqs in corpus
+[2025-01-20 10:28:40.83]  Saved reproducer to echidna/coverage/7767488252291410085.txt
+[2025-01-20 10:28:40.92] [status] tests: 0/3, fuzzing: 4000/100000, values: [12254,0,10000], cov: 37809, corpus: 35
+[2025-01-20 10:28:41.27] [Worker 6] Sequence replayed from corpus file 413257105900378868.txt (6/8)
+[2025-01-20 10:28:41.64] [Worker 10] Sequence replayed from corpus file 6886933747903814043.txt (7/8)
+[2025-01-20 10:28:41.82] [Worker 13] Sequence replayed from corpus file 1506146278962219745.txt (6/8)
+[2025-01-20 10:28:43.15] [Worker 5] Sequence replayed from corpus file 8454844902074701775.txt (4/8)
+[2025-01-20 10:28:43.94] [status] tests: 0/3, fuzzing: 4202/100000, values: [12254,0,10000], cov: 37809, corpus: 35
+[2025-01-20 10:28:43.93] [Worker 11] Sequence replayed from corpus file 6164723837343654433.txt (8/8)
+[2025-01-20 10:28:44.07] [Worker 3] Sequence replayed from corpus file 4285796562565820324.txt (6/8)
+[2025-01-20 10:28:44.21] [Worker 4] Sequence replayed from corpus file 8448712378196719838.txt (6/8)
+[2025-01-20 10:28:44.59] [Worker 6] Sequence replayed from corpus file 4284430380841278992.txt (7/8)
+[2025-01-20 10:28:45.29] [Worker 7] Sequence replayed from corpus file 8856049018394573473.txt (4/8)
+[2025-01-20 10:28:45.79] [Worker 14] Sequence replayed from corpus file 887002754449779170.txt (6/8)
+[2025-01-20 10:28:46.08] [Worker 8] Sequence replayed from corpus file 6857328675376464512.txt (3/8)
+[2025-01-20 10:28:46.33] [Worker 10] Sequence replayed from corpus file 3001840966807634776.txt (8/8)
+[2025-01-20 10:28:46.89] [Worker 13] Sequence replayed from corpus file 2409029271566380496.txt (7/8)
+[2025-01-20 10:28:46.96] [status] tests: 0/3, fuzzing: 4505/100000, values: [12254,0,10000], cov: 37816, corpus: 35
+[2025-01-20 10:28:47.21] [Worker 6] Sequence replayed from corpus file 6019068374284863941.txt (8/8)
+[2025-01-20 10:28:47.22] [Worker 13] Sequence replayed from corpus file 3667755347859493656.txt (8/8)
+[2025-01-20 10:28:49.63] [Worker 14] Sequence replayed from corpus file 3758317978936019710.txt (7/8)
+[2025-01-20 10:28:49.83] [Worker 4] Sequence replayed from corpus file 2169556138560673525.txt (7/8)
+[2025-01-20 10:28:50.01] [status] tests: 0/3, fuzzing: 4909/100000, values: [12254,0,10000], cov: 37816, corpus: 35
+[2025-01-20 10:28:50.74] [Worker 5] Sequence replayed from corpus file 6961483551711870408.txt (5/8)
+[2025-01-20 10:28:50.94] [Worker 5] Sequence replayed from corpus file 7189206213060014780.txt (6/8)
+[2025-01-20 10:28:51.20] [Worker 8] New coverage: 37816 instr, 8 contracts, 36 seqs in corpus
+[2025-01-20 10:28:51.20] [Worker 8] Sequence replayed from corpus file 5095649458181297307.txt (4/8)
+[2025-01-20 10:28:51.53]  Saved reproducer to echidna/coverage/5095649458181297307.txt
+[2025-01-20 10:28:53.04] [status] tests: 0/3, fuzzing: 7559/100000, values: [12254,0,10000], cov: 37816, corpus: 36
+[2025-01-20 10:28:53.06] [Worker 7] Sequence replayed from corpus file 7563814358766821109.txt (5/8)
+[2025-01-20 10:28:53.24] [Worker 3] Sequence replayed from corpus file 3886607798022711033.txt (7/8)
+[2025-01-20 10:28:56.08] [status] tests: 0/3, fuzzing: 8631/100000, values: [12254,0,10000], cov: 37816, corpus: 36
+[2025-01-20 10:28:57.09] [Worker 5] Sequence replayed from corpus file 7735123838632404671.txt (7/8)
+[2025-01-20 10:28:57.40] [Worker 14] Sequence replayed from corpus file 1914670240007525655.txt (8/8)
+[2025-01-20 10:28:57.95] [Worker 8] Sequence replayed from corpus file 730416223623137575.txt (5/8)
+[2025-01-20 10:28:59.09] [status] tests: 0/3, fuzzing: 9338/100000, values: [12254,0,10000], cov: 37816, corpus: 36
+[2025-01-20 10:28:59.13] [Worker 7] Sequence replayed from corpus file 3207884808973808966.txt (6/8)
+[2025-01-20 10:28:59.20] [Worker 1] New maximum value of crytic_optimize_rounding_convert_to_assets_under_stated: 16456
+[2025-01-20 10:28:59.25] [Worker 4] Sequence replayed from corpus file 2611143212956541374.txt (8/8)
+[2025-01-20 10:28:59.32]  Saved reproducer to echidna/reproducers-optimizations/505193016601184586.txt
+[2025-01-20 10:29:00.31] [Worker 3] Sequence replayed from corpus file 373350767827096573.txt (8/8)
+[2025-01-20 10:29:00.38] INFO: Performing RPC: <EVM.Query: fetch contract 0x00000000000000000000000000000000FFFFfFFFEmptyBase>
+[2025-01-20 10:29:00.38] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x00000000000000000000000000000000FFFFfFFFEmptyBase>
+[2025-01-20 10:29:02.01] [Worker 8] New coverage: 37823 instr, 8 contracts, 37 seqs in corpus
+[2025-01-20 10:29:02.01] [Worker 8] Sequence replayed from corpus file 8098868171031672560.txt (6/8)
+[2025-01-20 10:29:02.12] [status] tests: 0/3, fuzzing: 10045/100000, values: [16456,0,10000], cov: 37823, corpus: 37
+[2025-01-20 10:29:02.40]  Saved reproducer to echidna/coverage/8098868171031672560.txt
+[2025-01-20 10:29:02.42] [Worker 1] New coverage: 37823 instr, 8 contracts, 38 seqs in corpus
+[2025-01-20 10:29:02.99]  Saved reproducer to echidna/coverage/3295197179219825016.txt
+[2025-01-20 10:29:03.51] [Worker 5] Sequence replayed from corpus file 783987866030387329.txt (8/8)
+[2025-01-20 10:29:04.19] [Worker 8] Sequence replayed from corpus file 5757975778671495030.txt (7/8)
+[2025-01-20 10:29:05.15] [status] tests: 0/3, fuzzing: 12248/100000, values: [16456,0,10000], cov: 37823, corpus: 38
+[2025-01-20 10:29:06.00] [Worker 7] Sequence replayed from corpus file 5379599830418817433.txt (7/8)
+[2025-01-20 10:29:08.19] [status] tests: 0/3, fuzzing: 14681/100000, values: [16456,0,10000], cov: 37823, corpus: 38
+[2025-01-20 10:29:11.23] [status] tests: 0/3, fuzzing: 15668/100000, values: [16456,0,10000], cov: 37823, corpus: 38
+[2025-01-20 10:29:12.62] [Worker 8] Sequence replayed from corpus file 252316264222985244.txt (8/8)
+[2025-01-20 10:29:13.05] [Worker 7] New coverage: 37839 instr, 8 contracts, 39 seqs in corpus
+[2025-01-20 10:29:13.08] [Worker 7] Sequence replayed from corpus file 892722600724631776.txt (8/8)
+[2025-01-20 10:29:13.14]  Saved reproducer to echidna/coverage/892722600724631776.txt
+[2025-01-20 10:29:14.27] [status] tests: 0/3, fuzzing: 16072/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:17.30] [status] tests: 0/3, fuzzing: 17734/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:20.39] [status] tests: 0/3, fuzzing: 19562/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:23.51] [status] tests: 0/3, fuzzing: 20435/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:26.53] [status] tests: 0/3, fuzzing: 21344/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:29.55] [status] tests: 0/3, fuzzing: 22354/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:32.56] [status] tests: 0/3, fuzzing: 22859/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:35.58] [status] tests: 0/3, fuzzing: 23869/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:38.58] [status] tests: 0/3, fuzzing: 24459/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:40.89] INFO: Performing RPC: <EVM.Query: fetch contract 0x0000000000000000000000000000000000000000EmptyBase>
+[2025-01-20 10:29:40.89] ERROR: Requested RPC but it is not configured: <EVM.Query: fetch contract 0x0000000000000000000000000000000000000000EmptyBase>
+[2025-01-20 10:29:41.63] [status] tests: 0/3, fuzzing: 24863/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:44.72] [status] tests: 0/3, fuzzing: 25772/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:47.91] [status] tests: 0/3, fuzzing: 26437/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:50.92] [status] tests: 0/3, fuzzing: 27470/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:53.96] [status] tests: 0/3, fuzzing: 28570/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:56.97] [status] tests: 0/3, fuzzing: 29281/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:29:59.98] [status] tests: 0/3, fuzzing: 30185/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:02.99] [status] tests: 0/3, fuzzing: 30690/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:06.00] [status] tests: 0/3, fuzzing: 31094/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:09.05] [status] tests: 0/3, fuzzing: 31988/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:12.05] [status] tests: 0/3, fuzzing: 33060/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:15.23] [status] tests: 0/3, fuzzing: 33441/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:18.23] [status] tests: 0/3, fuzzing: 34525/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:21.32] [status] tests: 0/3, fuzzing: 35506/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:24.33] [status] tests: 0/3, fuzzing: 36105/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:27.36] [status] tests: 0/3, fuzzing: 37260/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:30.37] [status] tests: 0/3, fuzzing: 37765/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:33.44] [status] tests: 0/3, fuzzing: 38551/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:36.47] [status] tests: 0/3, fuzzing: 39359/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:39.54] [status] tests: 0/3, fuzzing: 40027/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:42.60] [status] tests: 0/3, fuzzing: 40936/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:45.63] [status] tests: 0/3, fuzzing: 41715/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:48.68] [status] tests: 0/3, fuzzing: 42675/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:51.68] [status] tests: 0/3, fuzzing: 43786/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:54.70] [status] tests: 0/3, fuzzing: 44775/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:30:57.75] [status] tests: 0/3, fuzzing: 45671/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:31:00.79] [status] tests: 0/3, fuzzing: 46722/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:31:03.84] [status] tests: 0/3, fuzzing: 47765/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:31:06.99] [status] tests: 0/3, fuzzing: 48745/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:31:10.00] [status] tests: 0/3, fuzzing: 49856/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:31:13.00] [status] tests: 0/3, fuzzing: 51148/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:31:16.02] [status] tests: 0/3, fuzzing: 52057/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:31:19.04] [status] tests: 0/3, fuzzing: 53239/100000, values: [16456,0,10000], cov: 37839, corpus: 39
+[2025-01-20 10:31:20.78] [Worker 4] New coverage: 37847 instr, 8 contracts, 40 seqs in corpus
+[2025-01-20 10:31:21.02]  Saved reproducer to echidna/coverage/2904371014853665052.txt
+[2025-01-20 10:31:22.12] [status] tests: 0/3, fuzzing: 54148/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:25.17] [status] tests: 0/3, fuzzing: 54956/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:28.18] [status] tests: 0/3, fuzzing: 55966/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:31.18] [status] tests: 0/3, fuzzing: 56952/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:34.21] [status] tests: 0/3, fuzzing: 57848/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:37.26] [status] tests: 0/3, fuzzing: 59161/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:40.30] [status] tests: 0/3, fuzzing: 60148/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:43.35] [status] tests: 0/3, fuzzing: 61057/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:46.39] [status] tests: 0/3, fuzzing: 62378/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:49.42] [status] tests: 0/3, fuzzing: 63489/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:52.46] [status] tests: 0/3, fuzzing: 64196/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:55.46] [status] tests: 0/3, fuzzing: 65543/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:31:58.47] [status] tests: 0/3, fuzzing: 66386/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:01.49] [status] tests: 0/3, fuzzing: 67684/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:04.53] [status] tests: 0/3, fuzzing: 68332/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:07.55] [status] tests: 0/3, fuzzing: 69746/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:10.58] [status] tests: 0/3, fuzzing: 70251/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:13.61] [status] tests: 0/3, fuzzing: 70958/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:16.64] [status] tests: 0/3, fuzzing: 72223/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:19.65] [status] tests: 0/3, fuzzing: 73031/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:22.66] [status] tests: 0/3, fuzzing: 73830/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:25.69] [status] tests: 0/3, fuzzing: 74678/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:28.72] [status] tests: 0/3, fuzzing: 75492/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:31.82] [status] tests: 0/3, fuzzing: 76558/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:34.83] [status] tests: 0/3, fuzzing: 77541/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:37.83] [status] tests: 0/3, fuzzing: 78450/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:40.85] [status] tests: 0/3, fuzzing: 79647/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:43.86] [status] tests: 0/3, fuzzing: 80859/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:46.96] [status] tests: 0/3, fuzzing: 81716/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:50.01] [status] tests: 0/3, fuzzing: 82654/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:53.01] [status] tests: 0/3, fuzzing: 83497/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:56.06] [status] tests: 0/3, fuzzing: 85044/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:32:59.10] [status] tests: 0/3, fuzzing: 86142/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+[2025-01-20 10:33:00.10] [Worker 10] Test limit reached. Stopping.
+[2025-01-20 10:33:00.10] [Worker 13] Test limit reached. Stopping.
+[2025-01-20 10:33:00.34] [Worker 0] Test limit reached. Stopping.
+[2025-01-20 10:33:00.36] [Worker 11] Test limit reached. Stopping.
+[2025-01-20 10:33:00.37] [Worker 4] Test limit reached. Stopping.
+[2025-01-20 10:33:00.37] [Worker 2] Test limit reached. Stopping.
+[2025-01-20 10:33:00.43] [Worker 12] Test limit reached. Stopping.
+[2025-01-20 10:33:00.43] [Worker 6] Test limit reached. Stopping.
+[2025-01-20 10:33:00.66] [Worker 7] Test limit reached. Stopping.
+[2025-01-20 10:33:00.67] [Worker 5] Test limit reached. Stopping.
+[2025-01-20 10:33:00.69] [Worker 15] Crashed:
+
+Prelude.init: empty list
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/List.hs:1644:3 in base:GHC.List
+  errorEmptyList, called at libraries/base/GHC/List.hs:180:28 in base:GHC.List
+  init, called at lib/Echidna/Shrink.hs:76:21 in echidna-2.2.6-7vzRLMdHp2sAhS4FYYfNlO:Echidna.Shrink
+
+Please report it to https://github.com/crytic/echidna/issues
+[2025-01-20 10:33:00.72] [Worker 8] Test limit reached. Stopping.
+[2025-01-20 10:33:00.81] [Worker 14] Test limit reached. Stopping.
+[2025-01-20 10:33:00.84] [Worker 1] Test limit reached. Stopping.
+[2025-01-20 10:33:00.88] [Worker 3] Test limit reached. Stopping.
+[2025-01-20 10:33:00.89] [Worker 9] Test limit reached. Stopping.
+[2025-01-20 10:33:00.89] [status] tests: 3/3, fuzzing: 87708/100000, values: [16456,0,10000], cov: 37847, corpus: 40
+crytic_optimize_rounding_convert_to_assets_under_stated: max value: 16456
+
+  Call sequence, shrinking 1/100000:
+    *wait* Time delay: 201138 seconds Block delay: 95975
+    CryticTester.property_flag_supply_attack_reverse() from: 0x0000000000000000000000000000000000010000 Time delay: 561597 seconds Block delay: 25223
+    CryticTester.property_previewMint_shouldNeverRevert(340282366920938463463374607431768211452) from: 0x0000000000000000000000000000000000020000 Time delay: 275394 seconds Block delay: 13782
+    CryticTester.IBGTVault_redeem_clamped_2(115792089237316195423570985008687907853269984665640564039457584007911596747873) from: 0x0000000000000000000000000000000000030000 Time delay: 346950 seconds Block delay: 8236
+    *wait* Time delay: 483092 seconds Block delay: 84701
+    CryticTester.property_previewWithdraw_shouldNeverRevert(1000000000000) from: 0x0000000000000000000000000000000000020000 Time delay: 31 seconds Block delay: 1522
+    *wait* Time delay: 856160 seconds Block delay: 9868
+    CryticTester.property_storageBalanceOutOfSync() from: 0x0000000000000000000000000000000000010000 Time delay: 244724 seconds Block delay: 7
+    CryticTester.IBGTVault_withdraw_clamped_2(1127) from: 0x0000000000000000000000000000000000020000 Time delay: 478623 seconds Block delay: 27
+    *wait* Time delay: 129091 seconds Block delay: 60803
+    CryticTester.target_MockRewards(267922993968347524690059229) from: 0x0000000000000000000000000000000000010000 Time delay: 273777 seconds Block delay: 35088
+    *wait* Time delay: 322326 seconds Block delay: 13188
+    CryticTester.property_previewDeposit_shouldNeverRevert(1) from: 0x0000000000000000000000000000000000030000 Time delay: 193409 seconds Block delay: 52316
+    CryticTester.property_previewRedeem_shouldNeverRevert(110952018459583204258492944476367963135) from: 0x0000000000000000000000000000000000010000 Time delay: 1775 seconds Block delay: 45261
+    *wait* Time delay: 379552 seconds Block delay: 24224
+    CryticTester.property_ibgt_vault_total_assets_never_reverts() from: 0x0000000000000000000000000000000000020000 Time delay: 38230 seconds Block delay: 35265
+    *wait* Time delay: 128967 seconds Block delay: 28697
+    CryticTester.property_previewMint_shouldNeverRevert(77) from: 0x0000000000000000000000000000000000010000 Time delay: 193408 seconds Block delay: 5140
+    CryticTester.property_previewMint_shouldNeverRevert(259737083964661509905391962818129932726) from: 0x0000000000000000000000000000000000020000 Time delay: 389576 seconds Block delay: 1088
+    CryticTester.property_previewDeposit_shouldNeverRevert(192) from: 0x0000000000000000000000000000000000010000 Time delay: 322183 seconds Block delay: 561
+    *wait* Time delay: 451288 seconds Block delay: 88016
+    CryticTester.target_MockRewards(189524887582805405997231019) from: 0x0000000000000000000000000000000000010000 Time delay: 1775 seconds Block delay: 5011
+    CryticTester.property_previewRedeem_shouldNeverRevert(324224889787082721292204727257802687802) from: 0x0000000000000000000000000000000000020000 Time delay: 65535 seconds Block delay: 47683
+    CryticTester.IBGTVault_redeem_clamped_2(115792089237316195423570985008687907853269984665640564039457584007913129639873) from: 0x0000000000000000000000000000000000020000 Time delay: 69 seconds Block delay: 5009
+    CryticTester.property_totalSupply_ShouldNeverRevert() from: 0x0000000000000000000000000000000000030000 Time delay: 225906 seconds Block delay: 12493
+    *wait* Time delay: 198598 seconds Block delay: 7323
+    CryticTester.property_additions_should_never_cause_ppfs_loss() from: 0x0000000000000000000000000000000000030000 Time delay: 49735 seconds Block delay: 32737
+    CryticTester.IBGTVault_setPairThreshold_clamped(0x1fffffffe,115012390675902521174166516420880022621885060173068029377815905118502056001431,115792089237316195423570985008687907853269984665640564039457584007913129639935) from: 0x0000000000000000000000000000000000020000 Time delay: 24867 seconds Block delay: 22909
+    CryticTester.property_previewWithdraw_shouldNeverRevert(238702819272310331647657305113941386826) from: 0x0000000000000000000000000000000000020000 Time delay: 512439 seconds Block delay: 59983
+    CryticTester.IBGTVault_redeem_clamped(4369999,30174310945613168862451689549077755579853970678794496437627728462648291873781) from: 0x0000000000000000000000000000000000030000 Time delay: 521319 seconds Block delay: 35248
+    CryticTester.MAX_ROUNDING_ERROR() from: 0x0000000000000000000000000000000000030000 Time delay: 67960 seconds Block delay: 41099
+    CryticTester.IBGTVault_withdraw_clamped_2(84660354792833489208173081165673113104294346785375412393992979254154502189103) from: 0x0000000000000000000000000000000000030000 Time delay: 166184 seconds Block delay: 30011
+    CryticTester.property_previewMint_shouldNeverRevert(27902414089246742407735942948998664458) from: 0x0000000000000000000000000000000000010000 Time delay: 305572 seconds Block delay: 15369
+    CryticTester.IBGTVault_setPairThreshold_clamped(0x1fffffffe,1524785991,0) from: 0x0000000000000000000000000000000000030000 Time delay: 198598 seconds Block delay: 9920
+    CryticTester.infraredCollateralVault_internalizeDonations_clamped(1681904609438377163314) from: 0x0000000000000000000000000000000000020000 Time delay: 33605 seconds Block delay: 53451
+    *wait* Time delay: 73040 seconds Block delay: 59981
+    CryticTester.IBGTVault_redeem_clamped_2(826) from: 0x0000000000000000000000000000000000020000 Time delay: 73040 seconds Block delay: 38100
+    CryticTester.property_previewDeposit_shouldNeverRevert(0) from: 0x0000000000000000000000000000000000030000 Time delay: 322374 seconds Block delay: 23722
+    CryticTester.MAX_ROUNDING_ERROR() from: 0x0000000000000000000000000000000000020000 Time delay: 66543 seconds Block delay: 53011
+    CryticTester.property_getPrice_shouldNeverRevert() from: 0x0000000000000000000000000000000000030000
+    *wait* Time delay: 950665 seconds Block delay: 26087
+    CryticTester.property_previewDeposit_shouldNeverRevert(50799323403978001926471582688993602909) from: 0x0000000000000000000000000000000000020000 Time delay: 519847 seconds Block delay: 11826
+    CryticTester.IBGTVault_setPerformanceFee_clamped(48791) from: 0x0000000000000000000000000000000000030000 Time delay: 66543 seconds Block delay: 35248
+    *wait* Time delay: 78643 seconds Block delay: 32607
+    CryticTester.IBGTVault_deposit_clamped_2(16227481427540435488959381871520004894493405319226662537113296830569010044433) from: 0x0000000000000000000000000000000000030000 Time delay: 111322 seconds Block delay: 59552
+
+Traces:
+call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::balanceOf(CryticTester) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-shared/mocks/MockSwapper.sol:35)
+ └╴← (20000356482878500291117)
+call UpgradeableProxy::[unknown method](0xef8b30f70000000000000000000000000000000000000000000003f1c4a12c0e5dbc2f59) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-shared/mocks/MockSwapper.sol:35)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::previewDeposit(18626933424715835649881) (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(2) <no source map>
+ │  │  └╴error Revert («Index out of bounds») (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/BeforeAfter.sol:49)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call MockInfraredVault::earned(address,address)(UpgradeableProxy, 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (0)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::decimals() <no source map>
+ │  │  └╴← (18)
+ │  ├╴call MockInfraredVault::earned(address,address)(UpgradeableProxy, 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (0)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a::decimals() <no source map>
+ │  │  └╴← (18)
+ │  └╴← (1131895563737801932)
+ └╴← (1131895563737801932)
+call 0x2e234DAe75C793f67A35089C9d99245E1C58470b::balanceOf(UpgradeableProxy) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:61)
+ └╴← (0)
+call UpgradeableProxy::[unknown method](0x01e1d114) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:65)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::totalAssets() (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(2) <no source map>
+ │  │  └╴error Revert («Index out of bounds») (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/BeforeAfter.sol:49)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call MockInfraredVault::earned(address,address)(UpgradeableProxy, 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (0)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::decimals() <no source map>
+ │  │  └╴← (18)
+ │  ├╴call MockInfraredVault::earned(address,address)(UpgradeableProxy, 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (0)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a::decimals() <no source map>
+ │  │  └╴← (18)
+ │  └╴← (1631765991001368529472)
+ └╴← (1631765991001368529472)
+call UpgradeableProxy::[unknown method](0x18160ddd) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:69)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::totalSupply() (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  └╴← (99156884504774242)
+ └╴← (99156884504774242)
+call MockInfraredVault::stakedBalances(address)(UpgradeableProxy) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:74)
+ └╴← (1631656309520542871388)
+call UpgradeableProxy::[unknown method](0x70a082310000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e1496) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:76)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::balanceOf(CryticTester) (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  └╴← (87753807093442268)
+ └╴← (87753807093442268)
+call UpgradeableProxy::[unknown method](0xf8b2cb4f0000000000000000000000002e234dae75c793f67a35089c9d99245e1c58470b) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:78)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::getBalance(0x2e234DAe75C793f67A35089C9d99245E1C58470b) (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  └╴← (0)
+ └╴← (0)
+call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::balanceOf(CryticTester) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:83)
+ └╴← (20000356482878500291117)
+call MockBeraborrowCore::feeReceiver()() (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:84)
+ └╴← (0x0000000000000000000000000000000333333333)
+call 0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9::balanceOf(0x0000000000000000000000000000000333333333) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:84)
+ └╴← (0)
+call UpgradeableProxy::[unknown method](0x6e553f650000000000000000000000000000000000000000000003f1c4a12c0e5dbc2f590000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e1496) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-shared/mocks/MockSwapper.sol:35)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::deposit(18626933424715835649881, CryticTester) (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(2) <no source map>
+ │  │  └╴error Revert («Index out of bounds») (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/BeforeAfter.sol:49)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::balanceOf(UpgradeableProxy) <no source map>
+ │  │  └╴← (8318095390561622836686)
+ │  ├╴call 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a::balanceOf(UpgradeableProxy) <no source map>
+ │  │  └╴← (109681480825658084)
+ │  ├╴call MockInfraredVault::getReward()() <no source map>
+ │  │  └╴← 0x
+ │  ├╴call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::balanceOf(UpgradeableProxy) <no source map>
+ │  │  └╴← (8318095390561622836686)
+ │  ├╴call 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a::balanceOf(UpgradeableProxy) <no source map>
+ │  │  └╴← (109681480825658084)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(2) <no source map>
+ │  │  └╴error Revert («Index out of bounds») (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/BeforeAfter.sol:49)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call MockInfraredVault::earned(address,address)(UpgradeableProxy, 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (0)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::decimals() <no source map>
+ │  │  └╴← (18)
+ │  ├╴call MockInfraredVault::earned(address,address)(UpgradeableProxy, 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (0)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a::decimals() <no source map>
+ │  │  └╴← (18)
+ │  ├╴call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::transferFrom(CryticTester, UpgradeableProxy, 18626933424715835649881) <no source map>
+ │  │  ├╴emit Transfer(from=CryticTester, to=UpgradeableProxy, value=18626933424715835649881) <no source map>
+ │  │  └╴← (true)
+ │  ├╴emit Transfer(from=0x0000000000000000000000000000000000000000, to=CryticTester, value=1131895563737801932) <no source map>
+ │  ├╴emit Deposit(sender=CryticTester, owner=CryticTester, assets=18626933424715835649881, shares=1131895563737801932) <no source map>
+ │  ├╴call MockInfraredVault::stake(uint256)(18626933424715835649881) <no source map>
+ │  │  ├╴call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::transferFrom(UpgradeableProxy, MockInfraredVault, 18626933424715835649881) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/BeforeAfter.sol:49)
+ │  │  │  ├╴emit Transfer(from=UpgradeableProxy, to=MockInfraredVault, value=18626933424715835649881) <no source map>
+ │  │  │  └╴← (true)
+ │  │  ├╴emit Staked(user=UpgradeableProxy, amount=18626933424715835649881) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/BeforeAfter.sol:49)
+ │  │  └╴← 0x
+ │  └╴← (1131895563737801932)
+ └╴← (1131895563737801932)
+call 0x2e234DAe75C793f67A35089C9d99245E1C58470b::balanceOf(UpgradeableProxy) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:86)
+ └╴← (0)
+call UpgradeableProxy::[unknown method](0x01e1d114) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:89)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::totalAssets() (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(2) <no source map>
+ │  │  └╴error Revert («Index out of bounds») (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/BeforeAfter.sol:49)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call MockInfraredVault::earned(address,address)(UpgradeableProxy, 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (0)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::decimals() <no source map>
+ │  │  └╴← (18)
+ │  ├╴call MockInfraredVault::earned(address,address)(UpgradeableProxy, 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (0)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a::decimals() <no source map>
+ │  │  └╴← (18)
+ │  └╴← (20258699415717204179353)
+ └╴← (20258699415717204179353)
+call UpgradeableProxy::[unknown method](0x18160ddd) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:93)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::totalSupply() (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  └╴← (1231052448242576174)
+ └╴← (1231052448242576174)
+call MockInfraredVault::stakedBalances(address)(UpgradeableProxy) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:94)
+ └╴← (20258589734236378521269)
+call UpgradeableProxy::[unknown method](0x70a082310000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e1496) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:98)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::balanceOf(CryticTester) (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  └╴← (1219649370831244200)
+ └╴← (1219649370831244200)
+call UpgradeableProxy::[unknown method](0xf8b2cb4f0000000000000000000000002e234dae75c793f67a35089c9d99245e1c58470b) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:100)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::getBalance(0x2e234DAe75C793f67A35089C9d99245E1C58470b) (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  └╴← (0)
+ └╴← (0)
+call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::balanceOf(CryticTester) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:101)
+ └╴← (1373423058162664641236)
+call MockBeraborrowCore::feeReceiver()() (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:103)
+ └╴← (0x0000000000000000000000000000000333333333)
+call 0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9::balanceOf(0x0000000000000000000000000000000333333333) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/Setup.sol:102)
+ └╴← (0)
+
+crytic_optimize_rounding_convert_to_assets_over_stated: max value: 0
+Call sequence:
+(no transactions)
+crytic_optimize_rounding_convert_to_assets_under_stated_bps: max value: 10000
+
+  Call sequence, shrinking 0/100000:
+    CryticTester.target_MockRewards(3483653400108269) from: 0x0000000000000000000000000000000000010000
+    *wait* Time delay: 374164 seconds Block delay: 4770
+    CryticTester.property_flag_supply_attack() from: 0x0000000000000000000000000000000000010000 Time delay: 44 seconds Block delay: 50707
+
+Traces:
+call UpgradeableProxy::[unknown method](0x01e1d114) (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-shared/mocks/MockPriceFeed.sol:35)
+ ├╴delegatecall 0x03A6a84cD762D9707A21605b548aaaB891562aAb::totalAssets() (/Users/simonbusch/code/audit/beraborrow/blockend/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol:29)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(2) <no source map>
+ │  │  └╴error Revert («Index out of bounds») (/Users/simonbusch/code/audit/beraborrow/blockend/test/recon-lsp/BeforeAfter.sol:49)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(0) <no source map>
+ │  │  └╴← (0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f)
+ │  ├╴call MockInfraredVault::rewardTokens(uint256)(1) <no source map>
+ │  │  └╴← (0xF62849F9A0B5Bf2913b396098F7c7019b51A820a)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::oracleRecords(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (MockPriceFeed, 18, 86400, «», 0, false)
+ │  ├╴call MockPriceFeed::feedType(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (0x0000000000000000000000000000000000000000, false)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::isCollVault(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (false)
+ │  ├╴call MockInfraredVault::earned(address,address)(UpgradeableProxy, 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (3483653400108269)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f::decimals() <no source map>
+ │  │  └╴← (18)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::oracleRecords(address)(0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (MockPriceFeed, 18, 86400, «», 0, false)
+ │  ├╴call MockPriceFeed::feedType(address)(0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (0x0000000000000000000000000000000000000000, false)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::isCollVault(address)(0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (false)
+ │  ├╴call MockInfraredVault::earned(address,address)(UpgradeableProxy, 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (3483653400108269)
+ │  ├╴call MockBeraborrowCore::priceFeed()() <no source map>
+ │  │  └╴← (MockPriceFeed)
+ │  ├╴call MockPriceFeed::fetchPrice(address)(0xF62849F9A0B5Bf2913b396098F7c7019b51A820a) <no source map>
+ │  │  └╴← (1000000000000000000)
+ │  ├╴call 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a::decimals() <no source map>
+ │  │  └╴← (18)
+ │  └╴← (1006758287596210042)
+ └╴← (1006758287596210042)
+
+
+
+Unique instructions: 37847
+Unique codehashes: 8
+Corpus size: 40
+Seed: 5151502316591876463
+Total calls: 87708

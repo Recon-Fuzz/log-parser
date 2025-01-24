@@ -641,6 +641,77 @@ describe("Testing fuzz results for", () => {
       });
     });
   });
+
+  describe("Echidna fuzzer - 13 - call sequence with shrinking", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-13.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(
+        el.sequence,
+        "",
+        el.brokenProperty,
+        vmData
+      );
+      test("it should have the correct format", () => {
+        testFormat(format);
+      });
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      });
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+      test("it should have no empty strings as broken props", () => {
+        testAllBrokenPropsExist(el.brokenProperty);
+      });
+    });
+  });
+
+  describe("Echidna fuzzer - 14 - Optimization logs", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-13.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      const vmData = {
+        roll: false,
+        time: false,
+        prank: false,
+      };
+      const format = echidnaLogsToFunctions(
+        el.sequence,
+        "",
+        el.brokenProperty,
+        vmData
+      );
+      test("it should have the correct format", () => {
+        testFormat(format);
+      });
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      });
+      test("Format should include the broken property", () => {
+        expect(format.includes(el.brokenProperty)).toBe(true);
+      });
+      test("it should have no empty strings as broken props", () => {
+        testAllBrokenPropsExist(el.brokenProperty);
+      });
+      test("It should include the max value from Optimization", () => {
+        expect(format.includes(" // Max value:")).toBe(true);
+      })
+    });
+  });
 });
 
 function testEchidnaUnshrunkingLogs(
@@ -671,7 +742,7 @@ function testFormat(format: string) {
 //Make sure we only have 1 call sequence per broken property
 function testCleanTraces(traces: string) {
   expect(traces.includes("---End Trace---")).toBe(true);
-  const sequenceCount = (traces.match(/Call sequence:/g) || []).length;
+  const sequenceCount = (traces.match(/Call sequence/g) || []).length;
   expect(sequenceCount).toBe(1);
 }
 
