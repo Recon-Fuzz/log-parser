@@ -40,6 +40,7 @@ const markdownShell = (
 - Coverage: ${jobStats.coverage}
 - Failed: ${jobStats.failed}
 - Passed: ${jobStats.passed}
+- Number of tests: ${jobStats.numberOfTests}
 
 <details>
   <summary> <h2> Results </h2> </summary>
