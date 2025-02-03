@@ -1,0 +1,5 @@
+Call sequence:
+CryticTester.target_MockRewards(0)
+CryticTester.IBGTVault_redeem_clamped(0,0) Time delay: 1 seconds Block delay: 1
+
+---End Trace---
