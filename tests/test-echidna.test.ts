@@ -712,6 +712,36 @@ describe("Testing fuzz results for", () => {
       })
     });
   });
+  describe("Echidna fuzzer - 15 - identation", () => {
+    const dataEchidna = fs.readFileSync(
+      "./tests/test_data/echidna-14.txt",
+      "utf8"
+    );
+    const jobStatsEchidna = processLogs(dataEchidna, Fuzzer.ECHIDNA);
+
+    jobStatsEchidna.brokenProperties.forEach((el) => {
+      const vmData = {
+        roll: true,
+        time: true,
+        prank: true,
+      };
+      const format = echidnaLogsToFunctions(
+        el.sequence,
+        "",
+        el.brokenProperty,
+        vmData
+      );
+      test("it should have the correct format", () => {
+        testFormat(format);
+      });
+      test("it should have clean traces", () => {
+        testCleanTraces(el.sequence);
+      });
+      test("It should have the correct identation", () => {
+        expect(format.includes("  vm.roll(block.number + 1);")).toBe(true);
+      })
+    });
+  });
 });
 
 function testEchidnaUnshrunkingLogs(
