@@ -313,6 +313,34 @@ describe("Testing fuzz results for", () => {
       });
     });
   });
+
+  describe("Medusa fuzzer - 7 - it should format correctly", () => {
+    // Parse compressed addresses correctly: 0x20000 should be ok
+    const datamedusa = fs.readFileSync(
+      "./tests/test_data/medusa-7.txt",
+      "utf8"
+    );
+    const jobStatsmedusa = processLogs(datamedusa, Fuzzer.MEDUSA);
+    test("It should format correctly", () => {
+      jobStatsmedusa.brokenProperties.forEach((el, i) => {
+        const vmData = {
+          roll: true,
+          time: true,
+          prank: true,
+        };
+        const format = medusaLogsToFunctions(el.sequence, "", vmData);
+        console.log("format --> \n", format)
+        if (i === 0) {
+          expect(format.includes("0x20000")).toBe(true);
+          expect(format.includes("0x10000")).toBe(true);
+        } else if (i === 1) {
+          expect(format.includes("0x10000")).toBe(true);
+        } else if (i === 2) {
+          expect(format.includes("0x20000")).toBe(true);
+        }
+      });
+    });
+  });
   describe("Medusa fuzzzer - Should parse the number of tests correctly ", () => {
     const dataMedusa1 = fs.readFileSync("./tests/test_data/medusa.txt", "utf8");
     const jobStatsMedusa1 = processLogs(dataMedusa1, Fuzzer.MEDUSA);

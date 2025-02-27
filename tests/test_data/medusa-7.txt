@@ -1,0 +1,129 @@
+Test for method "CryticTester.liquidateAllBut(uint128,uint128)" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) CryticTester.stabilityPool_provideToSP(uint128,address)(3181352903686338196, 0x) (block=15147, time=490477, gas=12500000, gasprice=1, value=0, sender=0x20000)
+2) CryticTester.liquidateAllBut(uint128,uint128)(2, 248396535150561414602986877769208316) (block=22294, time=997371, gas=12500000, gasprice=1, value=0, sender=0x10000)
+3) CryticTester.liquidateAllBut(uint128,uint128)(1, 6826739353142738430735031753889) (block=81745, time=1279359, gas=12500000, gasprice=1, value=0, sender=0x10000)
+[Execution Trace]
+ => [call] CryticTester.liquidateAllBut(uint128,uint128)(1, 6826739353142738430735031753889) (addr=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC, value=0, sender=0x10000)
+ => [call] <unresolved contract>.<unresolved method>(msg_data=9bf2f1ac) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000000000000000002)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=1cdc47000000000000000000000000007d8cb8f412b3ee9ac79558791333f41d2b1ccdac) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000000000000000000)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=389e92a50000000000000000000000007d8cb8f412b3ee9ac79558791333f41d2b1ccdac) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=00000000000000000000000000000000002fd6e50c95e41c98d3cd149bffd1fb)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=f5f1595d0000000000000000000000007d8cb8f412b3ee9ac79558791333f41d2b1ccdac) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=000000000000000000000000000000007ffffffffffffffffffffffffffffffd)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=1cdc47000000000000000000000000000000000000000000000000000000000000020000) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000000000000000000)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=389e92a50000000000000000000000000000000000000000000000000000000000020000) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000000000000000000)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=f5f1595d0000000000000000000000000000000000000000000000000000000000020000) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000000000000000000)]
+ => [call] ActivePoolMock.<unresolved method>(msg_data=) (addr=0x328C6C75cC6b0d97F6061F4B4988a1B16eb65362, value=6826739353142738430735031753889, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [vm error ('insufficient balance for transfer')]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=9bf2f1ac) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000000000000000002)]
+ => [call] StdCheats.prank(address)(0xA5668d1a670C8e192B4ef3F2d47232bAf287E2cF) (addr=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D, value=0, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return ()]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=335525ad000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000562a62709b7b724e4ffbe45ca1) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=0, sender=0xA5668d1a670C8e192B4ef3F2d47232bAf287E2cF)
+ => [call] CommunityIssuanceMock.issueLQTY()() (addr=0x965467f65080360c1683ecb814D0B318e6cC733d, value=0, sender=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4])
+ => [call] StdCheats.prank(address)(0x6804A3FF6bcf551fACf1a66369a5f8802B3C9C58) (addr=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D, value=0, sender=0x965467f65080360c1683ecb814D0B318e6cC733d)
+ => [return ()]
+ => [call] LUSDToken.mint(address,uint256)(StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], 0) (addr=LUSDToken [0x86778c157BC56EeA7eaa168b44BFAc3f5f8FA13A], value=0, sender=0x6804A3FF6bcf551fACf1a66369a5f8802B3C9C58)
+ => [event] Transfer(0x, StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], 0)
+ => [return ()]
+ => [return (170141183460469231731687303715884105727)]
+ => [event] <unresolved(topics=[2d6127771b164a9cc8827d24b5955db2a77e7a81dac389107ebb8bce9fb64968], data=003025f39ef241c56cd2e7c400000000005eaf19bcf5af00f4b360e00dc0000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000)>
+ => [revert ('SafeMath: subtraction overflow')]
+ => [event] Log("offset can revert")
+ => [panic: assertion failed]
+
+
+ [FAILED] Assertion Test: CryticTester.property_depositorETHGain_solvency()
+Test for method "CryticTester.property_depositorETHGain_solvency()" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) CryticTester.stabilityPool_provideToSP(uint128,address)(920146266279, 0x) (block=14211, time=444215, gas=12500000, gasprice=1, value=0, sender=0x10000)
+2) CryticTester.liquidateAllBut(uint128,uint128)(0, 223681681931037194299604619750628187) (block=17081, time=447708, gas=12500000, gasprice=1, value=0, sender=0x10000)
+3) CryticTester.property_depositorETHGain_solvency()() (block=50299, time=955540, gas=12500000, gasprice=1, value=0, sender=0x10000)
+[Execution Trace]
+ => [call] CryticTester.property_depositorETHGain_solvency()() (addr=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC, value=0, sender=0x10000)
+ => [call] <unresolved contract>.<unresolved method>(msg_data=14f6c3be) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000000000000000000)]
+ => [event] Log("solvency of ETH yield")
+ => [panic: assertion failed]
+
+
+ [FAILED] Assertion Test: CryticTester.property_depositorLQTYGain_solvency()
+Test for method "CryticTester.property_depositorLQTYGain_solvency()" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) CryticTester.stabilityPool_provideToSP(uint128,address)(468247846290936484, 0x) (block=2, time=278996, gas=12500000, gasprice=1, value=0, sender=0x20000)
+2) CryticTester.stabilityPool_offset(uint128,uint128)(180680201422883446, 6507005006102563674282222696116303) (block=9813, time=458780, gas=12500000, gasprice=1, value=0, sender=0x20000)
+3) CryticTester.emptyStabilityPool(uint128)(1329065118003297720324869192144829306) (block=15570, time=523641, gas=12500000, gasprice=1, value=0, sender=0x20000)
+4) CryticTester.property_depositorLQTYGain_solvency()() (block=22857, time=534207, gas=12500000, gasprice=1, value=0, sender=0x10000)
+[Execution Trace]
+ => [call] CryticTester.property_depositorLQTYGain_solvency()() (addr=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC, value=0, sender=0x10000)
+ => [call] LUSDToken.balanceOf(address)(StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4]) (addr=LUSDToken [0x86778c157BC56EeA7eaa168b44BFAc3f5f8FA13A], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (170141183460469231731687303715884105727)]
+ => [event] Log("solvency of LQTY yield")
+ => [panic: assertion failed]
+
+
+ [FAILED] Assertion Test: CryticTester.property_depositsSolvency()
+Test for method "CryticTester.property_depositsSolvency()" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) CryticTester.stabilityPool_provideToSP(uint128,address)(31793741813548883836685035368438436498, 0x) (block=2, time=278996, gas=12500000, gasprice=1, value=0, sender=0x20000)
+2) CryticTester.stabilityPool_provideToSP(uint128,address)(5316911983139650600, 0x) (block=2870, time=285552, gas=12500000, gasprice=1, value=0, sender=0x30000)
+3) CryticTester.stabilityPool_offset(uint128,uint128)(32498445856012, 6661247639619107574011694830811934724) (block=2870, time=285552, gas=12500000, gasprice=1, value=0, sender=0x20000)
+4) CryticTester.liquidateAllBut(uint128,uint128)(232427595912854320, 0) (block=2870, time=285552, gas=12500000, gasprice=1, value=0, sender=0x10000)
+5) CryticTester.property_depositsSolvency()() (block=2871, time=285554, gas=12500000, gasprice=1, value=0, sender=0x20000)
+[Execution Trace]
+ => [call] CryticTester.property_depositsSolvency()() (addr=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC, value=0, sender=0x20000)
+ => [call] <unresolved contract>.<unresolved method>(msg_data=9bf2f1ac) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000339bfaac2623b30)]
+ => [event] Log("solvency of deposits")
+ => [panic: assertion failed]
+
+
+ [FAILED] Assertion Test: CryticTester.stabilityPool_offset(uint128,uint128)
+Test for method "CryticTester.stabilityPool_offset(uint128,uint128)" resulted in an assertion failure after the following call sequence:
+[Call Sequence]
+1) CryticTester.stabilityPool_provideToSP(uint128,address)(1362187587564800498, 0x) (block=15147, time=490477, gas=12500000, gasprice=1, value=0, sender=0x20000)
+2) CryticTester.liquidateAllBut(uint128,uint128)(23442416812432233, 12445444062813651492594461970) (block=15164, time=490509, gas=12500000, gasprice=1, value=0, sender=0x30000)
+3) CryticTester.stabilityPool_offset(uint128,uint128)(1, 485234726760181385106795352035074) (block=18984, time=963236, gas=12500000, gasprice=1, value=0, sender=0x10000)
+[Execution Trace]
+ => [call] CryticTester.stabilityPool_offset(uint128,uint128)(1, 485234726760181385106795352035074) (addr=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC, value=0, sender=0x10000)
+ => [call] <unresolved contract>.<unresolved method>(msg_data=1cdc47000000000000000000000000007d8cb8f412b3ee9ac79558791333f41d2b1ccdac) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=000000000000000000000000000000000000000000000000005348c0fec81b67)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=389e92a50000000000000000000000007d8cb8f412b3ee9ac79558791333f41d2b1ccdac) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=00000000000000000000000000000000000000002836a14a85c08a551fc72d10)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=f5f1595d0000000000000000000000007d8cb8f412b3ee9ac79558791333f41d2b1ccdac) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=000000000000000000000000000000007ffffffffffffffffffffffffffffffe)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=1cdc47000000000000000000000000000000000000000000000000000000000000020000) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000000000000000000)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=389e92a50000000000000000000000000000000000000000000000000000000000020000) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000000000000000000)]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=f5f1595d0000000000000000000000000000000000000000000000000000000000020000) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=0000000000000000000000000000000000000000000000000000000000000000)]
+ => [call] ActivePoolMock.<unresolved method>(msg_data=) (addr=0x328C6C75cC6b0d97F6061F4B4988a1B16eb65362, value=485234726760181385106795352035074, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [vm error ('insufficient balance for transfer')]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=9bf2f1ac) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=<nil>, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return (return_data=000000000000000000000000000000000000000000000000005348c0fec81b69)]
+ => [call] StdCheats.prank(address)(0xA5668d1a670C8e192B4ef3F2d47232bAf287E2cF) (addr=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D, value=0, sender=0x7D8CB8F412B3ee9AC79558791333F41d2b1ccDAC)
+ => [return ()]
+ => [call] <unresolved contract>.<unresolved method>(msg_data=335525ad000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000017ec85f68373f08a5b6734400f02) (addr=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], value=0, sender=0xA5668d1a670C8e192B4ef3F2d47232bAf287E2cF)
+ => [call] CommunityIssuanceMock.issueLQTY()() (addr=0x965467f65080360c1683ecb814D0B318e6cC733d, value=0, sender=StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4])
+ => [call] StdCheats.prank(address)(0x6804A3FF6bcf551fACf1a66369a5f8802B3C9C58) (addr=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D, value=0, sender=0x965467f65080360c1683ecb814D0B318e6cC733d)
+ => [return ()]
+ => [call] LUSDToken.mint(address,uint256)(StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], 0) (addr=LUSDToken [0x86778c157BC56EeA7eaa168b44BFAc3f5f8FA13A], value=0, sender=0x6804A3FF6bcf551fACf1a66369a5f8802B3C9C58)
+ => [event] Transfer(0x, StabilityPool [0xed950f8Bd06396A949821B68b3620e7551Faf7A4], 0)
+ => [return ()]
+ => [return (170141183460469231731687303715884105727)]
+ => [event] <unresolved(topics=[2d6127771b164a9cc8827d24b5955db2a77e7a81dac389107ebb8bce9fb64968], data=00000000000000000a301823dbf3bf7c39990273b09f7459d721d6c03861c8e100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000)>
+ => [revert ('SafeMath: subtraction overflow')]
+ => [event] Log("offset can revert")
+ => [panic: assertion failed]
+
+
+ Test summary: 18 test(s) passed, 5 test(s) failed
+ html report(s) saved to: medusa/coverage/coverage_report.html
+ lcov report(s) saved to: medusa/coverage/lcov.info

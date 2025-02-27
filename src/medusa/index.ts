@@ -172,7 +172,7 @@ export function getFunctionCallsWithVM(
   logs: string,
   vmData?: VmParsingData
 ): string[] {
-  const pattern: RegExp =/(?<=\.)[\w]+\(([^()]*(?:\([^()]*\)[^()]*)*)\)\(?([^()]*)\)?\s+\(block=\d*,\s*time=\d*,\s*gas=\d*,\s*gasprice=\d*,\s*value=\d*,\s*sender=0x[0-9a-fA-F]{40}\)/gm
+  const pattern: RegExp =/(?<=\.)[\w]+\(([^()]*(?:\([^()]*\)[^()]*)*)\)\(?([^()]*)\)?\s+\(block=\d*,\s*time=\d*,\s*gas=\d*,\s*gasprice=\d*,\s*value=\d*,\s*sender=0x[0-9a-fA-F]{1,40}\)/gm
   const matches: RegExpMatchArray | null = logs.match(pattern);
   const functionCalls = matches?.map((entry) => {
     let returnData = "";
@@ -205,9 +205,9 @@ export function getFunctionCallsWithVM(
       const block = parseInt(entry.match(/block=(\d+)/)[1]);
       //@ts-ignore
       const time = parseInt(entry.match(/time=(\d+)/)[1]);
-      const sender = entry.match(/sender=(0x[0-9a-fA-F]{40})/)
+      const sender = entry.match(/sender=(0x[0-9a-fA-F]{1,40})/)
         ? //@ts-ignore
-          entry.match(/sender=(0x[0-9a-fA-F]{40})/)[1]
+          entry.match(/sender=(0x[0-9a-fA-F]{1,40})/)[1]
         : "";
       if (vmData.roll) {
         returnData += `\n   vm.roll(${block});`;
