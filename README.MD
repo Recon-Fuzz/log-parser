@@ -2,13 +2,14 @@
 
 A TypeScript utility for parsing Medusa and Echidna fuzzing logs.
 
+https://www.npmjs.com/package/@recon-fuzz/log-parser
+
 ## Installation
 
 ```bash
 yarn add @recon-fuzz/log-parser
 ```
 
-NPM: https://www.npmjs.com/package/@recon-fuzz/log-parser
 
 ## Usage
 
