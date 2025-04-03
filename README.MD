@@ -2,6 +2,16 @@
 
 A TypeScript utility for parsing Medusa and Echidna fuzzing logs.
 
+## Web
+
+Used in:
+
+- https://getrecon.xyz/tools/medusa
+
+- https://getrecon.xyz/tools/echidna
+
+## NPM
+
 https://www.npmjs.com/package/@recon-fuzz/log-parser
 
 ## Installation
