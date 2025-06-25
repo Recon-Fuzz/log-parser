@@ -211,10 +211,31 @@ export function echidnaLogsToFunctions(
   vmData?: VmParsingData
 ): string {
   // Modified regex to capture call sequences more reliably
-  const regex = /Call sequence[\s\S]+?(?=\[\d{4}|$)/g;
-  const callSequenceMatches = input.match(regex);
-  if (!callSequenceMatches) {
-    return '';
+  const callSequenceMatches: string[] = [];
+  const regex = /Call sequence/g;
+  let match: RegExpExecArray | null;
+  while ((match = regex.exec(input)) !== null) {
+    let start = match.index;
+    let i = start + "Call sequence".length;
+    let parenDepth = 0;
+    let found = false;
+    while (i < input.length) {
+      if (input[i] === "(") parenDepth++;
+      else if (input[i] === ")") parenDepth = Math.max(0, parenDepth - 1);
+      else if (
+          parenDepth === 0 &&
+          input.slice(i, i + 5).match(/^\[\d{4}/)
+      ) {
+        callSequenceMatches.push(input.slice(start, i));
+        found = true;
+        break;
+      }
+      i++;
+    }
+    if (!found) {
+      callSequenceMatches.push(input.slice(start));
+      break;
+    }
   }
   // Rest of the function remains the same
   return callSequenceMatches
