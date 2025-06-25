@@ -163,6 +163,8 @@ export const shouldParseLine = (line: string): boolean => {
       const nextChar = line[i + 1];
       if (
         !(char === "[" && prevChar === "(") &&
+        !(char === "[" && prevChar === ",") &&
+        !(char === "]" && nextChar === ",") &&
         !(char === "]" && nextChar === ")")
       ) {
         return true;
