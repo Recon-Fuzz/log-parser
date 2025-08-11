@@ -20,7 +20,6 @@ export interface BrokenProperty {
   sequence: string;
 }
 
-
 export interface PropertyAndSequence {
   brokenProperty: string;
   sequence: string[] | string;
@@ -29,4 +28,5 @@ export interface PropertyAndSequence {
 export enum Fuzzer {
   MEDUSA = "MEDUSA",
   ECHIDNA = "ECHIDNA",
+  HALMOS = "HALMOS",
 }

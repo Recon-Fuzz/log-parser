@@ -1,6 +1,7 @@
 import { Fuzzer, type FuzzingResults } from "./types/types";
 import { processEchidna } from "./echidna/index";
 import { processMedusa } from "./medusa/index";
+import { processHalmos } from "./halmos/index";
 import { processTraceLogs } from "./utils/utils";
 
 /**
@@ -35,6 +36,8 @@ export const processLogs = (logs: string, tool: Fuzzer): FuzzingResults => {
       processMedusa(line, jobStats);
     } else if (tool === Fuzzer.ECHIDNA) {
       processEchidna(line, jobStats);
+    } else if (tool === Fuzzer.HALMOS) {
+      processHalmos(line, jobStats);
     }
   });
 
