@@ -1,22 +1,15 @@
 import { echidnaLogsToFunctions, echidnaShrunkAndProcess } from "../echidna";
+import { halmosLogsToFunctions } from "../halmos";
 import { processLogs } from "../main";
 import { medusaLogsToFunctions } from "../medusa";
 import { Fuzzer, FuzzingResults, VmParsingData } from "../types/types";
 
-export const generateJobMD = (
-  fuzzer: Fuzzer,
-  logs: string,
-  label: string
-) => {
+export const generateJobMD = (fuzzer: Fuzzer, logs: string, label: string) => {
   let data = processLogs(logs, fuzzer);
   if (fuzzer === Fuzzer.ECHIDNA) {
     data = echidnaShrunkAndProcess(logs, data);
   }
-  const md = markdownShell(
-    data,
-    fuzzer,
-    label,
-  );
+  const md = markdownShell(data, fuzzer, label);
   return md;
 };
 
@@ -83,6 +76,8 @@ const prepareTrace = (
     finalTrace = medusaLogsToFunctions(trace, "", vmData);
   } else if (fuzzer === "ECHIDNA") {
     finalTrace = echidnaLogsToFunctions(trace, "", brokenProperty, vmData);
+  } else if (fuzzer === "HALMOS") {
+    finalTrace = halmosLogsToFunctions(trace, "");
   }
   const functionName = finalTrace
     .split("() public")[0]
