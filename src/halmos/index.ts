@@ -1,119 +1,106 @@
-import {
-  type FuzzingResults,
-  type PropertyAndSequence,
-  type VmParsingData,
-} from "../types/types";
+import { type FuzzingResults, type PropertyAndSequence } from "../types/types";
 import { captureFuzzingDuration } from "../utils/utils";
-
-//////////////////////////////////////
-//          HALMOS                  //
-//////////////////////////////////////
 
 let halmosTraceLogger = false;
 let currentBrokenPropertyHalmos = "";
 
-/**
- * Process a single line of HALMOS output and update the job statistics.
- * @param {string} line - A single line from HALMOS output
- * @param {FuzzingResults} jobStats - The job statistics object to update
- */
+const isEmptyOrAnsi = (line: string): boolean =>
+  !line || line.includes("\x1b[") || line.includes("3[2K");
+
+const isTestResult = (line: string): boolean =>
+  line.includes("[FAIL]") || line.includes("[TIMEOUT]");
+
+const isEndOfTrace = (line: string): boolean =>
+  isTestResult(line) || line.includes("Symbolic test result:");
+
+const extractTestProperty = (line: string): string | null => {
+  const match = line.match(/\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/);
+  return match?.[1]?.trim() || null;
+};
+
+const extractCounts = (line: string) => {
+  const passedMatch = line.match(/(\d+)\s+passed/);
+  const failedMatch = line.match(/(\d+)\s+failed/);
+  return {
+    passed: passedMatch ? parseInt(passedMatch[1]) : 0,
+    failed: failedMatch ? parseInt(failedMatch[1]) : 0,
+  };
+};
+
+const extractDuration = (line: string): string => {
+  const timeMatch = line.match(/time:\s*([\d.]+)s/);
+  if (!timeMatch) return "";
+
+  const durationStr = `${Math.floor(parseFloat(timeMatch[1]))}s`;
+  return captureFuzzingDuration(durationStr) || durationStr;
+};
+
+const findOrCreateProperty = (
+  jobStats: FuzzingResults,
+  propertyName: string
+) => {
+  let property = jobStats.brokenProperties.find(
+    (prop) => prop.brokenProperty === propertyName
+  );
+
+  if (!property) {
+    property = { brokenProperty: propertyName, sequence: "" };
+    jobStats.brokenProperties.push(property);
+  }
+
+  return property;
+};
+
 export const processHalmos = (line: string, jobStats: FuzzingResults): void => {
   const trimmedLine = line.trim();
 
-  // Skip empty lines and ANSI escape sequences
-  if (
-    !trimmedLine ||
-    trimmedLine.includes("\x1b[") ||
-    trimmedLine.includes("3[2K")
-  ) {
-    return;
-  }
+  if (isEmptyOrAnsi(trimmedLine)) return;
 
-  // Extract duration from final result line
   if (trimmedLine.includes("Symbolic test result:")) {
-    const timeMatch = trimmedLine.match(/time:\s*([\d.]+)s/);
-    if (timeMatch) {
-      const durationStr = `${Math.floor(parseFloat(timeMatch[1]))}s`;
-      const duration = captureFuzzingDuration(durationStr);
-      jobStats.duration = duration || durationStr;
-    }
-
-    // Extract passed/failed counts
-    const passedMatch = trimmedLine.match(/(\d+)\s+passed/);
-    const failedMatch = trimmedLine.match(/(\d+)\s+failed/);
-
-    if (passedMatch) {
-      jobStats.passed = parseInt(passedMatch[1]);
-    }
-    if (failedMatch) {
-      jobStats.failed = parseInt(failedMatch[1]);
-    }
-
-    jobStats.numberOfTests = jobStats.passed + jobStats.failed;
+    const { passed, failed } = extractCounts(trimmedLine);
+    jobStats.passed = passed;
+    jobStats.failed = failed;
+    jobStats.numberOfTests = passed + failed;
+    jobStats.duration = extractDuration(trimmedLine);
     return;
   }
 
-  // Detect test results - [FAIL] or [TIMEOUT]
-  if (trimmedLine.includes("[FAIL]") || trimmedLine.includes("[TIMEOUT]")) {
-    const testMatch = trimmedLine.match(
-      /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/
-    );
-    if (testMatch) {
-      currentBrokenPropertyHalmos = testMatch[1].trim();
+  if (isTestResult(trimmedLine)) {
+    const property = extractTestProperty(trimmedLine);
+    if (property) {
+      currentBrokenPropertyHalmos = property;
       jobStats.results.push(trimmedLine);
 
-      // For timeout tests without counterexamples, add broken property immediately
       if (trimmedLine.includes("[TIMEOUT]")) {
-        jobStats.brokenProperties.push({
-          brokenProperty: currentBrokenPropertyHalmos,
-          sequence: "",
-        });
+        findOrCreateProperty(jobStats, property);
       }
     }
     return;
   }
 
-  // Start capturing counterexample
   if (trimmedLine === "Counterexample:") {
     halmosTraceLogger = true;
     return;
   }
 
-  // Capture counterexample parameters and end trace
   if (halmosTraceLogger) {
     if (trimmedLine.includes("=")) {
       jobStats.traces.push(trimmedLine);
-
-      const existingProperty = jobStats.brokenProperties.find(
-        (prop) => prop.brokenProperty === currentBrokenPropertyHalmos
+      const property = findOrCreateProperty(
+        jobStats,
+        currentBrokenPropertyHalmos
       );
-
-      if (!existingProperty) {
-        jobStats.brokenProperties.push({
-          brokenProperty: currentBrokenPropertyHalmos,
-          sequence: `${trimmedLine}\n`,
-        });
-      } else {
-        existingProperty.sequence += `${trimmedLine}\n`;
-      }
-    } else if (
-      trimmedLine.includes("[FAIL]") ||
-      trimmedLine.includes("[TIMEOUT]") ||
-      trimmedLine.includes("Symbolic test result:")
-    ) {
-      // End trace
+      property.sequence += `${trimmedLine}\n`;
+    } else if (isEndOfTrace(trimmedLine)) {
       halmosTraceLogger = false;
       jobStats.traces.push("---End Trace---");
 
-      const existingProperty = jobStats.brokenProperties.find(
+      const property = jobStats.brokenProperties.find(
         (prop) => prop.brokenProperty === currentBrokenPropertyHalmos
       );
 
-      if (
-        existingProperty &&
-        !existingProperty.sequence.includes("---End Trace---")
-      ) {
-        existingProperty.sequence += "---End Trace---\n";
+      if (property && !property.sequence.includes("---End Trace---")) {
+        property.sequence += "---End Trace---\n";
       }
 
       currentBrokenPropertyHalmos = "";
@@ -121,152 +108,133 @@ export const processHalmos = (line: string, jobStats: FuzzingResults): void => {
   }
 };
 
-/**
- * Extract property and sequence information from Halmos logs.
- * @param {string} logs - Raw Halmos logs
- * @param {VmParsingData} [vmData] - Optional VM parsing data
- * @returns {PropertyAndSequence[]} Array of property and sequence objects
- */
-export function getHalmosPropertyAndSequence(
-  logs: string,
-  vmData?: VmParsingData
-): PropertyAndSequence[] {
-  const results: PropertyAndSequence[] = [];
+const parseLogEntries = (logs: string) =>
+  logs.split(/\[(?:FAIL|TIMEOUT)\]/).filter((entry) => entry.trim() !== "");
 
-  // Split by [FAIL] and [TIMEOUT] to get individual test entries
-  const entries = logs
-    .split(/\[(?:FAIL|TIMEOUT)\]/)
-    .filter((entry) => entry.trim() !== "");
+const extractPropertyName = (entry: string, index: number): string => {
+  const match = `[FAIL]${entry}`.match(
+    /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/
+  );
+  return match?.[1] || `temp_${index}`;
+};
 
-  // Process all entries (no need to skip first since we're looking for content after [FAIL])
-  entries.forEach((entry, index) => {
-    const header = getHalmosHeaders(`[FAIL]${entry}`, index);
-    const body = getHalmosCounterexamples(entry);
-
-    if (header !== `temp_${index}` && body.length > 0) {
-      results.push({
-        brokenProperty: header,
-        sequence: body,
-      });
-    }
-  });
-
-  return results;
-}
-
-/**
- * Extract counterexample parameters from Halmos log entry
- * @param {string} logs - Log entry containing counterexample
- * @returns {string[]} Array of parameter assignments
- */
-function getHalmosCounterexamples(logs: string): string[] {
+const extractCounterexamples = (logs: string): string[] => {
   const lines = logs.split("\n");
-  const counterexamples: string[] = [];
   let capturing = false;
 
-  for (const line of lines) {
+  return lines.reduce<string[]>((acc, line) => {
     const trimmed = line.trim();
+
     if (trimmed === "Counterexample:") {
       capturing = true;
-      continue;
+      return acc;
     }
-    if (capturing && trimmed.includes("=")) {
-      counterexamples.push(trimmed);
-    } else if (
-      capturing &&
-      (trimmed.includes("Symbolic test result:") || trimmed.includes("[FAIL]"))
-    ) {
-      break;
+
+    if (capturing) {
+      if (trimmed.includes("=")) {
+        acc.push(trimmed);
+      } else if (
+        trimmed.includes("Symbolic test result:") ||
+        trimmed.includes("[FAIL]")
+      ) {
+        capturing = false;
+      }
     }
+
+    return acc;
+  }, []);
+};
+
+export function getHalmosPropertyAndSequence(
+  logs: string
+): PropertyAndSequence[] {
+  return parseLogEntries(logs)
+    .map((entry, index) => ({
+      property: extractPropertyName(entry, index),
+      counterexamples: extractCounterexamples(entry),
+      index,
+    }))
+    .filter(
+      ({ property, counterexamples, index }) =>
+        property !== `temp_${index}` && counterexamples.length > 0
+    )
+    .map(({ property, counterexamples }) => ({
+      brokenProperty: property,
+      sequence: counterexamples,
+    }));
+}
+
+const cleanParameterName = (paramName: string): string =>
+  paramName
+    .replace(/^p_/, "")
+    .replace(/_[a-f0-9]+_\d+$/, "")
+    .replace(/_(?:bool|uint256|address|int256)$/, "");
+
+const formatSolidityValue = (paramName: string, value: string): string => {
+  const cleanName = cleanParameterName(paramName);
+  const cleanValue = value.replace(/^0x/, "");
+
+  if (paramName.includes("_bool_")) {
+    return `bool ${cleanName} = ${cleanValue === "01" ? "true" : "false"};`;
   }
+  if (paramName.includes("_uint256_")) {
+    return `uint256 ${cleanName} = 0x${cleanValue};`;
+  }
+  if (paramName.includes("_address_")) {
+    return `address ${cleanName} = 0x${cleanValue.padStart(40, "0")};`;
+  }
+  if (paramName.includes("_int256_")) {
+    return `int256 ${cleanName} = int256(0x${cleanValue});`;
+  }
+  return `uint256 ${cleanName} = 0x${cleanValue};`;
+};
 
-  return counterexamples;
-}
+const generateTestFunction = (
+  propSeq: PropertyAndSequence,
+  identifier: string,
+  index: number
+): string => {
+  const functionName = `test_${propSeq.brokenProperty.replace(
+    /\W/g,
+    "_"
+  )}_${identifier}_${index}`;
+  const sequences = Array.isArray(propSeq.sequence)
+    ? propSeq.sequence
+    : [propSeq.sequence];
 
-/**
- * Extract test function name from Halmos log entry
- * @param {string} logs - Log entry
- * @param {number} counter - Fallback counter
- * @returns {string} Function name
- */
-function getHalmosHeaders(logs: string, counter: number): string {
-  const failMatch = logs.match(/\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/);
-  return failMatch?.[1] || `temp_${counter}`;
-}
+  const parameters = sequences
+    .filter(
+      (param): param is string =>
+        typeof param === "string" && param.includes("=")
+    )
+    .map((param) => {
+      const [paramName, paramValue] = param.split("=").map((s) => s.trim());
+      return `    ${formatSolidityValue(paramName, paramValue)}`;
+    })
+    .join("\n");
 
-/**
- * Convert HALMOS logs to Foundry test functions.
- * @param {string} logs - Raw HALMOS logs
- * @param {string} identifier - Test identifier/prefix
- * @param {VmParsingData} [vmData] - Optional VM parsing data
- * @returns {string} Generated Foundry test functions
- */
+  return [
+    `function ${functionName}() public {`,
+    `    // Counterexample for: ${propSeq.brokenProperty}`,
+    parameters,
+    `    `,
+    `    // Call the original function with counterexample values`,
+    `    // ${propSeq.brokenProperty}(/* add parameters here */);`,
+    `}`,
+  ].join("\n");
+};
+
 export function halmosLogsToFunctions(
   logs: string,
-  identifier: string,
-  vmData?: VmParsingData
+  identifier: string
 ): string {
-  const propertySequences = getHalmosPropertyAndSequence(logs, vmData);
+  const propertySequences = getHalmosPropertyAndSequence(logs);
 
-  if (propertySequences.length === 0) {
-    return "// No failed properties found in Halmos logs";
-  }
-
-  return propertySequences
-    .map((propSeq, index) => {
-      const functionName = `test_${propSeq.brokenProperty.replace(
-        /\W/g,
-        "_"
-      )}_${identifier}_${index}`;
-      const sequences = Array.isArray(propSeq.sequence)
-        ? propSeq.sequence
-        : [propSeq.sequence];
-
-      let functionBody = `function ${functionName}() public {\n`;
-      functionBody += `    // Counterexample for: ${propSeq.brokenProperty}\n`;
-
-      sequences.forEach((param) => {
-        if (typeof param === "string" && param.includes("=")) {
-          const [paramName, paramValue] = param.split("=").map((s) => s.trim());
-
-          // Convert Halmos parameter format to Solidity
-          let cleanParamName = paramName
-            .replace(/^p_/, "")
-            .replace(/_[a-f0-9]+_\d+$/, "");
-
-          // Remove type suffix from parameter name (e.g., "a_bool" -> "a")
-          cleanParamName = cleanParamName.replace(
-            /_(?:bool|uint256|address|int256)$/,
-            ""
-          );
-
-          const cleanValue = paramValue.replace(/^0x/, "");
-
-          // Determine type based on parameter name patterns
-          if (paramName.includes("_bool_")) {
-            const boolValue = cleanValue === "01" ? "true" : "false";
-            functionBody += `    bool ${cleanParamName} = ${boolValue};\n`;
-          } else if (paramName.includes("_uint256_")) {
-            functionBody += `    uint256 ${cleanParamName} = 0x${cleanValue};\n`;
-          } else if (paramName.includes("_address_")) {
-            functionBody += `    address ${cleanParamName} = 0x${cleanValue.padStart(
-              40,
-              "0"
-            )};\n`;
-          } else if (paramName.includes("_int256_")) {
-            functionBody += `    int256 ${cleanParamName} = int256(0x${cleanValue});\n`;
-          } else {
-            // Default to uint256 for unknown types
-            functionBody += `    uint256 ${cleanParamName} = 0x${cleanValue};\n`;
-          }
-        }
-      });
-
-      functionBody += `    \n    // Call the original function with counterexample values\n`;
-      functionBody += `    // ${propSeq.brokenProperty}(/* add parameters here */);\n`;
-      functionBody += `}`;
-
-      return functionBody;
-    })
-    .join("\n\n");
+  return propertySequences.length === 0
+    ? "// No failed properties found in Halmos logs"
+    : propertySequences
+        .map((propSeq, index) =>
+          generateTestFunction(propSeq, identifier, index)
+        )
+        .join("\n\n");
 }

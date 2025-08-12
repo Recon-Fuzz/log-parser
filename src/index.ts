@@ -3,13 +3,7 @@ export {
   echidnaLogsToFunctions,
   echidnaShrunkAndProcess,
 } from "./echidna/index";
-export {
-  processMedusa,
-  getPropertyAndSequenceString,
-  getFunctionCallsWithVM,
-  getFunctionCalls,
-  medusaLogsToFunctions,
-} from "./medusa/index";
+export { processMedusa, medusaLogsToFunctions } from "./medusa/index";
 export { processHalmos, halmosLogsToFunctions } from "./halmos/index";
 
 export {
