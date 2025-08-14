@@ -62,12 +62,8 @@ export const processHalmos = (line: string, jobStats: FuzzingResults): void => {
     return;
   }
 
-  // Start collecting counterexample data
   if (trimmedLine === "Counterexample:") {
-    // If we were already capturing, we need to handle the previous counterexample
-    // This can happen when there are multiple counterexamples without [FAIL] lines in between
     if (halmosCounterexampleLogger && currentCounterexampleData.length > 0) {
-      // This shouldn't happen in normal Halmos logs, but let's handle it gracefully
       halmosCounterexampleLogger = false;
       currentCounterexampleData = [];
     }
@@ -77,23 +73,18 @@ export const processHalmos = (line: string, jobStats: FuzzingResults): void => {
     return;
   }
 
-  // Collect counterexample parameter lines
   if (halmosCounterexampleLogger) {
     if (isTestResult(trimmedLine)) {
-      // We've hit a [FAIL] or [TIMEOUT] line - process the property
       const property = extractTestProperty(trimmedLine);
       if (property && currentCounterexampleData.length > 0) {
         jobStats.results.push(trimmedLine);
 
-        // Create broken property with the collected counterexample data
         const brokenProperty = findOrCreateProperty(jobStats, property);
         brokenProperty.sequence = currentCounterexampleData.join("\n") + "\n";
       } else if (property) {
-        // Just add to results, don't create empty broken properties
         jobStats.results.push(trimmedLine);
       }
 
-      // Reset state
       halmosCounterexampleLogger = false;
       currentCounterexampleData = [];
     } else if (trimmedLine.includes("=")) {
@@ -103,11 +94,9 @@ export const processHalmos = (line: string, jobStats: FuzzingResults): void => {
       trimmedLine.includes("[PASS]") ||
       trimmedLine === "Counterexample:"
     ) {
-      // Reset state if we hit end of logs, a pass, or another counterexample without a fail
       halmosCounterexampleLogger = false;
       currentCounterexampleData = [];
 
-      // If it's another counterexample, start capturing again
       if (trimmedLine === "Counterexample:") {
         halmosCounterexampleLogger = true;
         currentCounterexampleData = [];
@@ -115,12 +104,10 @@ export const processHalmos = (line: string, jobStats: FuzzingResults): void => {
     }
   }
 
-  // Handle test results that don't have preceding counterexamples
   if (!halmosCounterexampleLogger && isTestResult(trimmedLine)) {
     const property = extractTestProperty(trimmedLine);
     if (property) {
       jobStats.results.push(trimmedLine);
-      // Don't create empty broken properties for tests without counterexamples
     }
   }
 };
@@ -146,7 +133,6 @@ export function getHalmosPropertyAndSequence(
       if (trimmed.includes("=")) {
         currentCounterexamples.push(trimmed);
       } else if (trimmed.includes("[FAIL]") || trimmed.includes("[TIMEOUT]")) {
-        // Extract property name from the [FAIL] or [TIMEOUT] line
         const propertyMatch = trimmed.match(
           /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/
         );
@@ -191,22 +177,18 @@ const formatSolidityValue = (paramName: string, value: string): string => {
     return `address ${cleanName} = 0x${cleanValue.padStart(40, "0")};`;
   }
 
-  // Handle all uint types (uint8, uint16, uint32, uint64, uint128, uint256, etc.)
   if (type?.startsWith("uint")) {
     return `${type} ${cleanName} = 0x${cleanValue};`;
   }
 
-  // Handle all int types (int8, int16, int32, int64, int128, int256, etc.)
   if (type?.startsWith("int")) {
     return `${type} ${cleanName} = ${type}(0x${cleanValue});`;
   }
 
-  // Handle bytes types (bytes, bytes1, bytes2, ..., bytes32)
   if (type?.startsWith("bytes")) {
     return `${type} ${cleanName} = 0x${cleanValue};`;
   }
 
-  // Default fallback to uint256
   return `uint256 ${cleanName} = 0x${cleanValue};`;
 };
 

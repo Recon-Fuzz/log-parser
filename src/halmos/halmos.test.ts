@@ -253,7 +253,6 @@ Symbolic test result: 0 passed; 1 failed; time: 4.54s`;
       expect(jobStats.brokenProperties).toHaveLength(2);
       expect(jobStats.traces).toHaveLength(0); // Should not add to traces
 
-      // Check first broken property
       expect(jobStats.brokenProperties[0].brokenProperty).toBe(
         "check_address_properties(address,address)"
       );
@@ -261,7 +260,6 @@ Symbolic test result: 0 passed; 1 failed; time: 4.54s`;
         "p_a_address_2ca5aa8_00 = 0x00\np_b_address_35f48fe_00 = 0x00\n"
       );
 
-      // Check second broken property
       expect(jobStats.brokenProperties[1].brokenProperty).toBe(
         "check_array_sorted(uint256[])"
       );
