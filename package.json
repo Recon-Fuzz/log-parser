@@ -1,7 +1,7 @@
 {
   "name": "@recon-fuzz/log-parser",
   "description": "Fuzzer log parser for Recon Fuzz",
-  "version": "0.0.31",
+  "version": "0.0.33",
   "license": "GPL-2.0-only",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
