@@ -162,6 +162,85 @@ const formatSolidityValue = (paramName: string, value: string): string => {
 };
 
 /**
+ * Generate function call with mapped parameters
+ */
+const generateFunctionCall = (
+  brokenProperty: string,
+  variableMapping: Map<string, string>
+): string => {
+  // Extract function name and parameter types from the property
+  const functionMatch = brokenProperty.match(/^([^(]+)\(([^)]*)\)/);
+  if (!functionMatch) {
+    return `${brokenProperty}(/* parameters not parsed */)`;
+  }
+
+  const functionName = functionMatch[1];
+  const paramTypes = functionMatch[2];
+
+  if (!paramTypes.trim()) {
+    return `${functionName}()`;
+  }
+
+  // Parse parameter types
+  const types = paramTypes.split(",").map((t) => t.trim());
+  const parameters: string[] = [];
+
+  // Map parameter types to variable names
+  types.forEach((type, index) => {
+    // Look for variables that match this parameter position
+    const matchingVar = findMatchingVariable(type, index, variableMapping);
+    parameters.push(matchingVar || `/* ${type} parameter */`);
+  });
+
+  return `${functionName}(${parameters.join(", ")})`;
+};
+
+/**
+ * Find matching variable for a parameter type and position
+ */
+const findMatchingVariable = (
+  type: string,
+  position: number,
+  variableMapping: Map<string, string>
+): string | null => {
+  // Common patterns for parameter names
+  const typePatterns = {
+    address: ["a_address", "b_address", "address"],
+    bool: ["a_bool", "b_bool", "flag", "bool"],
+    uint256: ["x_uint256", "value_uint256", "amount", "uint256"],
+    uint8: ["small_uint8", "uint8"],
+    bytes: ["data_bytes", "bytes"],
+  };
+
+  // First, try to find exact matches based on position
+  const positionNames = ["a", "b", "c", "d", "e"];
+  if (position < positionNames.length) {
+    const expectedName = `${positionNames[position]}_${type.replace("[]", "")}`;
+    for (const [paramName, varName] of variableMapping) {
+      if (
+        paramName.includes(expectedName.replace("uint256", "uint256")) ||
+        paramName.includes(expectedName.replace("address", "address")) ||
+        paramName.includes(expectedName.replace("bool", "bool"))
+      ) {
+        return varName;
+      }
+    }
+  }
+
+  // Fallback: find any variable of the matching type
+  const patterns = typePatterns[type as keyof typeof typePatterns] || [type];
+  for (const pattern of patterns) {
+    for (const [paramName, varName] of variableMapping) {
+      if (paramName.includes(pattern)) {
+        return varName;
+      }
+    }
+  }
+
+  return null;
+};
+
+/**
  * Generate Foundry test function from property and sequence
  * Similar to Medusa's function generation approach
  */
@@ -180,6 +259,7 @@ const generateTestFunction = (
 
   const parameterDeclarations: string[] = [];
   const usedVariableNames = new Set<string>();
+  const variableMapping = new Map<string, string>();
 
   sequences
     .filter(
@@ -197,9 +277,16 @@ const generateTestFunction = (
         if (!usedVariableNames.has(varName)) {
           parameterDeclarations.push(`    ${solidityDeclaration}`);
           usedVariableNames.add(varName);
+          variableMapping.set(paramName, varName);
         }
       }
     });
+
+  // Generate function call with actual parameters
+  const functionCall = generateFunctionCall(
+    propSeq.brokenProperty,
+    variableMapping
+  );
 
   const parts = [
     `function ${functionName}() public {`,
@@ -212,7 +299,7 @@ const generateTestFunction = (
   }
 
   parts.push("", "    // Reproduction sequence:");
-  parts.push(`    // ${propSeq.brokenProperty}(/* add parameters here */);`);
+  parts.push(`    ${functionCall};`);
   parts.push("}");
 
   return parts.join("\n");
