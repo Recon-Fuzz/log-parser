@@ -112,10 +112,102 @@ export const processHalmos = (line: string, jobStats: FuzzingResults): void => {
   }
 };
 
+interface HalmosCounterexample {
+  parameters: string[];
+  sequence: string[];
+  functionCall?: string;
+}
+
 export function getHalmosPropertyAndSequence(
   logs: string
 ): PropertyAndSequence[] {
   const lines = logs.split("\n");
+
+  // Check if this is the new format with Counterexample: and Sequence: sections
+  const hasNewFormat = logs.includes("Sequence:");
+
+  if (hasNewFormat) {
+    return parseNewHalmosFormat(lines);
+  } else {
+    return parseOldHalmosFormat(lines);
+  }
+}
+
+function parseNewHalmosFormat(lines: string[]): PropertyAndSequence[] {
+  const results: PropertyAndSequence[] = [];
+  const counterexamples: HalmosCounterexample[] = [];
+
+  let currentCounterexample: HalmosCounterexample | null = null;
+  let inCounterexample = false;
+  let inSequence = false;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    // Start of a new counterexample
+    if (trimmed === "Counterexample:" || trimmed === "Counterexample: ∅") {
+      if (currentCounterexample) {
+        counterexamples.push(currentCounterexample);
+      }
+
+      currentCounterexample = {
+        parameters: [],
+        sequence: [],
+      };
+      inCounterexample = true;
+      inSequence = false;
+      continue;
+    }
+
+    if (trimmed === "Sequence:") {
+      inSequence = true;
+      inCounterexample = false;
+      continue;
+    }
+
+    if (inCounterexample && currentCounterexample && trimmed.includes("=")) {
+      currentCounterexample.parameters.push(trimmed);
+      continue;
+    }
+
+    if (inSequence && currentCounterexample && trimmed.startsWith("CALL ")) {
+      currentCounterexample.sequence.push(trimmed);
+      const callMatch = /CALL\s+\w+::(\w+)\(/.exec(trimmed);
+      if (callMatch && !currentCounterexample.functionCall) {
+        currentCounterexample.functionCall = callMatch[1];
+      }
+      continue;
+    }
+
+    if (
+      (trimmed === "" ||
+        trimmed.startsWith("Running ") ||
+        trimmed.startsWith("╭")) &&
+      (inCounterexample || inSequence)
+    ) {
+      inCounterexample = false;
+      inSequence = false;
+    }
+  }
+
+  if (currentCounterexample) {
+    counterexamples.push(currentCounterexample);
+  }
+
+  counterexamples.forEach((ce, index) => {
+    if (ce.sequence.length > 0) {
+      const functionCall = ce.functionCall || `unknown_function_${index}`;
+      results.push({
+        brokenProperty: functionCall,
+        sequence: [...ce.parameters, ...ce.sequence],
+      });
+    }
+  });
+
+  return results;
+}
+
+function parseOldHalmosFormat(lines: string[]): PropertyAndSequence[] {
   const results: PropertyAndSequence[] = [];
   let currentCounterexamples: string[] = [];
   let capturing = false;
@@ -133,8 +225,8 @@ export function getHalmosPropertyAndSequence(
       if (trimmed.includes("=")) {
         currentCounterexamples.push(trimmed);
       } else if (trimmed.includes("[FAIL]") || trimmed.includes("[TIMEOUT]")) {
-        const propertyMatch = trimmed.match(
-          /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/
+        const propertyMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(
+          trimmed
         );
         if (propertyMatch && currentCounterexamples.length > 0) {
           results.push({
@@ -192,6 +284,119 @@ const formatSolidityValue = (paramName: string, value: string): string => {
   return `uint256 ${cleanName} = 0x${cleanValue};`;
 };
 
+interface ParsedFunctionCall {
+  functionName: string;
+  parameters: string[];
+  originalCall: string;
+}
+
+const extractFunctionCallFromSequence = (
+  sequence: string[]
+): ParsedFunctionCall[] => {
+  const functionCalls: ParsedFunctionCall[] = [];
+
+  for (const line of sequence) {
+    if (line.startsWith("CALL ")) {
+      const functionMatch = /CALL\s+\w+::(\w+)\(/.exec(line);
+      if (functionMatch) {
+        const functionName = functionMatch[1];
+
+        const paramStart = line.indexOf("(", line.indexOf(functionName)) + 1;
+
+        let paramEnd = paramStart;
+        let depth = 1;
+
+        for (let i = paramStart; i < line.length && depth > 0; i++) {
+          if (line[i] === "(") depth++;
+          else if (line[i] === ")") depth--;
+          if (depth === 0) {
+            paramEnd = i;
+            break;
+          }
+        }
+
+        const params = line.substring(paramStart, paramEnd);
+
+        const parameters = parseHalmosParameters(params);
+
+        functionCalls.push({
+          functionName,
+          parameters,
+          originalCall: line,
+        });
+      }
+    }
+  }
+
+  return functionCalls;
+};
+
+const parseHalmosParameters = (params: string): string[] => {
+  if (!params.trim()) return [];
+
+  const parameters: string[] = [];
+  let currentParam = "";
+  let depth = 0;
+
+  for (const element of params) {
+    const char = element;
+
+    if (char === "(") {
+      depth++;
+      currentParam += char;
+    } else if (char === ")") {
+      depth--;
+      currentParam += char;
+    } else if (char === "," && depth === 0) {
+      if (currentParam.trim()) {
+        parameters.push(currentParam.trim());
+      }
+      currentParam = "";
+    } else {
+      currentParam += char;
+    }
+  }
+
+  if (currentParam.trim()) {
+    parameters.push(currentParam.trim());
+  }
+
+  return parameters;
+};
+
+const mapHalmosParameterToVariable = (
+  halmosParam: string,
+  parameterMap: Map<string, string>
+): string => {
+  if (halmosParam.startsWith("p_") && parameterMap.has(halmosParam)) {
+    return parameterMap.get(halmosParam)!;
+  }
+
+  if (halmosParam.startsWith("Concat(")) {
+    const concatMatch = /Concat\(([^)]+)\)/.exec(halmosParam);
+    if (concatMatch) {
+      const innerParams = concatMatch[1].split(",").map((p) => p.trim());
+      const mappedParams = innerParams
+        .filter((p) => p.startsWith("p_") && parameterMap.has(p))
+        .map((p) => parameterMap.get(p)!);
+      return mappedParams.length > 0
+        ? mappedParams.join(", ")
+        : "/* complex parameter */";
+    }
+  }
+
+  if (halmosParam.includes("Extract(")) {
+    const extractMatch = /Extract\([^,]+,\s*[^,]+,\s*(p_[^)]+)\)/.exec(
+      halmosParam
+    );
+    if (extractMatch && parameterMap.has(extractMatch[1])) {
+      return parameterMap.get(extractMatch[1])!;
+    }
+  }
+
+  return "/* unmapped parameter */";
+};
+
 const generateTestFunction = (
   propSeq: PropertyAndSequence,
   identifier: string,
@@ -205,26 +410,57 @@ const generateTestFunction = (
     ? propSeq.sequence
     : [propSeq.sequence];
 
-  const parameters = sequences
+  const parameterMap = new Map<string, string>();
+  const parameterDeclarations: string[] = [];
+
+  sequences
     .filter(
       (param): param is string =>
-        typeof param === "string" && param.includes("=")
+        typeof param === "string" &&
+        param.includes("=") &&
+        !param.startsWith("CALL")
     )
-    .map((param) => {
+    .forEach((param) => {
       const [paramName, paramValue] = param.split("=").map((s) => s.trim());
-      return `    ${formatSolidityValue(paramName, paramValue)}`;
-    })
-    .join("\n");
+      const solidityDeclaration = formatSolidityValue(paramName, paramValue);
+      parameterDeclarations.push(`    ${solidityDeclaration}`);
 
-  return [
+      // Extract variable name from the declaration for mapping
+      const varMatch = solidityDeclaration.match(/\w+\s+(\w+)\s*=/);
+      if (varMatch) {
+        parameterMap.set(paramName, varMatch[1]);
+      }
+    });
+
+  // Extract function calls from sequence and generate actual calls
+  const functionCalls = extractFunctionCallFromSequence(sequences);
+  const callsSection =
+    functionCalls.length > 0
+      ? functionCalls
+          .map((call) => {
+            const mappedParams = call.parameters
+              .map((param) => mapHalmosParameterToVariable(param, parameterMap))
+              .join(", ");
+            return `    ${call.functionName}(${mappedParams});`;
+          })
+          .join("\n")
+      : `    // ${propSeq.brokenProperty}(/* add parameters here */);`;
+
+  const parts = [
     `function ${functionName}() public {`,
     `    // Counterexample for: ${propSeq.brokenProperty}`,
-    parameters,
-    `    `,
-    `    // Call the original function with counterexample values`,
-    `    // ${propSeq.brokenProperty}(/* add parameters here */);`,
-    `}`,
-  ].join("\n");
+  ];
+
+  if (parameterDeclarations.length > 0) {
+    parts.push("", "    // Parameter declarations:");
+    parts.push(...parameterDeclarations);
+  }
+
+  parts.push("", "    // Reproduction sequence:");
+  parts.push(callsSection);
+  parts.push("}");
+
+  return parts.join("\n");
 };
 
 export function halmosLogsToFunctions(
