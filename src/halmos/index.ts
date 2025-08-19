@@ -203,6 +203,17 @@ const findMatchingVariable = (
   position: number,
   variableMapping: Map<string, string>
 ): string | null => {
+  // Handle array types specially (both dynamic [] and fixed [N])
+  if (type.includes("[") && type.includes("]")) {
+    // Look for array variable in mapping (e.g., "arr" -> "arr_array")
+    for (const [paramName, varName] of variableMapping) {
+      if (paramName === "arr" && varName.includes("_array")) {
+        return varName;
+      }
+    }
+    return createArrayParameter(type, variableMapping);
+  }
+
   // Common patterns for parameter names
   const typePatterns = {
     address: ["a_address", "b_address", "address"],
@@ -241,6 +252,98 @@ const findMatchingVariable = (
 };
 
 /**
+ * Create array parameter from individual array elements
+ */
+const createArrayParameter = (
+  type: string,
+  variableMapping: Map<string, string>
+): string => {
+  const arrayElements: string[] = [];
+  let arrayLength = 0;
+
+  // Find all array elements
+  const elementMap = new Map<number, string>();
+  const elementPattern = /arr\[(\d+)\]/;
+
+  for (const [paramName, varName] of variableMapping) {
+    const match = elementPattern.exec(paramName);
+    if (match) {
+      const index = parseInt(match[1], 10);
+      elementMap.set(index, varName);
+      arrayLength = Math.max(arrayLength, index + 1);
+    }
+  }
+
+  // Build array elements in order
+  for (let i = 0; i < arrayLength; i++) {
+    const element = elementMap.get(i);
+    if (element) {
+      arrayElements.push(element);
+    }
+  }
+
+  if (arrayElements.length > 0) {
+    return `[${arrayElements.join(", ")}]`;
+  }
+
+  return `/* ${type} parameter */`;
+};
+
+/**
+ * Generate array declarations from individual array elements
+ */
+const generateArrayDeclarations = (
+  variableMapping: Map<string, string>
+): { declarations: string[]; arrayVariables: Map<string, string> } => {
+  const declarations: string[] = [];
+  const arrayVariables = new Map<string, string>();
+
+  // Find all array elements and group them
+  const arrayGroups = new Map<string, Map<number, string>>();
+  const elementPattern = /arr\[(\d+)\]/;
+
+  for (const [paramName, varName] of variableMapping) {
+    const match = elementPattern.exec(paramName);
+    if (match) {
+      const index = parseInt(match[1], 10);
+      const arrayName = "arr"; // Could be extracted from paramName if needed
+
+      if (!arrayGroups.has(arrayName)) {
+        arrayGroups.set(arrayName, new Map());
+      }
+      arrayGroups.get(arrayName)!.set(index, varName);
+    }
+  }
+
+  // Generate array declarations
+  for (const [arrayName, elements] of arrayGroups) {
+    const maxIndex = Math.max(...elements.keys());
+    const arrayElements: string[] = [];
+
+    for (let i = 0; i <= maxIndex; i++) {
+      const element = elements.get(i);
+      arrayElements.push(element || "0");
+    }
+
+    if (arrayElements.length > 0) {
+      const arrayVarName = `${arrayName}_array`;
+      declarations.push(
+        `    uint256[] memory ${arrayVarName} = new uint256[](${arrayElements.length});`
+      );
+
+      // Add individual assignments
+      arrayElements.forEach((element, index) => {
+        declarations.push(`    ${arrayVarName}[${index}] = ${element};`);
+      });
+
+      arrayVariables.set(arrayName, arrayVarName);
+    }
+  }
+
+  return { declarations, arrayVariables };
+};
+
+/**
  * Generate Foundry test function from property and sequence
  * Similar to Medusa's function generation approach
  */
@@ -260,6 +363,7 @@ const generateTestFunction = (
   const parameterDeclarations: string[] = [];
   const usedVariableNames = new Set<string>();
   const variableMapping = new Map<string, string>();
+  const arrayDeclarations: string[] = [];
 
   sequences
     .filter(
@@ -271,7 +375,8 @@ const generateTestFunction = (
       const solidityDeclaration = formatSolidityValue(paramName, paramValue);
 
       // Extract variable name to check for duplicates
-      const varMatch = solidityDeclaration.match(/\w+\s+(\w+)\s*=/);
+      const varPattern = /\w+\s+(\w+)\s*=/;
+      const varMatch = varPattern.exec(solidityDeclaration);
       if (varMatch) {
         const varName = varMatch[1];
         if (!usedVariableNames.has(varName)) {
@@ -281,6 +386,16 @@ const generateTestFunction = (
         }
       }
     });
+
+  // Generate array declarations if needed
+  const arrayInfo = generateArrayDeclarations(variableMapping);
+  if (arrayInfo.declarations.length > 0) {
+    arrayDeclarations.push(...arrayInfo.declarations);
+    // Add array variables to mapping for function call generation
+    arrayInfo.arrayVariables.forEach((varName: string, arrayName: string) => {
+      variableMapping.set(arrayName, varName);
+    });
+  }
 
   // Generate function call with actual parameters
   const functionCall = generateFunctionCall(
@@ -296,6 +411,11 @@ const generateTestFunction = (
   if (parameterDeclarations.length > 0) {
     parts.push("", "    // Parameter declarations:");
     parts.push(...parameterDeclarations);
+  }
+
+  if (arrayDeclarations.length > 0) {
+    parts.push("", "    // Array declarations:");
+    parts.push(...arrayDeclarations);
   }
 
   parts.push("", "    // Reproduction sequence:");
