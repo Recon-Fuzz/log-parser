@@ -4,7 +4,11 @@ export {
   echidnaShrunkAndProcess,
 } from "./echidna/index";
 export { processMedusa, medusaLogsToFunctions } from "./medusa/index";
-export { processHalmos, halmosLogsToFunctions } from "./halmos/index";
+export {
+  processHalmos,
+  halmosLogsToFunctions,
+  halmosSequenceToFunction,
+} from "./halmos/index";
 
 export {
   VmParsingData,

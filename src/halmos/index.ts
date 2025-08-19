@@ -1,241 +1,103 @@
 import { type FuzzingResults, type PropertyAndSequence } from "../types/types";
-import { captureFuzzingDuration } from "../utils/utils";
 
-let halmosCounterexampleLogger = false;
-let currentCounterexampleData: string[] = [];
+let halmosTraceLogger = false;
+let currentBrokenPropertyHalmos = "";
+let currentCounterexample: string[] = [];
 
-const isEmptyOrAnsi = (line: string): boolean =>
-  !line || line.includes("\x1b[") || line.includes("3[2K");
-
-const isTestResult = (line: string): boolean =>
-  line.includes("[FAIL]") || line.includes("[TIMEOUT]");
-
-const extractTestProperty = (line: string): string | null => {
-  const match = line.match(/\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/);
-  return match?.[1]?.trim() || null;
-};
-
-const extractCounts = (line: string) => {
-  const passedMatch = line.match(/(\d+)\s+passed/);
-  const failedMatch = line.match(/(\d+)\s+failed/);
-  return {
-    passed: passedMatch ? parseInt(passedMatch[1]) : 0,
-    failed: failedMatch ? parseInt(failedMatch[1]) : 0,
-  };
-};
-
-const extractDuration = (line: string): string => {
-  const timeMatch = line.match(/time:\s*([\d.]+)s/);
-  if (!timeMatch) return "";
-
-  const durationStr = `${Math.floor(parseFloat(timeMatch[1]))}s`;
-  return captureFuzzingDuration(durationStr) || durationStr;
-};
-
-const findOrCreateProperty = (
-  jobStats: FuzzingResults,
-  propertyName: string
-) => {
-  let property = jobStats.brokenProperties.find(
-    (prop) => prop.brokenProperty === propertyName
-  );
-
-  if (!property) {
-    property = { brokenProperty: propertyName, sequence: "" };
-    jobStats.brokenProperties.push(property);
+/**
+ * The function `processHalmos` parses and extracts information from a given line
+ * of text to update job statistics and log results for a Halmos testing job.
+ * Similar to processMedusa and processEchidna functions.
+ */
+export function processHalmos(line: string, jobStats: FuzzingResults): void {
+  if (line.includes("Counterexample:")) {
+    halmosTraceLogger = true;
+    currentCounterexample = [];
   }
 
-  return property;
-};
-
-export const processHalmos = (line: string, jobStats: FuzzingResults): void => {
-  const trimmedLine = line.trim();
-
-  if (isEmptyOrAnsi(trimmedLine)) return;
-
-  if (trimmedLine.includes("Symbolic test result:")) {
-    const { passed, failed } = extractCounts(trimmedLine);
-    jobStats.passed = passed;
-    jobStats.failed = failed;
-    jobStats.numberOfTests = passed + failed;
-    jobStats.duration = extractDuration(trimmedLine);
-    return;
-  }
-
-  if (trimmedLine === "Counterexample:") {
-    if (halmosCounterexampleLogger && currentCounterexampleData.length > 0) {
-      halmosCounterexampleLogger = false;
-      currentCounterexampleData = [];
+  if (line.includes("[FAIL]") || line.includes("[TIMEOUT]")) {
+    const propertyMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(line);
+    if (propertyMatch) {
+      currentBrokenPropertyHalmos = propertyMatch[1].trim();
+      jobStats.brokenProperties.push({
+        brokenProperty: currentBrokenPropertyHalmos,
+        sequence: currentCounterexample.join("\n"),
+      });
+      jobStats.failed++;
     }
-
-    halmosCounterexampleLogger = true;
-    currentCounterexampleData = [];
-    return;
+    halmosTraceLogger = false;
+    currentCounterexample = [];
+  } else if (line.includes("[PASS]")) {
+    jobStats.passed++;
   }
 
-  if (halmosCounterexampleLogger) {
-    if (isTestResult(trimmedLine)) {
-      const property = extractTestProperty(trimmedLine);
-      if (property && currentCounterexampleData.length > 0) {
-        jobStats.results.push(trimmedLine);
+  if (halmosTraceLogger && line.trim() && !line.includes("Counterexample:")) {
+    if (line.includes("=") && line.startsWith("    p_")) {
+      currentCounterexample.push(line.trim());
+    }
+    jobStats.traces.push(line.trim());
+  }
 
-        const brokenProperty = findOrCreateProperty(jobStats, property);
-        brokenProperty.sequence = currentCounterexampleData.join("\n") + "\n";
-      } else if (property) {
-        jobStats.results.push(trimmedLine);
-      }
-
-      halmosCounterexampleLogger = false;
-      currentCounterexampleData = [];
-    } else if (trimmedLine.includes("=")) {
-      currentCounterexampleData.push(trimmedLine);
-    } else if (
-      trimmedLine.includes("Symbolic test result:") ||
-      trimmedLine.includes("[PASS]") ||
-      trimmedLine === "Counterexample:"
-    ) {
-      halmosCounterexampleLogger = false;
-      currentCounterexampleData = [];
-
-      if (trimmedLine === "Counterexample:") {
-        halmosCounterexampleLogger = true;
-        currentCounterexampleData = [];
-      }
+  // Extract test count from summary line
+  if (line.includes("Running") && line.includes("tests for")) {
+    const testCountMatch = line.match(/Running (\d+) tests/);
+    if (testCountMatch) {
+      jobStats.numberOfTests = parseInt(testCountMatch[1]);
     }
   }
-
-  if (!halmosCounterexampleLogger && isTestResult(trimmedLine)) {
-    const property = extractTestProperty(trimmedLine);
-    if (property) {
-      jobStats.results.push(trimmedLine);
-    }
-  }
-};
-
-interface HalmosCounterexample {
-  parameters: string[];
-  sequence: string[];
-  functionCall?: string;
 }
 
+/**
+ * Simple function to extract property and sequence from Halmos logs
+ * Similar to Medusa's getPropertyAndSequenceString function
+ */
 export function getHalmosPropertyAndSequence(
   logs: string
 ): PropertyAndSequence[] {
+  const results: PropertyAndSequence[] = [];
   const lines = logs.split("\n");
 
-  // Check if this is the new format with Counterexample: and Sequence: sections
-  const hasNewFormat = logs.includes("Sequence:");
-
-  if (hasNewFormat) {
-    return parseNewHalmosFormat(lines);
-  } else {
-    return parseOldHalmosFormat(lines);
-  }
-}
-
-function parseNewHalmosFormat(lines: string[]): PropertyAndSequence[] {
-  const results: PropertyAndSequence[] = [];
-  const counterexamples: HalmosCounterexample[] = [];
-
-  let currentCounterexample: HalmosCounterexample | null = null;
-  let inCounterexample = false;
-  let inSequence = false;
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-
-    // Start of a new counterexample
-    if (trimmed === "Counterexample:" || trimmed === "Counterexample: ∅") {
-      if (currentCounterexample) {
-        counterexamples.push(currentCounterexample);
-      }
-
-      currentCounterexample = {
-        parameters: [],
-        sequence: [],
-      };
-      inCounterexample = true;
-      inSequence = false;
-      continue;
-    }
-
-    if (trimmed === "Sequence:") {
-      inSequence = true;
-      inCounterexample = false;
-      continue;
-    }
-
-    if (inCounterexample && currentCounterexample && trimmed.includes("=")) {
-      currentCounterexample.parameters.push(trimmed);
-      continue;
-    }
-
-    if (inSequence && currentCounterexample && trimmed.startsWith("CALL ")) {
-      currentCounterexample.sequence.push(trimmed);
-      const callMatch = /CALL\s+\w+::(\w+)\(/.exec(trimmed);
-      if (callMatch && !currentCounterexample.functionCall) {
-        currentCounterexample.functionCall = callMatch[1];
-      }
-      continue;
-    }
-
-    if (
-      (trimmed === "" ||
-        trimmed.startsWith("Running ") ||
-        trimmed.startsWith("╭")) &&
-      (inCounterexample || inSequence)
-    ) {
-      inCounterexample = false;
-      inSequence = false;
-    }
-  }
-
-  if (currentCounterexample) {
-    counterexamples.push(currentCounterexample);
-  }
-
-  counterexamples.forEach((ce, index) => {
-    if (ce.sequence.length > 0) {
-      const functionCall = ce.functionCall || `unknown_function_${index}`;
-      results.push({
-        brokenProperty: functionCall,
-        sequence: [...ce.parameters, ...ce.sequence],
-      });
-    }
-  });
-
-  return results;
-}
-
-function parseOldHalmosFormat(lines: string[]): PropertyAndSequence[] {
-  const results: PropertyAndSequence[] = [];
-  let currentCounterexamples: string[] = [];
+  let currentCounterexample: string[] = [];
   let capturing = false;
 
-  for (const line of lines) {
-    const trimmed = line.trim();
+  for (const element of lines) {
+    const line = element.trim();
 
-    if (trimmed === "Counterexample:") {
+    if (line === "Counterexample:") {
       capturing = true;
-      currentCounterexamples = [];
+      currentCounterexample = [];
       continue;
     }
 
     if (capturing) {
-      if (trimmed.includes("=")) {
-        currentCounterexamples.push(trimmed);
-      } else if (trimmed.includes("[FAIL]") || trimmed.includes("[TIMEOUT]")) {
+      if (line.includes("[FAIL]") || line.includes("[TIMEOUT]")) {
+        // Extract property name
         const propertyMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(
-          trimmed
+          line
         );
-        if (propertyMatch && currentCounterexamples.length > 0) {
+        if (propertyMatch && currentCounterexample.length > 0) {
           results.push({
             brokenProperty: propertyMatch[1].trim(),
-            sequence: currentCounterexamples,
+            sequence: currentCounterexample,
           });
         }
         capturing = false;
-        currentCounterexamples = [];
+        currentCounterexample = [];
+      } else if (line.includes("=") && line.startsWith("p_")) {
+        currentCounterexample.push(line);
+      } else if (
+        line.length > 0 &&
+        !line.includes("=") &&
+        currentCounterexample.length > 0
+      ) {
+        // Handle multi-line values (like bytes data)
+        const lastParam =
+          currentCounterexample[currentCounterexample.length - 1];
+        if (lastParam.includes("=") && !lastParam.includes("0x")) {
+          // This is likely a continuation of the previous parameter
+          currentCounterexample[currentCounterexample.length - 1] =
+            lastParam + line;
+        }
       }
     }
   }
@@ -243,160 +105,66 @@ function parseOldHalmosFormat(lines: string[]): PropertyAndSequence[] {
   return results;
 }
 
+/**
+ * Helper function to clean parameter names for Solidity variable names
+ */
 const cleanParameterName = (paramName: string): string =>
   paramName
     .replace(/^p_/, "")
     .replace(/_[a-f0-9]+_\d+$/, "")
-    .replace(/_(?:bool|uint\d+|address|int\d+|bytes\d*)$/, "");
+    .replace(/\[(\d+)\]/, "$1");
 
-const extractTypeFromParamName = (paramName: string): string | null => {
-  const typeMatch = paramName.match(
-    /_(?:bool|uint\d+|address|int\d+|bytes\d*)_/
-  );
-  return typeMatch ? typeMatch[0].slice(1, -1) : null;
+/**
+ * Helper function to extract type from parameter name
+ */
+const extractTypeFromParamName = (paramName: string): string => {
+  if (paramName.includes("_bool_")) return "bool";
+  if (paramName.includes("_address_")) return "address";
+  if (paramName.includes("_uint256_")) return "uint256";
+  if (paramName.includes("_uint8_")) return "uint8";
+  if (paramName.includes("_bytes_")) return "bytes";
+  if (paramName.includes("_length_")) return "uint256";
+
+  const uintMatch = paramName.match(/_uint(\d+)_/);
+  if (uintMatch) return `uint${uintMatch[1]}`;
+
+  const intMatch = paramName.match(/_int(\d+)_/);
+  if (intMatch) return `int${intMatch[1]}`;
+
+  return "uint256"; // default
 };
 
+/**
+ * Helper function to format Solidity value declarations
+ */
 const formatSolidityValue = (paramName: string, value: string): string => {
   const cleanName = cleanParameterName(paramName);
   const cleanValue = value.replace(/^0x/, "");
   const type = extractTypeFromParamName(paramName);
 
-  if (paramName.includes("_bool_")) {
+  if (type === "bool") {
     return `bool ${cleanName} = ${cleanValue === "01" ? "true" : "false"};`;
   }
 
-  if (paramName.includes("_address_")) {
+  if (type === "address") {
     return `address ${cleanName} = 0x${cleanValue.padStart(40, "0")};`;
   }
 
-  if (type?.startsWith("uint")) {
+  if (type.startsWith("uint") || type.startsWith("int")) {
     return `${type} ${cleanName} = 0x${cleanValue};`;
   }
 
-  if (type?.startsWith("int")) {
-    return `${type} ${cleanName} = ${type}(0x${cleanValue});`;
-  }
-
-  if (type?.startsWith("bytes")) {
-    return `${type} ${cleanName} = 0x${cleanValue};`;
+  if (type === "bytes") {
+    return `bytes ${cleanName} = 0x${cleanValue};`;
   }
 
   return `uint256 ${cleanName} = 0x${cleanValue};`;
 };
 
-interface ParsedFunctionCall {
-  functionName: string;
-  parameters: string[];
-  originalCall: string;
-}
-
-const extractFunctionCallFromSequence = (
-  sequence: string[]
-): ParsedFunctionCall[] => {
-  const functionCalls: ParsedFunctionCall[] = [];
-
-  for (const line of sequence) {
-    if (line.startsWith("CALL ")) {
-      const functionMatch = /CALL\s+\w+::(\w+)\(/.exec(line);
-      if (functionMatch) {
-        const functionName = functionMatch[1];
-
-        const paramStart = line.indexOf("(", line.indexOf(functionName)) + 1;
-
-        let paramEnd = paramStart;
-        let depth = 1;
-
-        for (let i = paramStart; i < line.length && depth > 0; i++) {
-          if (line[i] === "(") depth++;
-          else if (line[i] === ")") depth--;
-          if (depth === 0) {
-            paramEnd = i;
-            break;
-          }
-        }
-
-        const params = line.substring(paramStart, paramEnd);
-
-        const parameters = parseHalmosParameters(params);
-
-        functionCalls.push({
-          functionName,
-          parameters,
-          originalCall: line,
-        });
-      }
-    }
-  }
-
-  return functionCalls;
-};
-
-const parseHalmosParameters = (params: string): string[] => {
-  if (!params.trim()) return [];
-
-  const parameters: string[] = [];
-  let currentParam = "";
-  let depth = 0;
-
-  for (const element of params) {
-    const char = element;
-
-    if (char === "(") {
-      depth++;
-      currentParam += char;
-    } else if (char === ")") {
-      depth--;
-      currentParam += char;
-    } else if (char === "," && depth === 0) {
-      if (currentParam.trim()) {
-        parameters.push(currentParam.trim());
-      }
-      currentParam = "";
-    } else {
-      currentParam += char;
-    }
-  }
-
-  if (currentParam.trim()) {
-    parameters.push(currentParam.trim());
-  }
-
-  return parameters;
-};
-
-const mapHalmosParameterToVariable = (
-  halmosParam: string,
-  parameterMap: Map<string, string>
-): string => {
-  if (halmosParam.startsWith("p_") && parameterMap.has(halmosParam)) {
-    return parameterMap.get(halmosParam)!;
-  }
-
-  if (halmosParam.startsWith("Concat(")) {
-    const concatMatch = /Concat\(([^)]+)\)/.exec(halmosParam);
-    if (concatMatch) {
-      const innerParams = concatMatch[1].split(",").map((p) => p.trim());
-      const mappedParams = innerParams
-        .filter((p) => p.startsWith("p_") && parameterMap.has(p))
-        .map((p) => parameterMap.get(p)!);
-      return mappedParams.length > 0
-        ? mappedParams.join(", ")
-        : "/* complex parameter */";
-    }
-  }
-
-  if (halmosParam.includes("Extract(")) {
-    const extractMatch = /Extract\([^,]+,\s*[^,]+,\s*(p_[^)]+)\)/.exec(
-      halmosParam
-    );
-    if (extractMatch && parameterMap.has(extractMatch[1])) {
-      return parameterMap.get(extractMatch[1])!;
-    }
-  }
-
-  return "/* unmapped parameter */";
-};
-
+/**
+ * Generate Foundry test function from property and sequence
+ * Similar to Medusa's function generation approach
+ */
 const generateTestFunction = (
   propSeq: PropertyAndSequence,
   identifier: string,
@@ -410,41 +178,28 @@ const generateTestFunction = (
     ? propSeq.sequence
     : [propSeq.sequence];
 
-  const parameterMap = new Map<string, string>();
   const parameterDeclarations: string[] = [];
+  const usedVariableNames = new Set<string>();
 
   sequences
     .filter(
       (param): param is string =>
-        typeof param === "string" &&
-        param.includes("=") &&
-        !param.startsWith("CALL")
+        typeof param === "string" && param.includes("=")
     )
     .forEach((param) => {
       const [paramName, paramValue] = param.split("=").map((s) => s.trim());
       const solidityDeclaration = formatSolidityValue(paramName, paramValue);
-      parameterDeclarations.push(`    ${solidityDeclaration}`);
 
-      // Extract variable name from the declaration for mapping
+      // Extract variable name to check for duplicates
       const varMatch = solidityDeclaration.match(/\w+\s+(\w+)\s*=/);
       if (varMatch) {
-        parameterMap.set(paramName, varMatch[1]);
+        const varName = varMatch[1];
+        if (!usedVariableNames.has(varName)) {
+          parameterDeclarations.push(`    ${solidityDeclaration}`);
+          usedVariableNames.add(varName);
+        }
       }
     });
-
-  // Extract function calls from sequence and generate actual calls
-  const functionCalls = extractFunctionCallFromSequence(sequences);
-  const callsSection =
-    functionCalls.length > 0
-      ? functionCalls
-          .map((call) => {
-            const mappedParams = call.parameters
-              .map((param) => mapHalmosParameterToVariable(param, parameterMap))
-              .join(", ");
-            return `    ${call.functionName}(${mappedParams});`;
-          })
-          .join("\n")
-      : `    // ${propSeq.brokenProperty}(/* add parameters here */);`;
 
   const parts = [
     `function ${functionName}() public {`,
@@ -457,11 +212,30 @@ const generateTestFunction = (
   }
 
   parts.push("", "    // Reproduction sequence:");
-  parts.push(callsSection);
+  parts.push(`    // ${propSeq.brokenProperty}(/* add parameters here */);`);
   parts.push("}");
 
   return parts.join("\n");
 };
+
+/**
+ * Generate a single test function from property name and sequence
+ * Used by frontend for individual broken properties
+ * This function works with individual sequences (similar to Medusa/Echidna approach)
+ */
+export function halmosSequenceToFunction(
+  sequence: string,
+  brokenProperty: string,
+  identifier: string,
+  index: number = 0
+): string {
+  // Parse the sequence string back to array format
+  const sequenceArray = sequence
+    .split("\n")
+    .filter((line) => line.trim() !== "");
+  const propSeq = { brokenProperty, sequence: sequenceArray };
+  return generateTestFunction(propSeq, identifier, index);
+}
 
 export function halmosLogsToFunctions(
   logs: string,
