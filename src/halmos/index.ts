@@ -35,11 +35,6 @@ function extractCallStatement(line: string): string | null {
   return null;
 }
 
-/**
- * The function `processHalmos` parses and extracts information from a given line
- * of text to update job statistics and log results for a Halmos testing job.
- * Similar to processMedusa and processEchidna functions.
- */
 export function processHalmos(line: string, jobStats: FuzzingResults): void {
   // Store all lines for later processing
   allLines.push(line);
@@ -428,9 +423,6 @@ const findMatchingVariable = (
   return null;
 };
 
-/**
- * Create array parameter from individual array elements
- */
 const createArrayParameter = (
   type: string,
   variableMapping: Map<string, string>
@@ -466,9 +458,6 @@ const createArrayParameter = (
   return `/* ${type} parameter */`;
 };
 
-/**
- * Generate array declarations from individual array elements
- */
 const generateArrayDeclarations = (
   variableMapping: Map<string, string>
 ): { declarations: string[]; arrayVariables: Map<string, string> } => {
