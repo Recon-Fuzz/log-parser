@@ -1,8 +1,39 @@
 import { type FuzzingResults, type PropertyAndSequence } from "../types/types";
 
-let halmosTraceLogger = false;
-let currentBrokenPropertyHalmos = "";
-let currentCounterexample: string[] = [];
+// Store all lines for batch processing
+let allLines: string[] = [];
+
+/**
+ * Extract CALL statement from a line, handling nested parentheses
+ */
+function extractCallStatement(line: string): string | null {
+  const callStart = line.indexOf("CALL ");
+  if (callStart === -1) return null;
+
+  // Find the function call pattern: CALL ContractName::functionName(
+  const functionMatch = line.match(/CALL\s+(\w+::[\w]+)\(/);
+  if (!functionMatch) return null;
+
+  const functionName = functionMatch[1];
+  const openParenIndex = line.indexOf("(", callStart);
+  if (openParenIndex === -1) return null;
+
+  // Find the matching closing parenthesis, handling nested parentheses
+  let parenCount = 1;
+  let i = openParenIndex + 1;
+  while (i < line.length && parenCount > 0) {
+    if (line[i] === "(") parenCount++;
+    else if (line[i] === ")") parenCount--;
+    i++;
+  }
+
+  if (parenCount === 0) {
+    const params = line.substring(openParenIndex + 1, i - 1);
+    return `CALL ${functionName}(${params})`;
+  }
+
+  return null;
+}
 
 /**
  * The function `processHalmos` parses and extracts information from a given line
@@ -10,32 +41,14 @@ let currentCounterexample: string[] = [];
  * Similar to processMedusa and processEchidna functions.
  */
 export function processHalmos(line: string, jobStats: FuzzingResults): void {
-  if (line.includes("Counterexample:")) {
-    halmosTraceLogger = true;
-    currentCounterexample = [];
-  }
+  // Store all lines for later processing
+  allLines.push(line);
 
+  // Handle pass/fail counts and test counts immediately
   if (line.includes("[FAIL]") || line.includes("[TIMEOUT]")) {
-    const propertyMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(line);
-    if (propertyMatch) {
-      currentBrokenPropertyHalmos = propertyMatch[1].trim();
-      jobStats.brokenProperties.push({
-        brokenProperty: currentBrokenPropertyHalmos,
-        sequence: currentCounterexample.join("\n"),
-      });
-      jobStats.failed++;
-    }
-    halmosTraceLogger = false;
-    currentCounterexample = [];
+    jobStats.failed++;
   } else if (line.includes("[PASS]")) {
     jobStats.passed++;
-  }
-
-  if (halmosTraceLogger && line.trim() && !line.includes("Counterexample:")) {
-    if (line.includes("=") && line.startsWith("    p_")) {
-      currentCounterexample.push(line.trim());
-    }
-    jobStats.traces.push(line.trim());
   }
 
   // Extract test count from summary line
@@ -44,6 +57,39 @@ export function processHalmos(line: string, jobStats: FuzzingResults): void {
     if (testCountMatch) {
       jobStats.numberOfTests = parseInt(testCountMatch[1]);
     }
+  }
+
+  // Process broken properties when we hit a FAIL/TIMEOUT line
+  if (line.includes("[FAIL]") || line.includes("[TIMEOUT]")) {
+    // Process all accumulated lines to extract broken properties
+    const logsText = allLines.join("\n");
+    const propertySequences = getHalmosPropertyAndSequence(logsText);
+
+    // Add any new broken properties that aren't already in jobStats
+    propertySequences.forEach((propSeq) => {
+      const exists = jobStats.brokenProperties.some(
+        (existing) => existing.brokenProperty === propSeq.brokenProperty
+      );
+      if (!exists) {
+        const sequenceString = Array.isArray(propSeq.sequence)
+          ? propSeq.sequence.join("\n")
+          : propSeq.sequence;
+        jobStats.brokenProperties.push({
+          brokenProperty: propSeq.brokenProperty,
+          sequence: sequenceString,
+        });
+      }
+    });
+  }
+
+  // Reset for next batch when we see a new counterexample
+  if (line.includes("Counterexample:")) {
+    allLines = [line];
+  }
+
+  // Always add to traces
+  if (line.trim()) {
+    jobStats.traces.push(line.trim());
   }
 }
 
@@ -58,34 +104,109 @@ export function getHalmosPropertyAndSequence(
   const lines = logs.split("\n");
 
   let currentCounterexample: string[] = [];
+  let currentSequenceCalls: string[] = [];
   let capturing = false;
+  let capturingSequence = false;
+  let currentCall = "";
 
   for (const element of lines) {
     const line = element.trim();
 
     if (line === "Counterexample:") {
       capturing = true;
+      capturingSequence = false;
       currentCounterexample = [];
+      currentSequenceCalls = [];
+      currentCall = "";
+      continue;
+    }
+
+    if (line === "Sequence:") {
+      capturingSequence = true;
+      currentCall = "";
       continue;
     }
 
     if (capturing) {
       if (line.includes("[FAIL]") || line.includes("[TIMEOUT]")) {
+        // Finalize any pending call
+        if (currentCall && capturingSequence) {
+          currentSequenceCalls.push(currentCall.trim());
+        }
+
         // Extract property name
         const propertyMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(
           line
         );
         if (propertyMatch && currentCounterexample.length > 0) {
+          // Combine parameter declarations and sequence calls
+          const combinedSequence = [
+            ...currentCounterexample,
+            ...currentSequenceCalls,
+          ];
           results.push({
             brokenProperty: propertyMatch[1].trim(),
-            sequence: currentCounterexample,
+            sequence: combinedSequence,
           });
         }
         capturing = false;
+        capturingSequence = false;
         currentCounterexample = [];
-      } else if (line.includes("=") && line.startsWith("p_")) {
+        currentSequenceCalls = [];
+        currentCall = "";
+      } else if (capturingSequence && line.startsWith("CALL ")) {
+        // Finalize previous call if any
+        if (currentCall) {
+          const callMatch = extractCallStatement(currentCall);
+          if (callMatch) {
+            currentSequenceCalls.push(callMatch);
+          }
+        }
+        // Start new call
+        currentCall = line;
+      } else if (
+        capturingSequence &&
+        currentCall &&
+        !line.startsWith("    CALL ") &&
+        !line.startsWith("        ") &&
+        line.trim() &&
+        !line.includes("[FAIL]") &&
+        !line.includes("[TIMEOUT]")
+      ) {
+        // This might be a continuation of the current CALL statement
+        // Check if it looks like part of the function parameters
+        if (line.includes(")") || line.includes(",") || line.includes("p_")) {
+          currentCall += " " + line.trim();
+        }
+      } else if (
+        capturingSequence &&
+        currentCall &&
+        (line.includes("(value:") ||
+          line.includes("(caller:") ||
+          line.startsWith("halmos_msg_"))
+      ) {
+        // Skip value and caller information for CALL statements
+        continue;
+      } else if (
+        capturingSequence &&
+        line.startsWith("    ") &&
+        (line.includes("SLOAD") ||
+          line.includes("SSTORE") ||
+          line.includes("STATICCALL") ||
+          line.includes("CREATE") ||
+          line.includes("↩ RETURN"))
+      ) {
+        // Skip internal EVM operations
+        continue;
+      } else if (
+        !capturingSequence &&
+        line.includes("=") &&
+        line.startsWith("p_")
+      ) {
+        // Extract parameter declarations
         currentCounterexample.push(line);
       } else if (
+        !capturingSequence &&
         line.length > 0 &&
         !line.includes("=") &&
         currentCounterexample.length > 0
@@ -104,6 +225,62 @@ export function getHalmosPropertyAndSequence(
 
   return results;
 }
+
+/**
+ * Helper function to parse CALL statements from Halmos sequence logs
+ * Extracts function name and parameters from lines like:
+ * "CALL CryticToFoundry::setTheManager(p_manager_address_83d2b33_33)"
+ */
+const parseCallStatement = (
+  callLine: string
+): { functionName: string; parameters: string[] } | null => {
+  // Match pattern: CALL ContractName::functionName(param1, param2, ...)
+  const callMatch = callLine.match(/CALL\s+\w+::(\w+)\(([^)]*)\)/);
+  if (!callMatch) {
+    return null;
+  }
+
+  const functionName = callMatch[1];
+  const paramString = callMatch[2].trim();
+
+  if (!paramString) {
+    return { functionName, parameters: [] };
+  }
+
+  // Parse parameters - handle complex expressions like Concat(param1, param2)
+  const parameters: string[] = [];
+  let currentParam = "";
+  let parenDepth = 0;
+  let i = 0;
+
+  while (i < paramString.length) {
+    const char = paramString[i];
+
+    if (char === "(") {
+      parenDepth++;
+      currentParam += char;
+    } else if (char === ")") {
+      parenDepth--;
+      currentParam += char;
+    } else if (char === "," && parenDepth === 0) {
+      // Found a parameter separator at top level
+      if (currentParam.trim()) {
+        parameters.push(currentParam.trim());
+      }
+      currentParam = "";
+    } else {
+      currentParam += char;
+    }
+    i++;
+  }
+
+  // Add the last parameter
+  if (currentParam.trim()) {
+    parameters.push(currentParam.trim());
+  }
+
+  return { functionName, parameters };
+};
 
 /**
  * Helper function to clean parameter names for Solidity variable names
@@ -364,11 +541,15 @@ const generateTestFunction = (
   const usedVariableNames = new Set<string>();
   const variableMapping = new Map<string, string>();
   const arrayDeclarations: string[] = [];
+  const sequenceCalls: string[] = [];
 
+  // Process parameter declarations
   sequences
     .filter(
       (param): param is string =>
-        typeof param === "string" && param.includes("=")
+        typeof param === "string" &&
+        param.includes("=") &&
+        param.startsWith("p_")
     )
     .forEach((param) => {
       const [paramName, paramValue] = param.split("=").map((s) => s.trim());
@@ -387,6 +568,35 @@ const generateTestFunction = (
       }
     });
 
+  // Process sequence calls
+  sequences
+    .filter(
+      (line): line is string =>
+        typeof line === "string" && line.startsWith("CALL ")
+    )
+    .forEach((callLine) => {
+      const parsedCall = parseCallStatement(callLine);
+      if (parsedCall) {
+        const { functionName: callFunctionName, parameters } = parsedCall;
+
+        // Map parameters to variable names
+        const mappedParams = parameters.map((param) => {
+          // Extract parameter name from complex expressions like Concat(p_param, ...)
+          const paramMatch = /p_\w+_[a-f0-9]+_\d+/.exec(param);
+          if (paramMatch) {
+            const paramName = paramMatch[0];
+            return variableMapping.get(paramName) || paramName;
+          }
+          return param;
+        });
+
+        const functionCallStr = `${callFunctionName}(${mappedParams.join(
+          ", "
+        )})`;
+        sequenceCalls.push(`    ${functionCallStr};`);
+      }
+    });
+
   // Generate array declarations if needed
   const arrayInfo = generateArrayDeclarations(variableMapping);
   if (arrayInfo.declarations.length > 0) {
@@ -396,12 +606,6 @@ const generateTestFunction = (
       variableMapping.set(arrayName, varName);
     });
   }
-
-  // Generate function call with actual parameters
-  const functionCall = generateFunctionCall(
-    propSeq.brokenProperty,
-    variableMapping
-  );
 
   const parts = [
     `function ${functionName}() public {`,
@@ -419,7 +623,28 @@ const generateTestFunction = (
   }
 
   parts.push("", "    // Reproduction sequence:");
-  parts.push(`    ${functionCall};`);
+
+  // Add sequence calls if available, otherwise fall back to the original property call
+  if (sequenceCalls.length > 0) {
+    parts.push(...sequenceCalls);
+
+    // For invariant tests, add the invariant call at the end
+    if (propSeq.brokenProperty.includes("invariant")) {
+      const invariantCall = generateFunctionCall(
+        propSeq.brokenProperty,
+        variableMapping
+      );
+      parts.push(`    ${invariantCall};`);
+    }
+  } else {
+    // Fallback to original behavior for unit tests
+    const functionCall = generateFunctionCall(
+      propSeq.brokenProperty,
+      variableMapping
+    );
+    parts.push(`    ${functionCall};`);
+  }
+
   parts.push("}");
 
   return parts.join("\n");
