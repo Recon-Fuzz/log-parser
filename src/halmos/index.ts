@@ -103,11 +103,27 @@ export function getHalmosPropertyAndSequence(
   let capturing = false;
   let capturingSequence = false;
   let currentCall = "";
+  let currentProperty = "";
 
-  for (const element of lines) {
-    const line = element.trim();
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
 
-    if (line === "Counterexample:") {
+    // Handle different failure formats
+    // Format 1: [FAIL] property_name (paths: ...)
+    const failMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(line);
+    if (failMatch) {
+      currentProperty = failMatch[1].trim();
+    }
+
+    // Format 2: Assertion failure detected in ContractName.property_name()
+    const assertionFailMatch =
+      /Assertion failure detected in \w+\.(.+?)\(\)/.exec(line);
+    if (assertionFailMatch) {
+      currentProperty = assertionFailMatch[1].trim();
+    }
+
+    // Start capturing when we see "Counterexample:"
+    if (line === "Counterexample:" || line.includes("Counterexample:")) {
       capturing = true;
       capturingSequence = false;
       currentCounterexample = [];
@@ -116,31 +132,49 @@ export function getHalmosPropertyAndSequence(
       continue;
     }
 
-    if (line === "Sequence:") {
+    // Start capturing sequence when we see "Sequence:"
+    if (line === "Sequence:" || line.includes("Sequence:")) {
       capturingSequence = true;
       currentCall = "";
       continue;
     }
 
     if (capturing) {
-      if (line.includes("[FAIL]") || line.includes("[TIMEOUT]")) {
+      // Check for end conditions
+      const isEndCondition =
+        line.includes("[FAIL]") ||
+        line.includes("[TIMEOUT]") ||
+        line.includes("Symbolic test result:") ||
+        (currentProperty && i === lines.length - 1);
+
+      if (isEndCondition) {
         // Finalize any pending call
         if (currentCall && capturingSequence) {
-          currentSequenceCalls.push(currentCall.trim());
+          const callMatch = extractCallStatement(currentCall);
+          if (callMatch) {
+            currentSequenceCalls.push(callMatch);
+          }
         }
 
-        // Extract property name
-        const propertyMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(
-          line
-        );
-        if (propertyMatch && currentCounterexample.length > 0) {
+        // Use the property we found earlier or try to extract from current line
+        let propertyName = currentProperty;
+        if (!propertyName) {
+          const propertyMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(
+            line
+          );
+          if (propertyMatch) {
+            propertyName = propertyMatch[1].trim();
+          }
+        }
+
+        if (propertyName && currentCounterexample.length > 0) {
           // Combine parameter declarations and sequence calls
           const combinedSequence = [
             ...currentCounterexample,
             ...currentSequenceCalls,
           ];
           results.push({
-            brokenProperty: propertyMatch[1].trim(),
+            brokenProperty: propertyName,
             sequence: combinedSequence,
           });
         }
@@ -149,6 +183,7 @@ export function getHalmosPropertyAndSequence(
         currentCounterexample = [];
         currentSequenceCalls = [];
         currentCall = "";
+        currentProperty = "";
       } else if (capturingSequence && line.startsWith("CALL ")) {
         // Finalize previous call if any
         if (currentCall) {
@@ -196,10 +231,17 @@ export function getHalmosPropertyAndSequence(
       } else if (
         !capturingSequence &&
         line.includes("=") &&
-        line.startsWith("p_")
+        (line.startsWith("p_") ||
+          line.includes("_uint256") ||
+          line.includes("_address") ||
+          line.includes("_bool") ||
+          line.includes("halmos_"))
       ) {
-        // Extract parameter declarations
-        currentCounterexample.push(line);
+        // Extract parameter declarations - handle various parameter naming patterns
+        // Skip halmos internal variables unless they're actual parameters
+        if (!line.includes("halmos_") || line.startsWith("p_")) {
+          currentCounterexample.push(line);
+        }
       } else if (
         !capturingSequence &&
         line.length > 0 &&
@@ -242,6 +284,14 @@ const parseCallStatement = (
     return { functionName, parameters: [] };
   }
 
+  // Handle Concat() expressions that combine multiple parameters
+  if (paramString.startsWith("Concat(")) {
+    // Extract parameters from Concat(param1, param2, ...)
+    const concatContent = paramString.slice(7, -1); // Remove "Concat(" and ")"
+    const concatParams = parseConcatParameters(concatContent);
+    return { functionName, parameters: concatParams };
+  }
+
   // Parse parameters - handle complex expressions like Concat(param1, param2)
   const parameters: string[] = [];
   let currentParam = "";
@@ -278,32 +328,86 @@ const parseCallStatement = (
 };
 
 /**
+ * Parse parameters from Concat() expressions
+ * Handles nested expressions and extracts individual parameter names
+ */
+const parseConcatParameters = (concatContent: string): string[] => {
+  const parameters: string[] = [];
+  let currentParam = "";
+  let parenDepth = 0;
+  let i = 0;
+
+  while (i < concatContent.length) {
+    const char = concatContent[i];
+
+    if (char === "(") {
+      parenDepth++;
+      currentParam += char;
+    } else if (char === ")") {
+      parenDepth--;
+      currentParam += char;
+    } else if (char === "," && parenDepth === 0) {
+      // Found a parameter separator at top level
+      const param = currentParam.trim();
+      if (param && param.startsWith("p_")) {
+        parameters.push(param);
+      }
+      currentParam = "";
+    } else {
+      currentParam += char;
+    }
+    i++;
+  }
+
+  // Add the last parameter
+  const lastParam = currentParam.trim();
+  if (lastParam && lastParam.startsWith("p_")) {
+    parameters.push(lastParam);
+  }
+
+  return parameters;
+};
+
+/**
  * Helper function to clean parameter names for Solidity variable names
  */
 const cleanParameterName = (paramName: string): string =>
   paramName
     .replace(/^p_/, "")
-    .replace(/_[a-f0-9]+_\d+$/, "")
+    .replace(/_[a-f0-9]+_\d+$/, "") // Remove hash_number suffix
+    .replace(/_[a-zA-Z0-9]+_\d+$/, "") // Remove alphanumeric_number suffix
     .replace(/\[(\d+)\]/, "$1");
 
 /**
  * Helper function to extract type from parameter name
+ * Uses only generic type patterns, not specific variable names
  */
 const extractTypeFromParamName = (paramName: string): string => {
-  if (paramName.includes("_bool_")) return "bool";
-  if (paramName.includes("_address_")) return "address";
-  if (paramName.includes("_uint256_")) return "uint256";
-  if (paramName.includes("_uint8_")) return "uint8";
-  if (paramName.includes("_bytes_")) return "bytes";
-  if (paramName.includes("_length_")) return "uint256";
+  // Check for explicit type patterns in parameter names
+  if (paramName.includes("_bool")) return "bool";
+  if (paramName.includes("_address")) return "address";
+  if (paramName.includes("_uint256")) return "uint256";
+  if (paramName.includes("_uint8")) return "uint8";
+  if (paramName.includes("_uint16")) return "uint16";
+  if (paramName.includes("_uint32")) return "uint32";
+  if (paramName.includes("_uint64")) return "uint64";
+  if (paramName.includes("_uint128")) return "uint128";
+  if (paramName.includes("_bytes")) return "bytes";
+  if (paramName.includes("_string")) return "string";
 
+  // Handle dynamic uint types like _uint24_, _uint96_, etc.
   const uintMatch = paramName.match(/_uint(\d+)_/);
   if (uintMatch) return `uint${uintMatch[1]}`;
 
+  // Handle signed integers
   const intMatch = paramName.match(/_int(\d+)_/);
   if (intMatch) return `int${intMatch[1]}`;
 
-  return "uint256"; // default
+  // Handle fixed-size bytes
+  const bytesMatch = paramName.match(/_bytes(\d+)_/);
+  if (bytesMatch) return `bytes${bytesMatch[1]}`;
+
+  return "uint256"; // default fallback
 };
 
 /**
@@ -315,7 +419,12 @@ const formatSolidityValue = (paramName: string, value: string): string => {
   const type = extractTypeFromParamName(paramName);
 
   if (type === "bool") {
-    return `bool ${cleanName} = ${cleanValue === "01" ? "true" : "false"};`;
+    // Handle different bool value formats
+    const boolValue =
+      cleanValue === "01" || cleanValue === "true" || cleanValue === "1"
+        ? "true"
+        : "false";
+    return `bool ${cleanName} = ${boolValue};`;
   }
 
   if (type === "address") {
@@ -386,13 +495,18 @@ const findMatchingVariable = (
     return createArrayParameter(type, variableMapping);
   }
 
-  // Common patterns for parameter names
+  // Generic type patterns for parameter matching
   const typePatterns = {
-    address: ["a_address", "b_address", "address"],
-    bool: ["a_bool", "b_bool", "flag", "bool"],
-    uint256: ["x_uint256", "value_uint256", "amount", "uint256"],
-    uint8: ["small_uint8", "uint8"],
-    bytes: ["data_bytes", "bytes"],
+    address: ["_address"],
+    bool: ["_bool"],
+    uint256: ["_uint256"],
+    uint8: ["_uint8"],
+    uint16: ["_uint16"],
+    uint32: ["_uint32"],
+    uint64: ["_uint64"],
+    uint128: ["_uint128"],
+    bytes: ["_bytes"],
+    string: ["_string"],
   };
 
   // First, try to find exact matches based on position
@@ -410,13 +524,23 @@ const findMatchingVariable = (
     }
   }
 
-  // Fallback: find any variable of the matching type
-  const patterns = typePatterns[type as keyof typeof typePatterns] || [type];
+  // Enhanced fallback: find any variable of the matching type with pattern matching
+  const patterns = typePatterns[type as keyof typeof typePatterns] || [
+    `_${type}`,
+  ];
   for (const pattern of patterns) {
     for (const [paramName, varName] of variableMapping) {
+      // Check if the parameter name contains the type pattern
       if (paramName.includes(pattern)) {
         return varName;
       }
+    }
+  }
+
+  // Last resort: try to find any variable that matches the base type
+  for (const [paramName, varName] of variableMapping) {
+    if (paramName.includes(`_${type}_`) || paramName.includes(`_${type}`)) {
+      return varName;
     }
   }
 
@@ -568,14 +692,44 @@ const generateTestFunction = (
       if (parsedCall) {
         const { functionName: callFunctionName, parameters } = parsedCall;
 
-        // Map parameters to variable names
+        // Map parameters to variable names with improved matching
         const mappedParams = parameters.map((param) => {
           // Extract parameter name from complex expressions like Concat(p_param, ...)
           const paramMatch = /p_\w+_[a-f0-9]+_\d+/.exec(param);
           if (paramMatch) {
             const paramName = paramMatch[0];
-            return variableMapping.get(paramName) || paramName;
+            const mappedVar = variableMapping.get(paramName);
+            if (mappedVar) {
+              return mappedVar;
+            }
+
+            // If direct mapping fails, try to find a similar parameter by base name
+            const baseName = paramName.split("_")[1]; // Extract base name like "flag", "account", etc.
+            for (const [key, value] of variableMapping) {
+              if (key.includes(baseName)) {
+                return value;
+              }
+            }
+
+            return paramName;
           }
+
+          // Handle simple parameter names that start with p_
+          if (param.startsWith("p_")) {
+            const mappedVar = variableMapping.get(param);
+            if (mappedVar) {
+              return mappedVar;
+            }
+
+            // Try to find by base name matching
+            const baseName = param.split("_")[1];
+            for (const [key, value] of variableMapping) {
+              if (key.includes(baseName)) {
+                return value;
+              }
+            }
+          }
+
           return param;
         });
 
