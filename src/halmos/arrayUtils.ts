@@ -1,78 +1,71 @@
-import { extractTypeFromParamName } from "./parameterUtils";
+// No imports needed for this file
 
 export const findMatchingVariable = (
   type: string,
   position: number,
   variableMapping: Map<string, string>
 ): string | null => {
+  // Debug output removed for production
+
   if (type.includes("[") && type.includes("]")) {
     const baseType = type.replace("[]", "");
-    const elementPattern = /^(.+)\[(\d+)\]/;
-    const lengthPattern = /^p_(.+)_length/;
-    const arraysByType = new Map<string, Set<string>>();
 
-    for (const [paramName] of variableMapping) {
-      const match = elementPattern.exec(paramName);
-      if (match) {
-        const fullArrayName = match[1];
-        const arrayName = fullArrayName.startsWith("p_")
-          ? fullArrayName.substring(2)
-          : fullArrayName;
+    // Simple approach: look for array variables directly in the mapping
+    // Array variables are stored as arrayName -> arrayVarName (e.g., "keys" -> "keys_array")
+    const arrayVariables: string[] = [];
 
-        const paramType = extractTypeFromParamName(paramName);
-        if (!arraysByType.has(paramType)) {
-          arraysByType.set(paramType, new Set());
-        }
-        arraysByType.get(paramType)!.add(arrayName);
-      }
-    }
+    for (const [key, value] of variableMapping) {
+      // Look for array variable names (they end with "_array")
+      if (value.endsWith("_array")) {
+        // Check if this array matches the expected type by looking at the original parameters
+        const arrayName = key; // e.g., "keys", "values"
 
-    for (const [paramName] of variableMapping) {
-      const lengthMatch = lengthPattern.exec(paramName);
-      if (lengthMatch) {
-        const arrayName = lengthMatch[1];
+        // Try to determine the array type from the counterexample parameters
+        let arrayType = "uint256"; // default
 
-        let alreadyExists = false;
-        for (const [, arraySet] of arraysByType) {
-          if (arraySet.has(arrayName)) {
-            alreadyExists = true;
+        // Look for array elements to determine type
+        const elementPattern =
+          /^p_(.+)\[(\d+)\]_(address|uint\d+|int\d+|bool|bytes\d*|string)_/;
+        for (const [paramName] of variableMapping) {
+          const match = elementPattern.exec(paramName);
+          if (match && match[1] === arrayName) {
+            const typeIndicator = match[3];
+            if (typeIndicator === "address") {
+              arrayType = "address";
+            } else if (typeIndicator === "bool") {
+              arrayType = "bool";
+            } else if (typeIndicator.startsWith("uint")) {
+              arrayType = typeIndicator;
+            } else if (typeIndicator.startsWith("int")) {
+              arrayType = typeIndicator;
+            } else if (typeIndicator === "bytes") {
+              arrayType = "bytes";
+            }
             break;
           }
         }
 
-        if (!alreadyExists) {
-          let inferredType = "uint256";
+        // If no elements found, try to infer from array name
+        if (arrayType === "uint256") {
           if (arrayName.includes("address")) {
-            inferredType = "address";
+            arrayType = "address";
           } else if (arrayName.includes("bool")) {
-            inferredType = "bool";
+            arrayType = "bool";
+          } else if (arrayName.includes("values")) {
+            arrayType = "uint256";
           }
+        }
 
-          if (inferredType === baseType) {
-            if (!arraysByType.has(baseType)) {
-              arraysByType.set(baseType, new Set());
-            }
-            arraysByType.get(baseType)!.add(arrayName);
-          }
+        // Debug output removed for production
+
+        if (arrayType === baseType) {
+          arrayVariables.push(value);
         }
       }
     }
 
-    const matchingArrays = arraysByType.get(baseType);
-
-    if (matchingArrays && matchingArrays.size > 0) {
-      const sortedArrayNames = Array.from(matchingArrays).sort();
-
-      if (position < sortedArrayNames.length) {
-        const arrayName = sortedArrayNames[position];
-        const arrayVarName = `${arrayName}_array`;
-
-        if (variableMapping.has(arrayName)) {
-          return variableMapping.get(arrayName)!;
-        }
-
-        return arrayVarName;
-      }
+    if (arrayVariables.length > 0 && position < arrayVariables.length) {
+      return arrayVariables[position];
     }
 
     return createArrayParameter(type, variableMapping);
@@ -166,80 +159,121 @@ export const generateArrayDeclarations = (
 
   const arrayGroups = new Map<
     string,
-    Map<number, { varName: string; type: string }>
+    {
+      elements: Map<number, string>;
+      type: string;
+      length: number;
+    }
   >();
 
-  const elementPattern = /^(.+)\[(\d+)\]/;
+  // Pattern to match array elements like "p_keys[0]_address_f8a6ab2_00"
+  // We want to capture: arrayName, index, and type (address/uint256/bool/etc)
+  const elementPattern =
+    /^p_(.+)\[(\d+)\]_(address|uint\d+|int\d+|bool|bytes\d*|string)_/;
   const lengthPattern = /^p_(.+)_length/;
 
+  // First pass: collect array elements and determine types from counterexample variable names
   for (const [paramName, varName] of variableMapping) {
     const match = elementPattern.exec(paramName);
     if (match) {
-      const fullArrayName = match[1]; // e.g., "p_keys", "p_values", "arr"
+      const arrayName = match[1]; // e.g., "keys", "values"
       const index = parseInt(match[2], 10);
+      const typeIndicator = match[3]; // e.g., "address", "uint256"
 
-      const arrayName = fullArrayName.startsWith("p_")
-        ? fullArrayName.substring(2)
-        : fullArrayName;
-
-      const type = extractTypeFromParamName(paramName);
+      // Map type indicators to Solidity types
+      let elementType = "uint256"; // default
+      if (typeIndicator === "address") {
+        elementType = "address";
+      } else if (typeIndicator === "bool") {
+        elementType = "bool";
+      } else if (typeIndicator.startsWith("uint")) {
+        elementType = typeIndicator;
+      } else if (typeIndicator.startsWith("int")) {
+        elementType = typeIndicator;
+      } else if (typeIndicator === "bytes") {
+        elementType = "bytes";
+      }
 
       if (!arrayGroups.has(arrayName)) {
-        arrayGroups.set(arrayName, new Map());
+        arrayGroups.set(arrayName, {
+          elements: new Map(),
+          type: elementType,
+          length: 0,
+        });
       }
-      arrayGroups.get(arrayName)!.set(index, { varName, type });
+
+      const arrayGroup = arrayGroups.get(arrayName)!;
+      arrayGroup.elements.set(index, varName);
+      // Always update type based on the most recent element type found
+      arrayGroup.type = elementType;
+      arrayGroup.length = Math.max(arrayGroup.length, index + 1);
     }
   }
 
+  // Second pass: collect array lengths and create arrays without elements
   for (const [paramName] of variableMapping) {
     const lengthMatch = lengthPattern.exec(paramName);
     if (lengthMatch) {
       const arrayName = lengthMatch[1];
+      const lengthVar = variableMapping.get(paramName);
 
-      if (!arrayGroups.has(arrayName)) {
-        arrayGroups.set(arrayName, new Map());
+      if (lengthVar && !arrayGroups.has(arrayName)) {
+        // Infer type from array name if no elements were found
+        let elementType = "uint256"; // default
+        if (arrayName.includes("address") || arrayName.includes("keys")) {
+          elementType = "address";
+        } else if (arrayName.includes("bool")) {
+          elementType = "bool";
+        } else if (arrayName.includes("values")) {
+          elementType = "uint256"; // values arrays are typically uint256
+        }
+
+        // Parse the length value (should be a string representation of a number)
+        let arrayLength = 0;
+        try {
+          // lengthVar is now the actual numeric value as a string
+          arrayLength = parseInt(lengthVar, 10) || 0;
+        } catch {
+          arrayLength = 0;
+        }
+
+        arrayGroups.set(arrayName, {
+          elements: new Map(),
+          type: elementType,
+          length: arrayLength,
+        });
+      } else if (lengthVar && arrayGroups.has(arrayName)) {
+        // Update length if we have the length variable
+        const arrayGroup = arrayGroups.get(arrayName)!;
+        try {
+          const parsedLength = parseInt(lengthVar, 10) || arrayGroup.length;
+          arrayGroup.length = Math.max(arrayGroup.length, parsedLength);
+        } catch {
+          // Keep existing length
+        }
       }
     }
   }
 
-  for (const [arrayName, elements] of arrayGroups) {
-    let elementType = "uint256"; // default type
-    const arrayElements: string[] = [];
-
-    if (elements.size > 0) {
-      const maxIndex = Math.max(...elements.keys());
-
-      for (let i = 0; i <= maxIndex; i++) {
-        const element = elements.get(i);
-        if (element) {
-          arrayElements.push(element.varName);
-          elementType = element.type;
-        } else {
-          arrayElements.push(elementType === "address" ? "address(0)" : "0");
-        }
-      }
-    } else {
-      if (arrayName.includes("address")) {
-        elementType = "address";
-      } else if (arrayName.includes("bool")) {
-        elementType = "bool";
-      }
-    }
-
+  // Generate array declarations
+  for (const [arrayName, arrayInfo] of arrayGroups) {
     const arrayVarName = `${arrayName}_array`;
+    const { elements, type: elementType, length } = arrayInfo;
 
-    if (arrayElements.length > 0) {
-      declarations.push(
-        `    ${elementType}[] memory ${arrayVarName} = new ${elementType}[](${arrayElements.length});`
-      );
+    // Generate array declaration and element assignments
 
-      arrayElements.forEach((element, index) => {
-        declarations.push(`    ${arrayVarName}[${index}] = ${element};`);
-      });
-    } else {
-      declarations.push(
-        `    ${elementType}[] memory ${arrayVarName} = new ${elementType}[](0);`
-      );
+    // Create array declaration
+    declarations.push(
+      `    ${elementType}[] memory ${arrayVarName} = new ${elementType}[](${length});`
+    );
+
+    // Add element assignments
+    for (let i = 0; i < length; i++) {
+      const elementVar = elements.get(i);
+      if (elementVar) {
+        declarations.push(`    ${arrayVarName}[${i}] = ${elementVar};`);
+      }
+      // If no element variable, the array slot remains at default value (0 or address(0))
     }
 
     arrayVariables.set(arrayName, arrayVarName);

@@ -75,18 +75,26 @@ export const generateTestFunction = (
     )
     .forEach((param) => {
       const [paramName, paramValue] = param.split("=").map((s) => s.trim());
-      const solidityDeclaration = formatSolidityValue(paramName, paramValue);
 
-      const varPattern = /\w+\s+(\w+)\s*=/;
-      const varMatch = varPattern.exec(solidityDeclaration);
-      if (varMatch) {
-        const varName = varMatch[1];
-        if (!usedVariableNames.has(varName)) {
-          if (!paramName.includes("_length")) {
+      // Store all parameter mappings, including length parameters
+      // We need length parameters to determine array sizes
+      if (paramName.includes("_length")) {
+        // For length parameters, store the actual numeric value
+        const cleanValue = paramValue.replace(/^0x/, "");
+        const lengthValue = parseInt(cleanValue, 16) || 0;
+        variableMapping.set(paramName, lengthValue.toString());
+      } else {
+        const solidityDeclaration = formatSolidityValue(paramName, paramValue);
+
+        const varPattern = /\w+\s+(\w+)\s*=/;
+        const varMatch = varPattern.exec(solidityDeclaration);
+        if (varMatch) {
+          const varName = varMatch[1];
+          if (!usedVariableNames.has(varName)) {
             parameterDeclarations.push(`    ${solidityDeclaration}`);
+            usedVariableNames.add(varName);
+            variableMapping.set(paramName, varName);
           }
-          usedVariableNames.add(varName);
-          variableMapping.set(paramName, varName);
         }
       }
     });
