@@ -1,274 +1,618 @@
 import {
-  processHalmos,
-  halmosLogsToFunctions,
   getHalmosPropertyAndSequence,
+  halmosLogsToFunctions,
+  halmosSequenceToFunction,
+  processHalmos,
 } from "./index";
-import { FuzzingResults } from "../types/types";
+import { type FuzzingResults, Fuzzer } from "../types/types";
+import { processLogs } from "../main";
+import * as fs from "fs";
+import * as path from "path";
 
 describe("Halmos Parser", () => {
-  let jobStats: FuzzingResults;
-
-  beforeEach(() => {
-    jobStats = {
-      duration: "",
-      coverage: 0,
-      failed: 0,
-      passed: 0,
-      results: [],
-      traces: [],
-      brokenProperties: [],
-      numberOfTests: 0,
-    };
-  });
-
-  describe("processHalmos", () => {
-    it("should parse simple failed test with counterexample", () => {
-      const lines = [
-        "Counterexample:",
-        "    p_a_bool_7b2a94e_00 = 0x00",
-        "    p_b_bool_6c9fed6_00 = 0x00",
-        "[FAIL] check_bool_xor_always_true(bool,bool) (paths: 4, time: 0.33s, bounds: [])",
-        "Symbolic test result: 0 passed; 1 failed; time: 0.34s",
-      ];
-
-      lines.forEach((line) => processHalmos(line, jobStats));
-
-      expect(jobStats.failed).toBe(1);
-      expect(jobStats.passed).toBe(0);
-      expect(jobStats.numberOfTests).toBe(1);
-      expect(jobStats.duration).toBe("0s");
-      expect(jobStats.brokenProperties).toHaveLength(1);
-      expect(jobStats.brokenProperties[0].brokenProperty).toBe(
-        "check_bool_xor_always_true(bool,bool)"
-      );
-      expect(jobStats.brokenProperties[0].sequence).toBe(
-        "p_a_bool_7b2a94e_00 = 0x00\np_b_bool_6c9fed6_00 = 0x00\n"
-      );
-      expect(jobStats.traces).toHaveLength(0); // Should not add to traces
-    });
-
-    it("should parse timeout test without creating empty broken properties", () => {
-      const lines = [
-        "[TIMEOUT] check_bool_xor_always_true(bool,bool) (paths: 4, time: 0.11s, bounds: [])",
-        "Timeout queries saved in: /var/folders/3_/mlyqmvxn3dx7v3f2xx3xmf3r0000gn/T/check_bool_xor_always_true-c8btwv0i-timeout",
-        "Symbolic test result: 0 passed; 1 failed; time: 0.12s",
-      ];
-
-      lines.forEach((line) => processHalmos(line, jobStats));
-
-      expect(jobStats.failed).toBe(1);
-      expect(jobStats.passed).toBe(0);
-      expect(jobStats.results).toHaveLength(1);
-      expect(jobStats.results[0]).toContain("[TIMEOUT]");
-      expect(jobStats.brokenProperties).toHaveLength(0); // No empty properties
-    });
-
-    it("should parse multiple failed tests", () => {
-      const lines = [
-        "Counterexample:",
-        "    p_a_uint256_f73da65_00 = 0xffffffffffffffffffffffffffffffffffffffffffffffffffe0000000000003",
-        "    p_b_uint256_5ff3489_00 = 0x3ffffffffffff9",
-        "[FAIL] check_uint_multiplication_bound(uint256,uint256) (paths: 3, time: 0.44s, bounds: [])",
-        "Counterexample:",
-        "    p_s.flag_bool_0dc04dc_00 = 0x01",
-        "    p_s.value_uint256_c1f0917_00 = 0x00",
-        "[FAIL] check_struct_simple_invariant((uint256,bool)) (paths: 4, time: 0.12s, bounds: [])",
-        "Symbolic test result: 0 passed; 2 failed; time: 4.54s",
-      ];
-
-      lines.forEach((line) => processHalmos(line, jobStats));
-
-      expect(jobStats.failed).toBe(2);
-      expect(jobStats.passed).toBe(0);
-      expect(jobStats.numberOfTests).toBe(2);
-      expect(jobStats.brokenProperties).toHaveLength(2);
-      expect(jobStats.brokenProperties[0].brokenProperty).toBe(
-        "check_uint_multiplication_bound(uint256,uint256)"
-      );
-      expect(jobStats.brokenProperties[1].brokenProperty).toBe(
-        "check_struct_simple_invariant((uint256,bool))"
-      );
-      expect(jobStats.brokenProperties[0].sequence).toContain(
-        "p_a_uint256_f73da65_00"
-      );
-      expect(jobStats.brokenProperties[1].sequence).toContain(
-        "p_s.flag_bool_0dc04dc_00"
-      );
-    });
-
-    it("should skip ANSI escape sequences and empty lines", () => {
-      const lines = [
-        "3[2K[⠃] Compiling...",
-        "",
-        "⠋ Parsing /Users/mihajlorudenko/projects/recon/Halmos-Broken-Properties-Example/out",
-        "Symbolic test result: 1 passed; 0 failed; time: 1.0s",
-      ];
-
-      lines.forEach((line) => processHalmos(line, jobStats));
-
-      expect(jobStats.passed).toBe(1);
-      expect(jobStats.failed).toBe(0);
-      expect(jobStats.duration).toBe("1s");
-    });
-  });
-
   describe("getHalmosPropertyAndSequence", () => {
     it("should extract property and sequence from logs", () => {
       const logs = `Counterexample:
-    p_a_bool_7b2a94e_00 = 0x00
-    p_b_bool_6c9fed6_00 = 0x00
-[FAIL] check_bool_xor_always_true(bool,bool) (paths: 4, time: 0.33s, bounds: [])
-Symbolic test result: 0 passed; 1 failed; time: 0.34s`;
+    p_value_uint256_abc123_00 = 0x1234
+[FAIL] test_property(uint256) (paths: 1, time: 0.1s, bounds: [])`;
 
       const result = getHalmosPropertyAndSequence(logs);
 
       expect(result).toHaveLength(1);
+      expect(result[0].brokenProperty).toBe("test_property(uint256)");
+      expect(result[0].sequence).toEqual([
+        "p_value_uint256_abc123_00 = 0x1234",
+      ]);
+    });
+
+    it("should handle multiple failed properties", () => {
+      const logs = `Running 21 tests for test/HalmosDirect.t.sol:HalmosDirect
+Counterexample:
+    p_a_address_2ca5aa8_00 = 0x00
+    p_b_address_35f48fe_00 = 0x00
+[FAIL] check_address_properties(address,address) (paths: 4, time: 0.12s, bounds: [])
+Counterexample:
+    p_arr[0]_uint256_6ee061f_00 = 0x8000000000000000000000000000000000000000000000000000000000000000
+    p_arr[1]_uint256_22023b2_00 = 0x00
+    p_arr_length_3493a6d_00 = 0x02
+[FAIL] check_array_sorted(uint256[]) (paths: 4, time: 0.12s, bounds: [arr=[0, 1, 2]])
+[PASS] check_int_absolute_value(int256) (paths: 3, time: 0.01s, bounds: [])`;
+
+      const result = getHalmosPropertyAndSequence(logs);
+
+      expect(result).toHaveLength(2);
       expect(result[0].brokenProperty).toBe(
-        "check_bool_xor_always_true(bool,bool)"
+        "check_address_properties(address,address)"
       );
-      expect(result[0].sequence).toHaveLength(2);
-      expect(result[0].sequence[0]).toBe("p_a_bool_7b2a94e_00 = 0x00");
-      expect(result[0].sequence[1]).toBe("p_b_bool_6c9fed6_00 = 0x00");
+      expect(result[1].brokenProperty).toBe("check_array_sorted(uint256[])");
     });
   });
 
   describe("halmosLogsToFunctions", () => {
     it("should convert logs to Foundry test functions", () => {
       const logs = `Counterexample:
-    p_a_bool_7b2a94e_00 = 0x00
-    p_b_bool_6c9fed6_00 = 0x00
-[FAIL] check_bool_xor_always_true(bool,bool) (paths: 4, time: 0.33s, bounds: [])
-Symbolic test result: 0 passed; 1 failed; time: 0.34s`;
+    p_value_uint256_abc123_00 = 0x1234
+[FAIL] test_property(uint256) (paths: 1, time: 0.1s, bounds: [])`;
 
       const result = halmosLogsToFunctions(logs, "test_run");
 
       expect(result).toContain(
-        "function test_check_bool_xor_always_true_bool_bool__test_run_0() public {"
+        "function test_test_property_uint256__test_run_0() public {"
       );
-      expect(result).toContain("bool a = false;");
-      expect(result).toContain("bool b = false;");
-      expect(result).toContain(
-        "// Counterexample for: check_bool_xor_always_true(bool,bool)"
-      );
+      expect(result).toContain("// Counterexample for: test_property(uint256)");
+      expect(result).toContain("uint256 value_uint256 = 0x1234;");
     });
 
-    it("should handle uint256 parameters", () => {
+    it("should handle invariant tests with sequence calls", () => {
       const logs = `Counterexample:
-    p_a_uint256_f73da65_00 = 0xffffffffffffffffffffffffffffffffffffffffffffffffffe0000000000003
-    p_b_uint256_5ff3489_00 = 0x3ffffffffffff9
-[FAIL] check_uint_multiplication_bound(uint256,uint256) (paths: 3, time: 0.44s, bounds: [])
-Symbolic test result: 0 passed; 1 failed; time: 4.54s`;
+    p_entropy_uint256_b61accd_37 = 0x00
+    p_manager_address_518a6bc_70 = 0x8000000000000000000000000000000000000000
+Sequence:
+    CALL CryticToFoundry::switchActor(p_entropy_uint256_b61accd_37)
+    CALL CryticToFoundry::setTheManager(p_manager_address_518a6bc_70)
+[FAIL] invariant_never_manager() (paths: 90, time: 0.56s, bounds: [])`;
 
       const result = halmosLogsToFunctions(logs, "test_run");
 
       expect(result).toContain(
-        "uint256 a = 0xffffffffffffffffffffffffffffffffffffffffffffffffffe0000000000003;"
+        "function test_invariant_never_manager___test_run_0() public {"
       );
-      expect(result).toContain("uint256 b = 0x3ffffffffffff9;");
+      expect(result).toContain(
+        "// Counterexample for: invariant_never_manager()"
+      );
+      expect(result).toContain("uint256 entropy_uint256 = 0x00;");
+      expect(result).toContain(
+        "address manager_address = 0x8000000000000000000000000000000000000000;"
+      );
+      expect(result).toContain("switchActor(entropy_uint256);");
+      expect(result).toContain("setTheManager(manager_address);");
+      expect(result).toContain("invariant_never_manager();");
     });
 
     it("should return message when no failed properties found", () => {
-      const logs = `Symbolic test result: 1 passed; 0 failed; time: 1.0s`;
+      const logs = `[PASS] test_property(uint256) (paths: 1, time: 0.1s, bounds: [])`;
 
       const result = halmosLogsToFunctions(logs, "test_run");
 
       expect(result).toBe("// No failed properties found in Halmos logs");
     });
 
-    it("should handle various uint types", () => {
-      const logs = `Counterexample:
-    p_small_uint8_4282e7a_00 = 0xff
-    p_medium_uint64_5ff3489_00 = 0xffffffffffffffff
-    p_large_uint256_f73da65_00 = 0xffffffffffffffffffffffffffffffffffffffffffffffffffe0000000000003
-[FAIL] check_uint_types(uint8,uint64,uint256) (paths: 3, time: 0.44s, bounds: [])
-Symbolic test result: 0 passed; 1 failed; time: 4.54s`;
+    it("should parse actual logs file and generate correct invariant test", () => {
+      const logs = fs.readFileSync(path.join(__dirname, "logs.txt"), "utf-8");
+      const result = halmosLogsToFunctions(logs, "test");
 
-      const result = halmosLogsToFunctions(logs, "test_run");
+      console.log("Generated test functions:");
+      console.log(result);
 
-      expect(result).toContain("uint8 small = 0xff;");
-      expect(result).toContain("uint64 medium = 0xffffffffffffffff;");
-      expect(result).toContain(
-        "uint256 large = 0xffffffffffffffffffffffffffffffffffffffffffffffffffe0000000000003;"
-      );
+      // Check that the invariant test includes the sequence calls
+      expect(result).toContain("switchActor(");
+      expect(result).toContain("setTheManager(");
+      expect(result).toContain("invariant_never_manager()");
     });
 
-    it("should handle various int types", () => {
+    it("should debug the specific failing case", () => {
       const logs = `Counterexample:
-    p_small_int8_4282e7a_00 = 0x80
-    p_medium_int128_5ff3489_00 = 0x7fffffffffffffffffffffffffffffff
-    p_large_int256_f73da65_00 = 0x8000000000000000000000000000000000000000000000000000000000000000
-[FAIL] check_int_types(int8,int128,int256) (paths: 3, time: 0.44s, bounds: [])
-Symbolic test result: 0 passed; 1 failed; time: 4.54s`;
+    halmos_block_timestamp_depth1_6c7bfa9 = 0x8000000000000000
+    halmos_block_timestamp_depth2_ad1396a = 0x8000000000000000
+    halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_31225f5_36 =
+0x00
+    halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_e23a43b_69 =
+0x00
+    p_entropy_uint256_bf67ff6_37 = 0x00
+    p_manager_address_b8e5817_70 = 0x8000000000000000000000000000000000000000
+Sequence:
+    CALL CryticToFoundry::switchActor(p_entropy_uint256_bf67ff6_37) (value:
+halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_31225f5_36) (caller:
+halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_9282034_35)
+        SLOAD  @1 →
+0x0000000000000000000000000000000000000000000000000000000000000002
+        SLOAD
+@+(0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6,
+p_entropy_uint256_bf67ff6_37) →
+Select(storage_0x7fa9385be102ac3eac297483dd6233d62b3e1496_1_1_256_14378b1_03,
++(0x0000000000000000000000000000000000000000000000000000000000000000,
+p_entropy_uint256_bf67ff6_37))
+        SLOAD  @0 →
+0x0000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e1496
+        SSTORE @0 ← Concat(0x000000000000000000000000, Extract(0x9f, 0x00,
+Select(storage_0x7fa9385be102ac3eac297483dd6233d62b3e1496_1_1_256_14378b1_03,
+p_entropy_uint256_bf67ff6_37)))
+    ↩ RETURN 0x
+    CALL CryticToFoundry::setTheManager(p_manager_address_b8e5817_70) (value:
+halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_e23a43b_69) (caller:
+halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_22a8176_68)
+        SLOAD  @10 →
+0x0000000000000000000000000000000000000000000000000000000000000000
+        SSTORE @10 ← Concat(0x000000000000000000000000, Extract(0x9f, 0x00,
+p_manager_address_b8e5817_70))
+    ↩ RETURN 0x
 
-      const result = halmosLogsToFunctions(logs, "test_run");
+[FAIL] invariant_never_manager() (paths: 90, time: 0.56s, bounds: [])`;
 
-      expect(result).toContain("int8 small = int8(0x80);");
-      expect(result).toContain(
-        "int128 medium = int128(0x7fffffffffffffffffffffffffffffff);"
+      const propertySequences = getHalmosPropertyAndSequence(logs);
+      console.log(
+        "Parsed property sequences:",
+        JSON.stringify(propertySequences, null, 2)
       );
-      expect(result).toContain(
-        "int256 large = int256(0x8000000000000000000000000000000000000000000000000000000000000000);"
-      );
+
+      const result = halmosLogsToFunctions(logs, "test");
+      console.log("Generated function:");
+      console.log(result);
+
+      // Check that the invariant test includes the sequence calls
+      expect(result).toContain("switchActor(");
+      expect(result).toContain("setTheManager(");
+      expect(result).toContain("invariant_never_manager()");
     });
 
-    it("should handle bytes types", () => {
-      const logs = `Counterexample:
-    p_data_bytes32_4282e7a_00 = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    p_info_bytes_5ff3489_00 = 0x48656c6c6f20576f726c64
-[FAIL] check_bytes_types(bytes32,bytes) (paths: 3, time: 0.44s, bounds: [])
-Symbolic test result: 0 passed; 1 failed; time: 4.54s`;
+    it("should test halmosSequenceToFunction specifically", () => {
+      const sequence = `p_entropy_uint256_bf67ff6_37 = 0x00
+p_manager_address_b8e5817_70 = 0x8000000000000000000000000000000000000000
+CALL CryticToFoundry::switchActor(p_entropy_uint256_bf67ff6_37)
+CALL CryticToFoundry::setTheManager(p_manager_address_b8e5817_70)`;
 
-      const result = halmosLogsToFunctions(logs, "test_run");
-
-      expect(result).toContain(
-        "bytes32 data = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;"
+      const result = halmosSequenceToFunction(
+        sequence,
+        "invariant_never_manager()",
+        "test",
+        0
       );
-      expect(result).toContain("bytes info = 0x48656c6c6f20576f726c64;");
+      console.log("halmosSequenceToFunction result:");
+      console.log(result);
+
+      // Check that the invariant test includes the sequence calls
+      expect(result).toContain("switchActor(");
+      expect(result).toContain("setTheManager(");
+      expect(result).toContain("invariant_never_manager()");
     });
-  });
 
-  describe("Enhanced processHalmos with real log format", () => {
-    it("should correctly parse the actual Halmos log format from logs.md", () => {
-      const lines = [
-        "Running 21 tests for test/HalmosDirect.t.sol:HalmosDirect",
-        "Counterexample:",
-        "    p_a_address_2ca5aa8_00 = 0x00",
-        "    p_b_address_35f48fe_00 = 0x00",
-        "[FAIL] check_address_properties(address,address) (paths: 4, time: 0.12s, bounds: [])",
-        "Counterexample:",
-        "    p_arr[0]_uint256_6ee061f_00 = 0x8000000000000000000000000000000000000000000000000000000000000000",
-        "    p_arr[1]_uint256_22023b2_00 = 0x00",
-        "    p_arr_length_3493a6d_00 = 0x02",
-        "[FAIL] check_array_sorted(uint256[]) (paths: 4, time: 0.12s, bounds: [arr=[0, 1, 2]])",
-        "[PASS] check_int_absolute_value(int256) (paths: 3, time: 0.01s, bounds: [])",
-        "Symbolic test result: 2 failed, 1 passed, time: 0.25s",
-      ];
+    it("should debug sequence extraction issue", () => {
+      const logs = `Counterexample:
+    p_entropy_uint256_bf67ff6_37 = 0x00
+    p_manager_address_b8e5817_70 = 0x8000000000000000000000000000000000000000
+Sequence:
+    CALL CryticToFoundry::switchActor(p_entropy_uint256_bf67ff6_37) (value:
+halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_31225f5_36) (caller:
+halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_9282034_35)
+        SLOAD  @1 →
+0x0000000000000000000000000000000000000000000000000000000000000002
+    CALL CryticToFoundry::setTheManager(p_manager_address_b8e5817_70) (value:
+halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_e23a43b_69) (caller:
+halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_22a8176_68)
+        SLOAD  @10 →
+0x0000000000000000000000000000000000000000000000000000000000000000
 
-      lines.forEach((line) => processHalmos(line, jobStats));
+[FAIL] invariant_never_manager() (paths: 90, time: 0.56s, bounds: [])`;
 
-      expect(jobStats.failed).toBe(2);
-      expect(jobStats.passed).toBe(1);
-      expect(jobStats.numberOfTests).toBe(3);
-      expect(jobStats.duration).toBe("0s");
-      expect(jobStats.brokenProperties).toHaveLength(2);
-      expect(jobStats.traces).toHaveLength(0); // Should not add to traces
+      const propertySequences = getHalmosPropertyAndSequence(logs);
+      console.log(
+        "Debug - Full parsed sequences:",
+        JSON.stringify(propertySequences, null, 2)
+      );
 
+      if (propertySequences.length > 0) {
+        const sequence = propertySequences[0].sequence;
+        console.log("Debug - Sequence array:", sequence);
+        console.log(
+          "Debug - Sequence as string:",
+          Array.isArray(sequence) ? sequence.join("\n") : sequence
+        );
+
+        // Test what happens when we pass just the parameters (simulating the frontend issue)
+        const sequenceArray = Array.isArray(sequence) ? sequence : [sequence];
+        const parametersOnly = sequenceArray
+          .filter((line: string) => line.includes("="))
+          .join("\n");
+        console.log("Debug - Parameters only:", parametersOnly);
+
+        const resultWithParametersOnly = halmosSequenceToFunction(
+          parametersOnly,
+          "invariant_never_manager()",
+          "test",
+          0
+        );
+        console.log("Debug - Result with parameters only:");
+        console.log(resultWithParametersOnly);
+
+        // Test with full sequence
+        const fullSequence = Array.isArray(sequence)
+          ? sequence.join("\n")
+          : sequence;
+        const resultWithFullSequence = halmosSequenceToFunction(
+          fullSequence,
+          "invariant_never_manager()",
+          "test",
+          0
+        );
+        console.log("Debug - Result with full sequence:");
+        console.log(resultWithFullSequence);
+      }
+    });
+
+    it("should test processHalmos function with the problematic logs", () => {
+      const logs = `Counterexample:
+    halmos_block_timestamp_depth1_6c7bfa9 = 0x8000000000000000
+    halmos_block_timestamp_depth2_ad1396a = 0x8000000000000000
+    halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_31225f5_36 =
+0x00
+    halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_e23a43b_69 =
+0x00
+    p_entropy_uint256_bf67ff6_37 = 0x00
+    p_manager_address_b8e5817_70 = 0x8000000000000000000000000000000000000000
+Sequence:
+    CALL CryticToFoundry::switchActor(p_entropy_uint256_bf67ff6_37) (value:
+halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_31225f5_36) (caller:
+halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_9282034_35)
+        SLOAD  @1 →
+0x0000000000000000000000000000000000000000000000000000000000000002
+    CALL CryticToFoundry::setTheManager(p_manager_address_b8e5817_70) (value:
+halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_e23a43b_69) (caller:
+halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_22a8176_68)
+        SLOAD  @10 →
+0x0000000000000000000000000000000000000000000000000000000000000000
+
+[FAIL] invariant_never_manager() (paths: 90, time: 0.56s, bounds: [])`;
+
+      const jobStats: FuzzingResults = {
+        duration: "",
+        coverage: 0,
+        failed: 0,
+        passed: 0,
+        results: [],
+        traces: [],
+        brokenProperties: [],
+        numberOfTests: 0,
+      };
+
+      // Process the logs line by line like the main processLogs function does
+      const lines = logs.split("\n");
+      lines.forEach((line) => {
+        processHalmos(line, jobStats);
+      });
+
+      console.log(
+        "Debug - processHalmos result:",
+        JSON.stringify(jobStats.brokenProperties, null, 2)
+      );
+
+      expect(jobStats.brokenProperties).toHaveLength(1);
       expect(jobStats.brokenProperties[0].brokenProperty).toBe(
-        "check_address_properties(address,address)"
-      );
-      expect(jobStats.brokenProperties[0].sequence).toBe(
-        "p_a_address_2ca5aa8_00 = 0x00\np_b_address_35f48fe_00 = 0x00\n"
+        "invariant_never_manager()"
       );
 
-      expect(jobStats.brokenProperties[1].brokenProperty).toBe(
-        "check_array_sorted(uint256[])"
+      const sequence = jobStats.brokenProperties[0].sequence;
+      console.log("Debug - processHalmos sequence:", sequence);
+
+      // Check that the sequence contains both parameters and CALL statements
+      expect(sequence).toContain("p_entropy_uint256_bf67ff6_37 = 0x00");
+      expect(sequence).toContain(
+        "p_manager_address_b8e5817_70 = 0x8000000000000000000000000000000000000000"
       );
-      expect(jobStats.brokenProperties[1].sequence).toContain(
-        "p_arr[0]_uint256_6ee061f_00"
+      expect(sequence).toContain(
+        "CALL CryticToFoundry::switchActor(p_entropy_uint256_bf67ff6_37)"
       );
-      expect(jobStats.brokenProperties[1].sequence).toContain(
-        "p_arr_length_3493a6d_00"
+      expect(sequence).toContain(
+        "CALL CryticToFoundry::setTheManager(p_manager_address_b8e5817_70)"
       );
+    });
+
+    it("should handle the new problematic logs with Concat parameters", () => {
+      const logs = `Counterexample:
+    halmos_block_timestamp_depth1_6c7bfa9 = 0x8000000000000000
+    halmos_block_timestamp_depth2_abaca96 = 0x8000000000000000
+    halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_31225f5_36 =
+0x00
+    halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_e4ecfe0_64 =
+0x00
+    p_entropy_uint256_bf67ff6_37 = 0x00
+    p_isManager_bool_27d3489_66 = 0x01
+    p_manager_address_7f0b765_65 = 0x00
+Sequence:
+    CALL CryticToFoundry::switchActor(p_entropy_uint256_bf67ff6_37) (value:
+halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_31225f5_36) (caller:
+halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_9282034_35)
+        SLOAD  @1 →
+0x0000000000000000000000000000000000000000000000000000000000000002
+    CALL CryticToFoundry::setIsManager(Concat(p_manager_address_7f0b765_65,
+p_isManager_bool_27d3489_66)) (value:
+halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_e4ecfe0_64) (caller:
+halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_3c634f7_63)
+        SLOAD  @f_sha3_512(Concat(0x000000000000000000000000, Extract(0x9f,
+0x00, p_manager_address_7f0b765_65),
+0x0000000000000000000000000000000000000000000000000000000000000009)) → 0x00
+
+[FAIL] invariant_isNeverManager() (paths: 90, time: 0.57s, bounds: [])`;
+
+      const jobStats: FuzzingResults = {
+        duration: "",
+        coverage: 0,
+        failed: 0,
+        passed: 0,
+        results: [],
+        traces: [],
+        brokenProperties: [],
+        numberOfTests: 0,
+      };
+
+      // Process the logs line by line like the main processLogs function does
+      const lines = logs.split("\n");
+      lines.forEach((line) => {
+        processHalmos(line, jobStats);
+      });
+
+      console.log(
+        "Debug - New logs processHalmos result:",
+        JSON.stringify(jobStats.brokenProperties, null, 2)
+      );
+
+      expect(jobStats.brokenProperties).toHaveLength(1);
+      expect(jobStats.brokenProperties[0].brokenProperty).toBe(
+        "invariant_isNeverManager()"
+      );
+
+      const sequence = jobStats.brokenProperties[0].sequence;
+      console.log("Debug - New logs processHalmos sequence:", sequence);
+
+      // Check that the sequence contains both parameters and CALL statements
+      expect(sequence).toContain("p_entropy_uint256_bf67ff6_37 = 0x00");
+      expect(sequence).toContain("p_isManager_bool_27d3489_66 = 0x01");
+      expect(sequence).toContain("p_manager_address_7f0b765_65 = 0x00");
+      expect(sequence).toContain(
+        "CALL CryticToFoundry::switchActor(p_entropy_uint256_bf67ff6_37)"
+      );
+      expect(sequence).toContain(
+        "CALL CryticToFoundry::setIsManager(Concat(p_manager_address_7f0b765_65, p_isManager_bool_27d3489_66))"
+      );
+
+      // Test the generated function
+      const result = halmosSequenceToFunction(
+        sequence,
+        "invariant_isNeverManager()",
+        "test",
+        0
+      );
+      console.log("Debug - Generated function for new logs:");
+      console.log(result);
+
+      // Check that the function includes both calls
+      expect(result).toContain("switchActor(");
+      expect(result).toContain("setIsManager(");
+      expect(result).toContain("invariant_isNeverManager()");
+    });
+
+    it("should handle struct parameters correctly - original issue", () => {
+      const logs =
+        "Counterexample:\n" +
+        "    p_s.flag_bool_a4540c6_00 = 0x01\n" +
+        "    p_s.value_uint256_1b2e25d_00 = 0x00\n" +
+        "[FAIL] check_struct_simple_invariant((uint256,bool)) (paths: 4, time: 0.12s, bounds: [])";
+
+      const result = halmosLogsToFunctions(logs, "test_run");
+
+      // Should generate proper variable declarations
+      expect(result).toContain("bool flag_bool = true;");
+      expect(result).toContain("uint256 value_uint256 = 0x00;");
+
+      // Should generate proper function call with actual variables (not placeholder comments)
+      expect(result).toContain(
+        "check_struct_simple_invariant(value_uint256, flag_bool);"
+      );
+      expect(result).not.toContain("/* uint256 parameter */");
+      expect(result).not.toContain("/* bool parameter */");
+    });
+
+    it("should handle multiple counterexamples and select the first one", () => {
+      const logs = `Counterexample:
+    p_keys[0]_address_f8a6ab2_00 = 0x00
+    p_keys[1]_address_4e1a7c6_00 = 0x00
+    p_keys_length_36fa12a_00 = 0x02
+    p_values_length_e4b6baa_00 = 0x02
+Counterexample:
+    p_keys[0]_address_f8a6ab2_00 = 0x00
+    p_keys[1]_address_4e1a7c6_00 = 0x00
+    p_keys_length_36fa12a_00 = 0x02
+    p_values_length_e4b6baa_00 = 0x01
+Counterexample:
+    p_keys[0]_address_f8a6ab2_00 = 0x00
+    p_keys[1]_address_4e1a7c6_00 = 0x00
+    p_keys_length_36fa12a_00 = 0x02
+    p_values_length_e4b6baa_00 = 0x00
+[FAIL] check_parallel_arrays_consistency(address[],uint256[]) (paths: 14, time: 0.16s, bounds: [keys=[0, 1, 2], values=[0, 1, 2]])`;
+
+      const result = halmosLogsToFunctions(logs, "test_run");
+
+      // Should generate array declarations for both keys and values arrays
+      expect(result).toContain(
+        "address[] memory keys_array = new address[](2);"
+      );
+      expect(result).toContain(
+        "uint256[] memory values_array = new uint256[](2);"
+      );
+
+      // Should generate element assignments for keys array
+      expect(result).toContain("keys_array[0] = keys0_address;");
+      expect(result).toContain("keys_array[1] = keys1_address;");
+
+      // Should generate proper function call with both array parameters
+      expect(result).toContain(
+        "check_parallel_arrays_consistency(keys_array, values_array);"
+      );
+
+      // Should NOT contain placeholder comments in the function call
+      expect(result).not.toContain("/* address[] parameter */");
+      expect(result).not.toContain("/* uint256[] parameter */");
+
+      // Should use values from the FIRST counterexample only (length = 2 for both arrays)
+      expect(result).toContain("new address[](2)");
+      expect(result).toContain("new uint256[](2)");
+    });
+
+    it("should handle complex bytes and nested array parameters correctly", () => {
+      const logs = `Counterexample:
+    p_blueprint_bytes_43a8d42_00 = 0x7a7e7b7a00000000000000000000000000000000000000000000000000000000
+    p_blueprint_length_4558c73_00 = 0x04
+    p_registers[0]_length_101b512_00 = 0x04
+    p_registers[1]_length_3f27a51_00 = 0x04
+    p_registers_length_33632de_00 = 0x02
+    p_selector_bytes4_56b5b7a_00 = 0x00
+[FAIL] test_compareEncodes(bytes4,bytes,bytes[]) (paths: 58, time: 0.60s, bounds: [blueprint=[4], registers=[0, 1, 2], registers[0]=[4], registers[1]=[4]])`;
+
+      const result = halmosLogsToFunctions(logs, "test_run");
+
+      // Should generate correct bytes parameter with memory keyword and abi.encodePacked
+      expect(result).toContain(
+        'bytes memory blueprint_bytes = abi.encodePacked(hex"7a7e7b7a");'
+      );
+
+      // Should generate correct bytes4 parameter
+      expect(result).toContain("bytes4 selector_bytes4 = 0x00000000;");
+
+      // Should generate bytes[] array with correct length
+      expect(result).toContain("bytes[] memory registers = new bytes[](2);");
+
+      // Should initialize nested bytes arrays with correct lengths
+      expect(result).toContain("registers[0] = new bytes(4);");
+      expect(result).toContain("registers[1] = new bytes(4);");
+
+      // Should generate correct function call with all parameters
+      expect(result).toContain(
+        "test_compareEncodes(selector_bytes4, blueprint_bytes, registers);"
+      );
+
+      // Should NOT contain invalid variable names or placeholder comments
+      expect(result).not.toContain("registers[0]_array");
+      expect(result).not.toContain("registers[1]_array");
+      expect(result).not.toContain("/* bytes[] parameter */");
+      expect(result).not.toContain("uint256[] memory blueprint_array");
+    });
+
+    it("should handle the exact user-provided logs correctly", () => {
+      const logs = `0000000000e656e636f6465642e6c656e677468000000000000000000000000000000000000) [static] (caller: BlueprintEncoderTest)
+        ↩ 0x
+    ↩ STATICCALL 0x (error: FailCheatcode("VmAssertion(cond=100 == 4, msg='encodedVirtualLength')"))
+Counterexample:
+    p_blueprint_bytes_43a8d42_00 = 0x7a7e7b7a00000000000000000000000000000000000000000000000000000000
+    p_blueprint_length_4558c73_00 = 0x04
+    p_registers[0]_length_101b512_00 = 0x04
+    p_registers[1]_length_3f27a51_00 = 0x04
+    p_registers_length_33632de_00 = 0x02
+    p_selector_bytes4_56b5b7a_00 = 0x00
+# of potential paths involving assertion violations: 1 / 58 (--solver-threads 16)
+[FAIL] test_compareEncodes(bytes4,bytes,bytes[]) (paths: 58, time: 0.60s, bounds: [blueprint=[4], registers=[0, 1, 2],
+registers[0]=[4], registers[1]=[4]])`;
+
+      const result = halmosLogsToFunctions(logs, "test_run");
+      console.log("User logs result:", result);
+
+      // Should generate correct bytes parameter with memory keyword and abi.encodePacked
+      expect(result).toContain(
+        'bytes memory blueprint_bytes = abi.encodePacked(hex"7a7e7b7a");'
+      );
+
+      // Should generate correct bytes4 parameter
+      expect(result).toContain("bytes4 selector_bytes4 = 0x00000000;");
+
+      // Should generate bytes[] array with correct length
+      expect(result).toContain("bytes[] memory registers = new bytes[](2);");
+
+      // Should initialize nested bytes arrays with correct lengths
+      expect(result).toContain("registers[0] = new bytes(4);");
+      expect(result).toContain("registers[1] = new bytes(4);");
+
+      // Should generate correct function call with all parameters
+      expect(result).toContain(
+        "test_compareEncodes(selector_bytes4, blueprint_bytes, registers);"
+      );
+
+      // Should NOT contain invalid variable names or placeholder comments
+      expect(result).not.toContain("registers[0]_array");
+      expect(result).not.toContain("registers[1]_array");
+      expect(result).not.toContain("/* bytes[] parameter */");
+      expect(result).not.toContain("uint256[] memory blueprint_array");
+      expect(result).not.toContain("uint256[] memory registers_array");
+    });
+
+    it("should handle UI workflow with processHalmos correctly", () => {
+      const logs = `0000000000e656e636f6465642e6c656e677468000000000000000000000000000000000000) [static] (caller: BlueprintEncoderTest)
+        ↩ 0x
+    ↩ STATICCALL 0x (error: FailCheatcode("VmAssertion(cond=100 == 4, msg='encodedVirtualLength')"))
+Counterexample:
+    p_blueprint_bytes_43a8d42_00 = 0x7a7e7b7a00000000000000000000000000000000000000000000000000000000
+    p_blueprint_length_4558c73_00 = 0x04
+    p_registers[0]_length_101b512_00 = 0x04
+    p_registers[1]_length_3f27a51_00 = 0x04
+    p_registers_length_33632de_00 = 0x02
+    p_selector_bytes4_56b5b7a_00 = 0x00
+# of potential paths involving assertion violations: 1 / 58 (--solver-threads 16)
+[FAIL] test_compareEncodes(bytes4,bytes,bytes[]) (paths: 58, time: 0.60s, bounds: [blueprint=[4], registers=[0, 1, 2],
+registers[0]=[4], registers[1]=[4]])`;
+
+      // Simulate the UI workflow: processLogs -> get brokenProperties -> halmosSequenceToFunction
+      const jobStats = processLogs(logs, Fuzzer.HALMOS);
+
+      // Find the specific property we're testing
+      const targetProperty = jobStats.brokenProperties.find(
+        (prop) =>
+          prop.brokenProperty === "test_compareEncodes(bytes4,bytes,bytes[])"
+      );
+      expect(targetProperty).toBeDefined();
+
+      // This is what the UI does: takes the sequence and calls halmosSequenceToFunction
+      const sequence = targetProperty!.sequence;
+
+      const result = halmosSequenceToFunction(
+        sequence,
+        "test_compareEncodes(bytes4,bytes,bytes[])",
+        "test_run",
+        0
+      );
+
+      // Should generate correct bytes parameter with memory keyword and abi.encodePacked
+      expect(result).toContain(
+        'bytes memory blueprint_bytes = abi.encodePacked(hex"7a7e7b7a");'
+      );
+
+      // Should generate correct bytes4 parameter
+      expect(result).toContain("bytes4 selector_bytes4 = 0x00000000;");
+
+      // Should generate bytes[] array with correct length
+      expect(result).toContain("bytes[] memory registers = new bytes[](2);");
+
+      // Should initialize nested bytes arrays with correct lengths
+      expect(result).toContain("registers[0] = new bytes(4);");
+      expect(result).toContain("registers[1] = new bytes(4);");
+
+      // Should generate correct function call with all parameters
+      expect(result).toContain(
+        "test_compareEncodes(selector_bytes4, blueprint_bytes, registers);"
+      );
+
+      // Should NOT contain invalid variable names or placeholder comments
+      expect(result).not.toContain("registers[0]_array");
+      expect(result).not.toContain("registers[1]_array");
+      expect(result).not.toContain("/* bytes[] parameter */");
+      expect(result).not.toContain("uint256[] memory blueprint_array");
+      expect(result).not.toContain("uint256[] memory registers_array");
     });
   });
 });

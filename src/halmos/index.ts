@@ -1,231 +1,28 @@
-import { type FuzzingResults, type PropertyAndSequence } from "../types/types";
-import { captureFuzzingDuration } from "../utils/utils";
+import { type PropertyAndSequence } from "../types/types";
+import { getHalmosPropertyAndSequence } from "./logParser";
+import { generateTestFunction } from "./functionGenerator";
 
-let halmosCounterexampleLogger = false;
-let currentCounterexampleData: string[] = [];
+// Re-export functions from modules
+export { processHalmos, getHalmosPropertyAndSequence } from "./logParser";
 
-const isEmptyOrAnsi = (line: string): boolean =>
-  !line || line.includes("\x1b[") || line.includes("3[2K");
-
-const isTestResult = (line: string): boolean =>
-  line.includes("[FAIL]") || line.includes("[TIMEOUT]");
-
-const extractTestProperty = (line: string): string | null => {
-  const match = line.match(/\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/);
-  return match?.[1]?.trim() || null;
-};
-
-const extractCounts = (line: string) => {
-  const passedMatch = line.match(/(\d+)\s+passed/);
-  const failedMatch = line.match(/(\d+)\s+failed/);
-  return {
-    passed: passedMatch ? parseInt(passedMatch[1]) : 0,
-    failed: failedMatch ? parseInt(failedMatch[1]) : 0,
-  };
-};
-
-const extractDuration = (line: string): string => {
-  const timeMatch = line.match(/time:\s*([\d.]+)s/);
-  if (!timeMatch) return "";
-
-  const durationStr = `${Math.floor(parseFloat(timeMatch[1]))}s`;
-  return captureFuzzingDuration(durationStr) || durationStr;
-};
-
-const findOrCreateProperty = (
-  jobStats: FuzzingResults,
-  propertyName: string
-) => {
-  let property = jobStats.brokenProperties.find(
-    (prop) => prop.brokenProperty === propertyName
-  );
-
-  if (!property) {
-    property = { brokenProperty: propertyName, sequence: "" };
-    jobStats.brokenProperties.push(property);
-  }
-
-  return property;
-};
-
-export const processHalmos = (line: string, jobStats: FuzzingResults): void => {
-  const trimmedLine = line.trim();
-
-  if (isEmptyOrAnsi(trimmedLine)) return;
-
-  if (trimmedLine.includes("Symbolic test result:")) {
-    const { passed, failed } = extractCounts(trimmedLine);
-    jobStats.passed = passed;
-    jobStats.failed = failed;
-    jobStats.numberOfTests = passed + failed;
-    jobStats.duration = extractDuration(trimmedLine);
-    return;
-  }
-
-  if (trimmedLine === "Counterexample:") {
-    if (halmosCounterexampleLogger && currentCounterexampleData.length > 0) {
-      halmosCounterexampleLogger = false;
-      currentCounterexampleData = [];
-    }
-
-    halmosCounterexampleLogger = true;
-    currentCounterexampleData = [];
-    return;
-  }
-
-  if (halmosCounterexampleLogger) {
-    if (isTestResult(trimmedLine)) {
-      const property = extractTestProperty(trimmedLine);
-      if (property && currentCounterexampleData.length > 0) {
-        jobStats.results.push(trimmedLine);
-
-        const brokenProperty = findOrCreateProperty(jobStats, property);
-        brokenProperty.sequence = currentCounterexampleData.join("\n") + "\n";
-      } else if (property) {
-        jobStats.results.push(trimmedLine);
-      }
-
-      halmosCounterexampleLogger = false;
-      currentCounterexampleData = [];
-    } else if (trimmedLine.includes("=")) {
-      currentCounterexampleData.push(trimmedLine);
-    } else if (
-      trimmedLine.includes("Symbolic test result:") ||
-      trimmedLine.includes("[PASS]") ||
-      trimmedLine === "Counterexample:"
-    ) {
-      halmosCounterexampleLogger = false;
-      currentCounterexampleData = [];
-
-      if (trimmedLine === "Counterexample:") {
-        halmosCounterexampleLogger = true;
-        currentCounterexampleData = [];
-      }
-    }
-  }
-
-  if (!halmosCounterexampleLogger && isTestResult(trimmedLine)) {
-    const property = extractTestProperty(trimmedLine);
-    if (property) {
-      jobStats.results.push(trimmedLine);
-    }
-  }
-};
-
-export function getHalmosPropertyAndSequence(
-  logs: string
-): PropertyAndSequence[] {
-  const lines = logs.split("\n");
-  const results: PropertyAndSequence[] = [];
-  let currentCounterexamples: string[] = [];
-  let capturing = false;
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-
-    if (trimmed === "Counterexample:") {
-      capturing = true;
-      currentCounterexamples = [];
-      continue;
-    }
-
-    if (capturing) {
-      if (trimmed.includes("=")) {
-        currentCounterexamples.push(trimmed);
-      } else if (trimmed.includes("[FAIL]") || trimmed.includes("[TIMEOUT]")) {
-        const propertyMatch = trimmed.match(
-          /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/
-        );
-        if (propertyMatch && currentCounterexamples.length > 0) {
-          results.push({
-            brokenProperty: propertyMatch[1].trim(),
-            sequence: currentCounterexamples,
-          });
-        }
-        capturing = false;
-        currentCounterexamples = [];
-      }
-    }
-  }
-
-  return results;
-}
-
-const cleanParameterName = (paramName: string): string =>
-  paramName
-    .replace(/^p_/, "")
-    .replace(/_[a-f0-9]+_\d+$/, "")
-    .replace(/_(?:bool|uint\d+|address|int\d+|bytes\d*)$/, "");
-
-const extractTypeFromParamName = (paramName: string): string | null => {
-  const typeMatch = paramName.match(
-    /_(?:bool|uint\d+|address|int\d+|bytes\d*)_/
-  );
-  return typeMatch ? typeMatch[0].slice(1, -1) : null;
-};
-
-const formatSolidityValue = (paramName: string, value: string): string => {
-  const cleanName = cleanParameterName(paramName);
-  const cleanValue = value.replace(/^0x/, "");
-  const type = extractTypeFromParamName(paramName);
-
-  if (paramName.includes("_bool_")) {
-    return `bool ${cleanName} = ${cleanValue === "01" ? "true" : "false"};`;
-  }
-
-  if (paramName.includes("_address_")) {
-    return `address ${cleanName} = 0x${cleanValue.padStart(40, "0")};`;
-  }
-
-  if (type?.startsWith("uint")) {
-    return `${type} ${cleanName} = 0x${cleanValue};`;
-  }
-
-  if (type?.startsWith("int")) {
-    return `${type} ${cleanName} = ${type}(0x${cleanValue});`;
-  }
-
-  if (type?.startsWith("bytes")) {
-    return `${type} ${cleanName} = 0x${cleanValue};`;
-  }
-
-  return `uint256 ${cleanName} = 0x${cleanValue};`;
-};
-
-const generateTestFunction = (
-  propSeq: PropertyAndSequence,
+/**
+ * Generate a single test function from property name and sequence
+ * Used by frontend for individual broken properties
+ * This function works with individual sequences (similar to Medusa/Echidna approach)
+ */
+export function halmosSequenceToFunction(
+  sequence: string,
+  brokenProperty: string,
   identifier: string,
-  index: number
-): string => {
-  const functionName = `test_${propSeq.brokenProperty.replace(
-    /\W/g,
-    "_"
-  )}_${identifier}_${index}`;
-  const sequences = Array.isArray(propSeq.sequence)
-    ? propSeq.sequence
-    : [propSeq.sequence];
-
-  const parameters = sequences
-    .filter(
-      (param): param is string =>
-        typeof param === "string" && param.includes("=")
-    )
-    .map((param) => {
-      const [paramName, paramValue] = param.split("=").map((s) => s.trim());
-      return `    ${formatSolidityValue(paramName, paramValue)}`;
-    })
-    .join("\n");
-
-  return [
-    `function ${functionName}() public {`,
-    `    // Counterexample for: ${propSeq.brokenProperty}`,
-    parameters,
-    `    `,
-    `    // Call the original function with counterexample values`,
-    `    // ${propSeq.brokenProperty}(/* add parameters here */);`,
-    `}`,
-  ].join("\n");
-};
+  index: number = 0
+): string {
+  // Parse the sequence string back to array format
+  const sequenceArray = sequence
+    .split("\n")
+    .filter((line) => line.trim() !== "");
+  const propSeq = { brokenProperty, sequence: sequenceArray };
+  return generateTestFunction(propSeq, identifier, index);
+}
 
 export function halmosLogsToFunctions(
   logs: string,
