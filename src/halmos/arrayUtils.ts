@@ -15,10 +15,19 @@ export const findMatchingVariable = (
     const arrayVariables: string[] = [];
 
     for (const [key, value] of variableMapping) {
-      // Look for array variable names (they end with "_array")
-      if (value.endsWith("_array")) {
+      // Look for array variable names (they end with "_array" or are nested arrays)
+      const isRegularArray = value.endsWith("_array");
+      const isNestedArray =
+        !value.endsWith("_array") &&
+        !key.includes("_length") &&
+        !key.includes("_bytes") &&
+        !key.includes("_address") &&
+        !key.includes("_uint") &&
+        !key.includes("_bool");
+
+      if (isRegularArray || isNestedArray) {
         // Check if this array matches the expected type by looking at the original parameters
-        const arrayName = key; // e.g., "keys", "values"
+        const arrayName = key; // e.g., "keys", "values", "registers"
 
         // Try to determine the array type from the counterexample parameters
         let arrayType = "uint256"; // default
@@ -42,6 +51,19 @@ export const findMatchingVariable = (
               arrayType = "bytes";
             }
             break;
+          }
+        }
+
+        // For nested arrays, also check for length parameters to determine type
+        if (isNestedArray && arrayType === "uint256") {
+          const nestedLengthPattern = new RegExp(
+            `p_${arrayName}\\[\\d+\\]_length`
+          );
+          for (const [paramName] of variableMapping) {
+            if (nestedLengthPattern.test(paramName)) {
+              arrayType = "bytes"; // Nested arrays with length are typically bytes[]
+              break;
+            }
           }
         }
 
@@ -166,11 +188,24 @@ export const generateArrayDeclarations = (
     }
   >();
 
+  // Track nested arrays like registers[0], registers[1]
+  const nestedArrays = new Map<
+    string,
+    {
+      parentArray: string;
+      elementLengths: Map<number, number>;
+      elementType: string;
+    }
+  >();
+
   // Pattern to match array elements like "p_keys[0]_address_f8a6ab2_00"
   // We want to capture: arrayName, index, and type (address/uint256/bool/etc)
   const elementPattern =
     /^p_(.+)\[(\d+)\]_(address|uint\d+|int\d+|bool|bytes\d*|string)_/;
   const lengthPattern = /^p_(.+)_length/;
+
+  // Pattern to match nested array lengths like "p_registers[0]_length_101b512_00"
+  const nestedLengthPattern = /^p_(.+)\[(\d+)\]_length/;
 
   // First pass: collect array elements and determine types from counterexample variable names
   for (const [paramName, varName] of variableMapping) {
@@ -210,14 +245,52 @@ export const generateArrayDeclarations = (
     }
   }
 
-  // Second pass: collect array lengths and create arrays without elements
+  // Second pass: collect array lengths and nested array lengths
   for (const [paramName] of variableMapping) {
+    // Check for nested array lengths first (e.g., "p_registers[0]_length")
+    const nestedLengthMatch = nestedLengthPattern.exec(paramName);
+    if (nestedLengthMatch) {
+      const parentArrayName = nestedLengthMatch[1]; // e.g., "registers"
+      const elementIndex = parseInt(nestedLengthMatch[2], 10); // e.g., 0
+      const lengthValue = variableMapping.get(paramName);
+
+      if (lengthValue) {
+        if (!nestedArrays.has(parentArrayName)) {
+          nestedArrays.set(parentArrayName, {
+            parentArray: parentArrayName,
+            elementLengths: new Map(),
+            elementType: "bytes", // Default to bytes for nested arrays
+          });
+        }
+
+        const nestedArray = nestedArrays.get(parentArrayName)!;
+        const length = parseInt(lengthValue, 10) || 0;
+        nestedArray.elementLengths.set(elementIndex, length);
+      }
+      continue;
+    }
+
     const lengthMatch = lengthPattern.exec(paramName);
     if (lengthMatch) {
       const arrayName = lengthMatch[1];
       const lengthVar = variableMapping.get(paramName);
 
-      if (lengthVar && !arrayGroups.has(arrayName)) {
+      const isBytesLength = Array.from(variableMapping.keys()).some(
+        (key) =>
+          key.includes(`p_${arrayName}_bytes`) ||
+          (key.includes(`p_${arrayName}_`) && key.includes("_bytes_"))
+      );
+
+      const isNestedArrayLength = Array.from(variableMapping.keys()).some(
+        (key) => key.includes(`p_${arrayName}[`) && key.includes("]_length")
+      );
+
+      if (
+        lengthVar &&
+        !arrayGroups.has(arrayName) &&
+        !isBytesLength &&
+        !isNestedArrayLength
+      ) {
         // Infer type from array name if no elements were found
         let elementType = "uint256"; // default
         if (arrayName.includes("address") || arrayName.includes("keys")) {
@@ -277,6 +350,33 @@ export const generateArrayDeclarations = (
     }
 
     arrayVariables.set(arrayName, arrayVarName);
+  }
+
+  for (const [parentArrayName, nestedInfo] of nestedArrays) {
+    const { elementLengths, elementType } = nestedInfo;
+    const parentArrayVarName = parentArrayName;
+
+    const maxIndex = Math.max(...elementLengths.keys(), -1);
+    const parentArrayLength = maxIndex + 1;
+
+    const parentLengthKey = `p_${parentArrayName}_length`;
+    const parentLengthVar = variableMapping.get(parentLengthKey);
+    const actualParentLength = parentLengthVar
+      ? parseInt(parentLengthVar, 10)
+      : parentArrayLength;
+
+    declarations.push(
+      `    ${elementType}[] memory ${parentArrayVarName} = new ${elementType}[](${actualParentLength});`
+    );
+
+    for (let i = 0; i < actualParentLength; i++) {
+      const elementLength = elementLengths.get(i) || 0;
+      declarations.push(
+        `    ${parentArrayVarName}[${i}] = new ${elementType}(${elementLength});`
+      );
+    }
+
+    arrayVariables.set(parentArrayName, parentArrayVarName);
   }
 
   return { declarations, arrayVariables };

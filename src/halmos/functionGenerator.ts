@@ -67,44 +67,93 @@ export const generateTestFunction = (
   const arrayDeclarations: string[] = [];
   const sequenceCalls: string[] = [];
 
-  sequences
-    .filter(
-      (param): param is string =>
-        typeof param === "string" &&
-        param.includes("=") &&
-        (param.startsWith("p_") ||
-          param.includes("p_") ||
-          param.includes("p_s."))
-    )
-    .forEach((param) => {
-      // Clean up malformed parameter lines that may have extra quotes or whitespace
-      const cleanParam = param.replace(/^["'\s]*/, "").trim();
-      const [paramName, paramValue] = cleanParam
-        .split("=")
-        .map((s) => s.trim());
+  // Process only the first counterexample when there are multiple
+  const firstCounterexampleLines: string[] = [];
+  let inFirstCounterexample = false;
+  let foundFirstCounterexample = false;
 
-      // Store all parameter mappings, including length parameters
-      // We need length parameters to determine array sizes
-      if (paramName.includes("_length")) {
-        // For length parameters, store the actual numeric value
-        const cleanValue = paramValue.replace(/^0x/, "");
-        const lengthValue = parseInt(cleanValue, 16) || 0;
-        variableMapping.set(paramName, lengthValue.toString());
-      } else {
-        const solidityDeclaration = formatSolidityValue(paramName, paramValue);
+  for (const line of sequences) {
+    if (typeof line === "string") {
+      const trimmedLine = line.trim();
 
-        const varPattern = /\w+\s+(\w+)\s*=/;
-        const varMatch = varPattern.exec(solidityDeclaration);
-        if (varMatch) {
-          const varName = varMatch[1];
-          if (!usedVariableNames.has(varName)) {
-            parameterDeclarations.push(`    ${solidityDeclaration}`);
-            usedVariableNames.add(varName);
-            variableMapping.set(paramName, varName);
-          }
+      if (trimmedLine === "Counterexample:") {
+        if (!foundFirstCounterexample) {
+          inFirstCounterexample = true;
+          foundFirstCounterexample = true;
+        } else {
+          // Stop processing when we hit the second counterexample
+          break;
+        }
+      } else if (trimmedLine.includes("=") && inFirstCounterexample) {
+        firstCounterexampleLines.push(trimmedLine);
+      } else if (
+        trimmedLine.startsWith("[FAIL]") ||
+        (trimmedLine.startsWith("Counterexample:") && foundFirstCounterexample)
+      ) {
+        // End of current counterexample
+        inFirstCounterexample = false;
+      }
+    }
+  }
+
+  // If no explicit counterexample markers, process all parameter lines
+  const parametersToProcess =
+    firstCounterexampleLines.length > 0
+      ? firstCounterexampleLines
+      : sequences.filter(
+          (param): param is string =>
+            typeof param === "string" &&
+            param.includes("=") &&
+            (param.startsWith("p_") ||
+              param.includes("p_") ||
+              param.includes("p_s."))
+        );
+
+  // First pass: process all length parameters
+  parametersToProcess.forEach((param) => {
+    const cleanParam = param.replace(/^["'\s]*/, "").trim();
+    const [paramName, paramValue] = cleanParam.split("=").map((s) => s.trim());
+
+    if (paramName.includes("_length")) {
+      // For length parameters, store the actual numeric value
+      const cleanValue = paramValue.replace(/^0x/, "");
+      const lengthValue = parseInt(cleanValue, 16) || 0;
+      variableMapping.set(paramName, lengthValue.toString());
+    }
+  });
+
+  // Second pass: process all non-length parameters
+  parametersToProcess.forEach((param) => {
+    const cleanParam = param.replace(/^["'\s]*/, "").trim();
+    const [paramName, paramValue] = cleanParam.split("=").map((s) => s.trim());
+
+    if (!paramName.includes("_length")) {
+      // Create a map with all the length parameters
+      const lengthMap = new Map<string, string>();
+      for (const [key, value] of variableMapping) {
+        if (key.includes("_length")) {
+          lengthMap.set(key, value);
         }
       }
-    });
+
+      const solidityDeclaration = formatSolidityValue(
+        paramName,
+        paramValue,
+        lengthMap
+      );
+
+      const varPattern = /\w+\s+(\w+)\s*=/;
+      const varMatch = varPattern.exec(solidityDeclaration);
+      if (varMatch) {
+        const varName = varMatch[1];
+        if (!usedVariableNames.has(varName)) {
+          parameterDeclarations.push(`    ${solidityDeclaration}`);
+          usedVariableNames.add(varName);
+          variableMapping.set(paramName, varName);
+        }
+      }
+    }
+  });
 
   sequences
     .filter(

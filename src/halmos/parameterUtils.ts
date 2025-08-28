@@ -120,7 +120,8 @@ export const extractTypeFromParamName = (paramName: string): string => {
 
 export const formatSolidityValue = (
   paramName: string,
-  value: string
+  value: string,
+  lengthMapping?: Map<string, string>
 ): string => {
   const cleanName = cleanParameterName(paramName);
   const cleanValue = value.replace(/^0x/, "");
@@ -143,7 +144,49 @@ export const formatSolidityValue = (
   }
 
   if (type === "bytes") {
-    return `bytes ${cleanName} = 0x${cleanValue};`;
+    // For dynamic bytes, check if we have length information
+    if (lengthMapping) {
+      // Try different patterns to find the length parameter
+      const possibleLengthKeys = [
+        paramName.replace(/_bytes_[a-f0-9]+_\d+$/, "_length"),
+        paramName.replace(/_bytes[^_]*_[a-f0-9]+_\d+$/, "_length"),
+        `p_${cleanName}_length`,
+      ];
+
+      let lengthValue: string | undefined;
+
+      for (const key of possibleLengthKeys) {
+        lengthValue = lengthMapping.get(key);
+        if (lengthValue) break;
+      }
+
+      if (!lengthValue) {
+        for (const [mapKey, mapValue] of lengthMapping) {
+          // Match patterns like p_blueprint_length_4558c73_00 for blueprint_bytes
+          const baseParamName = cleanName.replace(/_bytes$/, ""); // Remove _bytes suffix if present
+          if (
+            mapKey.includes(`p_${baseParamName}_length`) ||
+            (mapKey.includes(baseParamName) && mapKey.includes("length"))
+          ) {
+            lengthValue = mapValue;
+            break;
+          }
+        }
+      }
+
+      if (lengthValue) {
+        const length = parseInt(lengthValue, 10);
+        const truncatedValue = cleanValue.substring(0, length * 2); // 2 hex chars per byte
+        return `bytes memory ${cleanName} = abi.encodePacked(hex"${truncatedValue}");`;
+      }
+    }
+
+    // Check if this is a bytes4 type (4 bytes = 8 hex chars) or selector
+    if (cleanValue.length <= 8 || cleanName.includes("selector")) {
+      return `bytes4 ${cleanName} = 0x${cleanValue.padEnd(8, "0")};`;
+    }
+
+    return `bytes memory ${cleanName} = 0x${cleanValue};`;
   }
 
   return `uint256 ${cleanName} = 0x${cleanValue};`;

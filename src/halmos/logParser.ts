@@ -65,10 +65,6 @@ export function processHalmos(line: string, jobStats: FuzzingResults): void {
     });
   }
 
-  if (line.includes("Counterexample:")) {
-    allLines = [line];
-  }
-
   if (line.trim()) {
     jobStats.traces.push(line.trim());
   }
@@ -86,6 +82,7 @@ export function getHalmosPropertyAndSequence(
   let capturingSequence = false;
   let currentCall = "";
   let currentProperty = "";
+  let foundFirstCounterexample = false;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
@@ -102,11 +99,18 @@ export function getHalmosPropertyAndSequence(
     }
 
     if (line === "Counterexample:" || line.includes("Counterexample:")) {
-      capturing = true;
-      capturingSequence = false;
-      currentCounterexample = [];
-      currentSequenceCalls = [];
-      currentCall = "";
+      if (!foundFirstCounterexample) {
+        capturing = true;
+        capturingSequence = false;
+        currentCounterexample = [];
+        currentSequenceCalls = [];
+        currentCall = "";
+        foundFirstCounterexample = true;
+      } else {
+        // Skip subsequent counterexamples
+        capturing = false;
+        capturingSequence = false;
+      }
       continue;
     }
 
@@ -116,13 +120,14 @@ export function getHalmosPropertyAndSequence(
       continue;
     }
 
-    if (capturing) {
-      const isEndCondition =
-        line.includes("[FAIL]") ||
-        line.includes("[TIMEOUT]") ||
-        line.includes("Symbolic test result:") ||
-        (currentProperty && i === lines.length - 1);
+    // Check for end condition regardless of capturing state
+    const isEndCondition =
+      line.includes("[FAIL]") ||
+      line.includes("[TIMEOUT]") ||
+      line.includes("Symbolic test result:") ||
+      (currentProperty && i === lines.length - 1);
 
+    if (isEndCondition || capturing) {
       if (isEndCondition) {
         if (currentCall && capturingSequence) {
           const callMatch = extractCallStatement(currentCall);
@@ -157,6 +162,7 @@ export function getHalmosPropertyAndSequence(
         currentSequenceCalls = [];
         currentCall = "";
         currentProperty = "";
+        foundFirstCounterexample = false;
       } else if (capturingSequence && line.startsWith("CALL ")) {
         if (currentCall) {
           const callMatch = extractCallStatement(currentCall);
@@ -205,7 +211,10 @@ export function getHalmosPropertyAndSequence(
           line.includes("halmos_"))
       ) {
         if (!line.includes("halmos_") || line.startsWith("p_")) {
-          currentCounterexample.push(line);
+          // Only capture parameters if we're in the first counterexample
+          if (capturing && foundFirstCounterexample) {
+            currentCounterexample.push(line);
+          }
         }
       } else if (
         !capturingSequence &&

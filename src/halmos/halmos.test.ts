@@ -4,7 +4,8 @@ import {
   halmosSequenceToFunction,
   processHalmos,
 } from "./index";
-import { type FuzzingResults } from "../types/types";
+import { type FuzzingResults, Fuzzer } from "../types/types";
+import { processLogs } from "../main";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -418,6 +419,200 @@ halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_3c634f7_63)
       );
       expect(result).not.toContain("/* uint256 parameter */");
       expect(result).not.toContain("/* bool parameter */");
+    });
+
+    it("should handle multiple counterexamples and select the first one", () => {
+      const logs = `Counterexample:
+    p_keys[0]_address_f8a6ab2_00 = 0x00
+    p_keys[1]_address_4e1a7c6_00 = 0x00
+    p_keys_length_36fa12a_00 = 0x02
+    p_values_length_e4b6baa_00 = 0x02
+Counterexample:
+    p_keys[0]_address_f8a6ab2_00 = 0x00
+    p_keys[1]_address_4e1a7c6_00 = 0x00
+    p_keys_length_36fa12a_00 = 0x02
+    p_values_length_e4b6baa_00 = 0x01
+Counterexample:
+    p_keys[0]_address_f8a6ab2_00 = 0x00
+    p_keys[1]_address_4e1a7c6_00 = 0x00
+    p_keys_length_36fa12a_00 = 0x02
+    p_values_length_e4b6baa_00 = 0x00
+[FAIL] check_parallel_arrays_consistency(address[],uint256[]) (paths: 14, time: 0.16s, bounds: [keys=[0, 1, 2], values=[0, 1, 2]])`;
+
+      const result = halmosLogsToFunctions(logs, "test_run");
+
+      // Should generate array declarations for both keys and values arrays
+      expect(result).toContain(
+        "address[] memory keys_array = new address[](2);"
+      );
+      expect(result).toContain(
+        "uint256[] memory values_array = new uint256[](2);"
+      );
+
+      // Should generate element assignments for keys array
+      expect(result).toContain("keys_array[0] = keys0_address;");
+      expect(result).toContain("keys_array[1] = keys1_address;");
+
+      // Should generate proper function call with both array parameters
+      expect(result).toContain(
+        "check_parallel_arrays_consistency(keys_array, values_array);"
+      );
+
+      // Should NOT contain placeholder comments in the function call
+      expect(result).not.toContain("/* address[] parameter */");
+      expect(result).not.toContain("/* uint256[] parameter */");
+
+      // Should use values from the FIRST counterexample only (length = 2 for both arrays)
+      expect(result).toContain("new address[](2)");
+      expect(result).toContain("new uint256[](2)");
+    });
+
+    it("should handle complex bytes and nested array parameters correctly", () => {
+      const logs = `Counterexample:
+    p_blueprint_bytes_43a8d42_00 = 0x7a7e7b7a00000000000000000000000000000000000000000000000000000000
+    p_blueprint_length_4558c73_00 = 0x04
+    p_registers[0]_length_101b512_00 = 0x04
+    p_registers[1]_length_3f27a51_00 = 0x04
+    p_registers_length_33632de_00 = 0x02
+    p_selector_bytes4_56b5b7a_00 = 0x00
+[FAIL] test_compareEncodes(bytes4,bytes,bytes[]) (paths: 58, time: 0.60s, bounds: [blueprint=[4], registers=[0, 1, 2], registers[0]=[4], registers[1]=[4]])`;
+
+      const result = halmosLogsToFunctions(logs, "test_run");
+
+      // Should generate correct bytes parameter with memory keyword and abi.encodePacked
+      expect(result).toContain(
+        'bytes memory blueprint_bytes = abi.encodePacked(hex"7a7e7b7a");'
+      );
+
+      // Should generate correct bytes4 parameter
+      expect(result).toContain("bytes4 selector_bytes4 = 0x00000000;");
+
+      // Should generate bytes[] array with correct length
+      expect(result).toContain("bytes[] memory registers = new bytes[](2);");
+
+      // Should initialize nested bytes arrays with correct lengths
+      expect(result).toContain("registers[0] = new bytes(4);");
+      expect(result).toContain("registers[1] = new bytes(4);");
+
+      // Should generate correct function call with all parameters
+      expect(result).toContain(
+        "test_compareEncodes(selector_bytes4, blueprint_bytes, registers);"
+      );
+
+      // Should NOT contain invalid variable names or placeholder comments
+      expect(result).not.toContain("registers[0]_array");
+      expect(result).not.toContain("registers[1]_array");
+      expect(result).not.toContain("/* bytes[] parameter */");
+      expect(result).not.toContain("uint256[] memory blueprint_array");
+    });
+
+    it("should handle the exact user-provided logs correctly", () => {
+      const logs = `0000000000e656e636f6465642e6c656e677468000000000000000000000000000000000000) [static] (caller: BlueprintEncoderTest)
+        ↩ 0x
+    ↩ STATICCALL 0x (error: FailCheatcode("VmAssertion(cond=100 == 4, msg='encodedVirtualLength')"))
+Counterexample:
+    p_blueprint_bytes_43a8d42_00 = 0x7a7e7b7a00000000000000000000000000000000000000000000000000000000
+    p_blueprint_length_4558c73_00 = 0x04
+    p_registers[0]_length_101b512_00 = 0x04
+    p_registers[1]_length_3f27a51_00 = 0x04
+    p_registers_length_33632de_00 = 0x02
+    p_selector_bytes4_56b5b7a_00 = 0x00
+# of potential paths involving assertion violations: 1 / 58 (--solver-threads 16)
+[FAIL] test_compareEncodes(bytes4,bytes,bytes[]) (paths: 58, time: 0.60s, bounds: [blueprint=[4], registers=[0, 1, 2],
+registers[0]=[4], registers[1]=[4]])`;
+
+      const result = halmosLogsToFunctions(logs, "test_run");
+      console.log("User logs result:", result);
+
+      // Should generate correct bytes parameter with memory keyword and abi.encodePacked
+      expect(result).toContain(
+        'bytes memory blueprint_bytes = abi.encodePacked(hex"7a7e7b7a");'
+      );
+
+      // Should generate correct bytes4 parameter
+      expect(result).toContain("bytes4 selector_bytes4 = 0x00000000;");
+
+      // Should generate bytes[] array with correct length
+      expect(result).toContain("bytes[] memory registers = new bytes[](2);");
+
+      // Should initialize nested bytes arrays with correct lengths
+      expect(result).toContain("registers[0] = new bytes(4);");
+      expect(result).toContain("registers[1] = new bytes(4);");
+
+      // Should generate correct function call with all parameters
+      expect(result).toContain(
+        "test_compareEncodes(selector_bytes4, blueprint_bytes, registers);"
+      );
+
+      // Should NOT contain invalid variable names or placeholder comments
+      expect(result).not.toContain("registers[0]_array");
+      expect(result).not.toContain("registers[1]_array");
+      expect(result).not.toContain("/* bytes[] parameter */");
+      expect(result).not.toContain("uint256[] memory blueprint_array");
+      expect(result).not.toContain("uint256[] memory registers_array");
+    });
+
+    it("should handle UI workflow with processHalmos correctly", () => {
+      const logs = `0000000000e656e636f6465642e6c656e677468000000000000000000000000000000000000) [static] (caller: BlueprintEncoderTest)
+        ↩ 0x
+    ↩ STATICCALL 0x (error: FailCheatcode("VmAssertion(cond=100 == 4, msg='encodedVirtualLength')"))
+Counterexample:
+    p_blueprint_bytes_43a8d42_00 = 0x7a7e7b7a00000000000000000000000000000000000000000000000000000000
+    p_blueprint_length_4558c73_00 = 0x04
+    p_registers[0]_length_101b512_00 = 0x04
+    p_registers[1]_length_3f27a51_00 = 0x04
+    p_registers_length_33632de_00 = 0x02
+    p_selector_bytes4_56b5b7a_00 = 0x00
+# of potential paths involving assertion violations: 1 / 58 (--solver-threads 16)
+[FAIL] test_compareEncodes(bytes4,bytes,bytes[]) (paths: 58, time: 0.60s, bounds: [blueprint=[4], registers=[0, 1, 2],
+registers[0]=[4], registers[1]=[4]])`;
+
+      // Simulate the UI workflow: processLogs -> get brokenProperties -> halmosSequenceToFunction
+      const jobStats = processLogs(logs, Fuzzer.HALMOS);
+
+      // Find the specific property we're testing
+      const targetProperty = jobStats.brokenProperties.find(
+        (prop) =>
+          prop.brokenProperty === "test_compareEncodes(bytes4,bytes,bytes[])"
+      );
+      expect(targetProperty).toBeDefined();
+
+      // This is what the UI does: takes the sequence and calls halmosSequenceToFunction
+      const sequence = targetProperty!.sequence;
+
+      const result = halmosSequenceToFunction(
+        sequence,
+        "test_compareEncodes(bytes4,bytes,bytes[])",
+        "test_run",
+        0
+      );
+
+      // Should generate correct bytes parameter with memory keyword and abi.encodePacked
+      expect(result).toContain(
+        'bytes memory blueprint_bytes = abi.encodePacked(hex"7a7e7b7a");'
+      );
+
+      // Should generate correct bytes4 parameter
+      expect(result).toContain("bytes4 selector_bytes4 = 0x00000000;");
+
+      // Should generate bytes[] array with correct length
+      expect(result).toContain("bytes[] memory registers = new bytes[](2);");
+
+      // Should initialize nested bytes arrays with correct lengths
+      expect(result).toContain("registers[0] = new bytes(4);");
+      expect(result).toContain("registers[1] = new bytes(4);");
+
+      // Should generate correct function call with all parameters
+      expect(result).toContain(
+        "test_compareEncodes(selector_bytes4, blueprint_bytes, registers);"
+      );
+
+      // Should NOT contain invalid variable names or placeholder comments
+      expect(result).not.toContain("registers[0]_array");
+      expect(result).not.toContain("registers[1]_array");
+      expect(result).not.toContain("/* bytes[] parameter */");
+      expect(result).not.toContain("uint256[] memory blueprint_array");
+      expect(result).not.toContain("uint256[] memory registers_array");
     });
   });
 });
