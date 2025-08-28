@@ -89,6 +89,7 @@ export const parseConcatParameters = (concatContent: string): string[] => {
 export const cleanParameterName = (paramName: string): string =>
   paramName
     .replace(/^p_/, "")
+    .replace(/^s\./, "") // Handle struct member notation like p_s.flag_bool_...
     .replace(/_[a-f0-9]+_\d+$/, "")
     .replace(/_[a-zA-Z0-9]+_\d+$/, "")
     .replace(/\[(\d+)\]/, "$1");

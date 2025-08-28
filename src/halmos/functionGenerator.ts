@@ -18,7 +18,7 @@ export const generateFunctionCall = (
     return `${functionName}()`;
   }
 
-  const types = paramTypes.split(",").map((t) => t.trim());
+  const types = paramTypes.split(",").map((t) => t.trim().replace(/[()]/g, ""));
   const parameters: string[] = [];
 
   const paramsByType = new Map<string, number[]>();
@@ -41,6 +41,7 @@ export const generateFunctionCall = (
       positionInType,
       variableMapping
     );
+
     parameters.push(matchingVar || `/* ${type} parameter */`);
   });
 
@@ -71,10 +72,16 @@ export const generateTestFunction = (
       (param): param is string =>
         typeof param === "string" &&
         param.includes("=") &&
-        param.startsWith("p_")
+        (param.startsWith("p_") ||
+          param.includes("p_") ||
+          param.includes("p_s."))
     )
     .forEach((param) => {
-      const [paramName, paramValue] = param.split("=").map((s) => s.trim());
+      // Clean up malformed parameter lines that may have extra quotes or whitespace
+      const cleanParam = param.replace(/^["'\s]*/, "").trim();
+      const [paramName, paramValue] = cleanParam
+        .split("=")
+        .map((s) => s.trim());
 
       // Store all parameter mappings, including length parameters
       // We need length parameters to determine array sizes
@@ -124,7 +131,6 @@ export const generateTestFunction = (
                 return value;
               }
             }
-
             return paramName;
           }
 

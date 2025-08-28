@@ -398,5 +398,26 @@ halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_3c634f7_63)
       expect(result).toContain("setIsManager(");
       expect(result).toContain("invariant_isNeverManager()");
     });
+
+    it("should handle struct parameters correctly - original issue", () => {
+      const logs =
+        "Counterexample:\n" +
+        "    p_s.flag_bool_a4540c6_00 = 0x01\n" +
+        "    p_s.value_uint256_1b2e25d_00 = 0x00\n" +
+        "[FAIL] check_struct_simple_invariant((uint256,bool)) (paths: 4, time: 0.12s, bounds: [])";
+
+      const result = halmosLogsToFunctions(logs, "test_run");
+
+      // Should generate proper variable declarations
+      expect(result).toContain("bool flag_bool = true;");
+      expect(result).toContain("uint256 value_uint256 = 0x00;");
+
+      // Should generate proper function call with actual variables (not placeholder comments)
+      expect(result).toContain(
+        "check_struct_simple_invariant(value_uint256, flag_bool);"
+      );
+      expect(result).not.toContain("/* uint256 parameter */");
+      expect(result).not.toContain("/* bool parameter */");
+    });
   });
 });
