@@ -1,9 +1,8 @@
-import { type PropertyAndSequence } from "../types/types";
-import { getHalmosPropertyAndSequence } from "./logParser";
 import { generateTestFunction } from "./functionGenerator";
+import { getHalmosPropertyAndSequence } from "./logParser";
 
 // Re-export functions from modules
-export { processHalmos, getHalmosPropertyAndSequence } from "./logParser";
+export { getHalmosPropertyAndSequence, processHalmos } from "./logParser";
 
 /**
  * Generate a single test function from property name and sequence

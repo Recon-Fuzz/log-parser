@@ -3,7 +3,7 @@ import { type FuzzingResults, type PropertyAndSequence } from "../types/types";
 let allLines: string[] = [];
 
 export function extractCallStatement(line: string): string | null {
-  const callStart = line.indexOf("CALL ");
+  const callStart = line.indexOf("CALL");
   if (callStart === -1) return null;
 
   const functionMatch = line.match(/CALL\s+(\w+::[\w]+)\(/);
@@ -87,6 +87,15 @@ export function getHalmosPropertyAndSequence(
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
 
+    // Skip counterexample if it's 'Counterexample: ∅'
+    if (line === "Counterexample: ∅" || line.includes("Counterexample: ∅")) {
+      capturing = false;
+      currentCounterexample = [];
+      currentSequenceCalls = [];
+      capturingSequence = false;
+      continue;
+    }
+
     const failMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(line);
     if (failMatch) {
       currentProperty = failMatch[1].trim();
@@ -98,7 +107,7 @@ export function getHalmosPropertyAndSequence(
       currentProperty = assertionFailMatch[1].trim();
     }
 
-    if (line === "Counterexample:" || line.includes("Counterexample:")) {
+    if (line.includes("Counterexample:")) {
       if (!foundFirstCounterexample) {
         capturing = true;
         capturingSequence = false;
@@ -114,7 +123,7 @@ export function getHalmosPropertyAndSequence(
       continue;
     }
 
-    if (line === "Sequence:" || line.includes("Sequence:")) {
+    if (line.includes("Sequence:")) {
       capturingSequence = true;
       currentCall = "";
       continue;
@@ -163,19 +172,28 @@ export function getHalmosPropertyAndSequence(
         currentCall = "";
         currentProperty = "";
         foundFirstCounterexample = false;
-      } else if (capturingSequence && line.startsWith("CALL ")) {
-        if (currentCall) {
-          const callMatch = extractCallStatement(currentCall);
-          if (callMatch) {
-            currentSequenceCalls.push(callMatch);
-          }
-        }
+      } else if (capturingSequence && line.startsWith("CALL")) {
+        // Start accumulating a multi-line CALL statement
         currentCall = line;
+        // Check if parentheses are balanced
+        let openParens = (currentCall.match(/\(/g) || []).length;
+        let closeParens = (currentCall.match(/\)/g) || []).length;
+        while (openParens > closeParens && i + 1 < lines.length) {
+          i++;
+          const nextLine = lines[i].trim();
+          currentCall += " " + nextLine;
+          openParens = (currentCall.match(/\(/g) || []).length;
+          closeParens = (currentCall.match(/\)/g) || []).length;
+        }
+        const callMatch = extractCallStatement(currentCall);
+        if (callMatch) {
+          currentSequenceCalls.push(callMatch);
+        }
+        currentCall = "";
       } else if (
         capturingSequence &&
         currentCall &&
-        !line.startsWith("    CALL ") &&
-        !line.startsWith("        ") &&
+        !line.startsWith("CALL") &&
         line.trim() &&
         !line.includes("[FAIL]") &&
         !line.includes("[TIMEOUT]")
@@ -193,12 +211,11 @@ export function getHalmosPropertyAndSequence(
         continue;
       } else if (
         capturingSequence &&
-        line.startsWith("    ") &&
         (line.includes("SLOAD") ||
           line.includes("SSTORE") ||
           line.includes("STATICCALL") ||
           line.includes("CREATE") ||
-          line.includes("↩ RETURN"))
+          line.includes("RETURN"))
       ) {
         continue;
       } else if (
