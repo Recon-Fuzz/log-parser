@@ -106,7 +106,8 @@ export const generateTestFunction = (
             param.includes("=") &&
             (param.startsWith("p_") ||
               param.includes("p_") ||
-              param.includes("p_s."))
+              param.includes("p_s.") ||
+              param.startsWith("halmos_msg_value_"))
         );
 
   // First pass: process all length parameters
@@ -158,12 +159,18 @@ export const generateTestFunction = (
   sequences
     .filter(
       (line): line is string =>
-        typeof line === "string" && line.startsWith("CALL ")
+        typeof line === "string" &&
+        line.startsWith("CALL ") &&
+        !line.includes("hevm::prank")
     )
     .forEach((callLine) => {
       const parsedCall = parseCallStatement(callLine);
       if (parsedCall) {
-        const { functionName: callFunctionName, parameters } = parsedCall;
+        const {
+          functionName: callFunctionName,
+          parameters,
+          msgValue,
+        } = parsedCall;
 
         const mappedParams = parameters.map((param) => {
           const paramMatch = /p_\w+_[a-f0-9]+_\d+/.exec(param);
@@ -200,9 +207,15 @@ export const generateTestFunction = (
           return param;
         });
 
-        const functionCallStr = `${callFunctionName}(${mappedParams.join(
-          ", "
-        )})`;
+        let functionCallStr = "";
+        if (msgValue) {
+          const mappedMsgValue = variableMapping.get(msgValue) || msgValue;
+          functionCallStr = `${callFunctionName}{value: ${mappedMsgValue}}(${mappedParams.join(
+            ", "
+          )})`;
+        } else {
+          functionCallStr = `${callFunctionName}(${mappedParams.join(", ")})`;
+        }
         sequenceCalls.push(`    ${functionCallStr};`);
       }
     });
