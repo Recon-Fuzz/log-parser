@@ -61,10 +61,13 @@ export function processHalmos(line: string, jobStats: FuzzingResults): void {
     }
   }
 
+  // Trigger extraction when we hit a clear end-of-run marker or a PASS/FAIL,
+  // including the summary line that Halmos prints even when individual items show [PASS]
   if (
     line.includes("[FAIL]") ||
     line.includes("[TIMEOUT]") ||
-    (line.includes("[PASS]") && hasAssertionFailure)
+    (line.includes("[PASS]") && hasAssertionFailure) ||
+    (line.includes("Symbolic test result:") && hasAssertionFailure)
   ) {
     const logsText = allLines.join("\n");
     const propertySequences = getHalmosPropertyAndSequence(logsText);
@@ -84,7 +87,7 @@ export function processHalmos(line: string, jobStats: FuzzingResults): void {
       }
     });
 
-    if (line.includes("[PASS]")) {
+    if (line.includes("[PASS]") || line.includes("Symbolic test result:")) {
       hasAssertionFailure = false;
     }
   }
