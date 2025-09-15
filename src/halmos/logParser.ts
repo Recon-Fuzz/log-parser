@@ -61,13 +61,13 @@ export function processHalmos(line: string, jobStats: FuzzingResults): void {
     }
   }
 
-  // Trigger extraction when we hit a clear end-of-run marker or a PASS/FAIL,
-  // including the summary line that Halmos prints even when individual items show [PASS]
+  // Trigger extraction when we hit an end-of-run marker.
+  // Always run extraction on summary lines; if there's nothing to extract, it’s a no-op.
   if (
     line.includes("[FAIL]") ||
     line.includes("[TIMEOUT]") ||
     (line.includes("[PASS]") && hasAssertionFailure) ||
-    (line.includes("Symbolic test result:") && hasAssertionFailure)
+    line.includes("Symbolic test result:")
   ) {
     const logsText = allLines.join("\n");
     const propertySequences = getHalmosPropertyAndSequence(logsText);
@@ -110,6 +110,7 @@ export function getHalmosPropertyAndSequence(
   let currentCall = "";
   let currentProperty = "";
   let foundFirstCounterexample = false;
+  let callDepth = 0;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
@@ -153,6 +154,7 @@ export function getHalmosPropertyAndSequence(
     if (line.includes("Sequence:")) {
       capturingSequence = true;
       currentCall = "";
+      callDepth = 0; // reset depth at the start of a new sequence
       continue;
     }
 
@@ -214,9 +216,20 @@ export function getHalmosPropertyAndSequence(
         }
         const callMatch = extractCallStatement(currentCall);
         if (callMatch) {
-          currentSequenceCalls.push(callMatch);
+          const contractMatch = /CALL\s+([^:]+)::/.exec(callMatch);
+          const contractName = contractMatch ? contractMatch[1] : "";
+          if (contractName === "CryticToFoundry") {
+            currentSequenceCalls.push(callMatch);
+          }
         }
+        callDepth++;
         currentCall = "";
+      } else if (
+        capturingSequence &&
+        (line.startsWith("↩") || line.startsWith("\u21A9"))
+      ) {
+        callDepth = Math.max(0, callDepth - 1);
+        continue;
       } else if (
         capturingSequence &&
         currentCall &&

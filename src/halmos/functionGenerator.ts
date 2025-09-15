@@ -66,6 +66,10 @@ export const generateTestFunction = (
   const variableMapping = new Map<string, string>();
   const arrayDeclarations: string[] = [];
   const sequenceCalls: string[] = [];
+  // Track msg.value variables that are explicitly zero to omit {value: ...}
+  const zeroMsgValueKeys = new Set<string>();
+  // When any msg.value variable is declared as zero, omit value from all calls
+  let anyMsgValueZero = false;
 
   // Process only the first counterexample when there are multiple
   const firstCounterexampleLines: string[] = [];
@@ -151,6 +155,17 @@ export const generateTestFunction = (
           parameterDeclarations.push(`    ${solidityDeclaration}`);
           usedVariableNames.add(varName);
           variableMapping.set(paramName, varName);
+
+          // Track zero msg.value to omit value decorator in calls
+          if (paramName.startsWith("halmos_msg_value_")) {
+            const raw = paramValue.trim();
+            const hex = raw.toLowerCase().startsWith("0x") ? raw.slice(2) : raw;
+            const isZero = hex.length === 0 || /^0+$/.test(hex);
+            if (isZero) {
+              zeroMsgValueKeys.add(paramName);
+              anyMsgValueZero = true;
+            }
+          }
         }
       }
     }
@@ -208,7 +223,37 @@ export const generateTestFunction = (
         });
 
         let functionCallStr = "";
+        let shouldIncludeValue = false;
         if (msgValue) {
+          if (anyMsgValueZero) {
+            // If any msg.value is explicitly zero, omit value decorator entirely
+            shouldIncludeValue = false;
+          } else if (!zeroMsgValueKeys.has(msgValue)) {
+            // Fallback: inspect the mapped variable declaration to see if it's zero
+            const mappedMsgValueVar = variableMapping.get(msgValue);
+            if (mappedMsgValueVar) {
+              const decl = parameterDeclarations.find((d) =>
+                d.includes(` ${mappedMsgValueVar} = 0x`)
+              );
+              if (decl) {
+                const hexPart = (decl.split("= 0x")[1] || "")
+                  .replace(/;$/, "")
+                  .trim();
+                // Treat empty or all-zero as zero
+                const isZeroHex = hexPart.length === 0 || /^0+$/i.test(hexPart);
+                shouldIncludeValue = !isZeroHex;
+              } else {
+                // If we can't find the declaration, include it conservatively
+                shouldIncludeValue = true;
+              }
+            } else {
+              // No mapping available, include it conservatively
+              shouldIncludeValue = true;
+            }
+          }
+        }
+
+        if (msgValue && shouldIncludeValue) {
           const mappedMsgValue = variableMapping.get(msgValue) || msgValue;
           functionCallStr = `${callFunctionName}{value: ${mappedMsgValue}}(${mappedParams.join(
             ", "

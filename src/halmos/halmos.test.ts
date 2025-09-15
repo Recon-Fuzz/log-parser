@@ -106,7 +106,10 @@ Sequence:
 
       // Check that the generated test matches current fixture (doomsday)
       expect(result).toContain("doomsday_increment_never_reverts");
-      expect(result).toContain("increment(");
+      // Only top-level calls should be present
+      expect(result).toContain("counter_setNumber1(");
+      expect(result).not.toContain("increment(");
+      expect(result).not.toContain("setNumber(");
     });
 
     it("should debug the specific failing case", () => {
@@ -158,10 +161,12 @@ p_manager_address_b8e5817_70))
       console.log("Generated function:");
       console.log(result);
 
-      // Check that the invariant test includes the sequence calls (value metadata may be present)
+      // Check that the invariant test includes the sequence calls
       expect(result).toContain("switchActor");
       expect(result).toContain("setTheManager");
       expect(result).toContain("invariant_never_manager()");
+      // msg.value is zero in the logs -> should not add {value: ...}
+      expect(result).not.toContain("{value:");
     });
 
     it("should test halmosSequenceToFunction specifically", () => {
@@ -393,10 +398,12 @@ halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_3c634f7_63)
       console.log("Debug - Generated function for new logs:");
       console.log(result);
 
-      // Check that the function includes both calls (value metadata may be present)
+      // Check that the function includes both calls
       expect(result).toContain("switchActor");
       expect(result).toContain("setIsManager");
       expect(result).toContain("invariant_isNeverManager()");
+      // msg.value is zero in the logs -> should not add {value: ...}
+      expect(result).not.toContain("{value:");
     });
 
     it("should handle struct parameters correctly - original issue", () => {
@@ -612,6 +619,60 @@ registers[0]=[4], registers[1]=[4]])`;
       expect(result).not.toContain("/* bytes[] parameter */");
       expect(result).not.toContain("uint256[] memory blueprint_array");
       expect(result).not.toContain("uint256[] memory registers_array");
+    });
+
+    it("should debug the new logs that show assertion failure but 0 failed", () => {
+      const newLogs = fs.readFileSync(
+        path.join(__dirname, "../../test-new-logs.txt"),
+        "utf8"
+      );
+
+      console.log("=== DEBUGGING NEW LOGS ===");
+
+      // Test the streaming processor
+      const jobStats: FuzzingResults = {
+        duration: "0s",
+        coverage: 0,
+        passed: 0,
+        failed: 0,
+        numberOfTests: 0,
+        results: [],
+        traces: [],
+        brokenProperties: [],
+      };
+
+      const lines = newLogs.split("\n");
+      lines.forEach((line) => {
+        processHalmos(line, jobStats);
+      });
+
+      console.log("Final jobStats:", JSON.stringify(jobStats, null, 2));
+
+      // Test the direct parser
+      const directResult = getHalmosPropertyAndSequence(newLogs);
+      console.log(
+        "Direct parser result:",
+        JSON.stringify(directResult, null, 2)
+      );
+
+      // Test the function generator
+      if (directResult.length > 0) {
+        const sequenceString = Array.isArray(directResult[0].sequence)
+          ? directResult[0].sequence.join("\n")
+          : directResult[0].sequence;
+        const functionResult = halmosSequenceToFunction(
+          directResult[0].brokenProperty,
+          sequenceString,
+          "test_debug"
+        );
+        console.log("Generated function:", functionResult);
+      }
+
+      expect(jobStats.brokenProperties.length).toBeGreaterThan(0);
+      expect(directResult.length).toBeGreaterThan(0);
+      expect(directResult[0].brokenProperty).toBe(
+        "doomsday_increment_never_reverts"
+      );
     });
   });
 });
