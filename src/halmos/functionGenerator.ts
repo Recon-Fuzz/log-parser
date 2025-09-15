@@ -141,30 +141,34 @@ export const generateTestFunction = (
         }
       }
 
-      const solidityDeclaration = formatSolidityValue(
-        paramName,
-        paramValue,
-        lengthMap
-      );
+      // Check if this is a zero msg.value parameter and skip declaration
+      let shouldSkipDeclaration = false;
+      if (paramName.startsWith("halmos_msg_value_")) {
+        const raw = paramValue.trim();
+        const hex = raw.toLowerCase().startsWith("0x") ? raw.slice(2) : raw;
+        const isZero = hex.length === 0 || /^0+$/.test(hex);
+        if (isZero) {
+          zeroMsgValueKeys.add(paramName);
+          anyMsgValueZero = true;
+          shouldSkipDeclaration = true;
+        }
+      }
 
-      const varPattern = /\w+\s+(\w+)\s*=/;
-      const varMatch = varPattern.exec(solidityDeclaration);
-      if (varMatch) {
-        const varName = varMatch[1];
-        if (!usedVariableNames.has(varName)) {
-          parameterDeclarations.push(`    ${solidityDeclaration}`);
-          usedVariableNames.add(varName);
-          variableMapping.set(paramName, varName);
+      if (!shouldSkipDeclaration) {
+        const solidityDeclaration = formatSolidityValue(
+          paramName,
+          paramValue,
+          lengthMap
+        );
 
-          // Track zero msg.value to omit value decorator in calls
-          if (paramName.startsWith("halmos_msg_value_")) {
-            const raw = paramValue.trim();
-            const hex = raw.toLowerCase().startsWith("0x") ? raw.slice(2) : raw;
-            const isZero = hex.length === 0 || /^0+$/.test(hex);
-            if (isZero) {
-              zeroMsgValueKeys.add(paramName);
-              anyMsgValueZero = true;
-            }
+        const varPattern = /\w+\s+(\w+)\s*=/;
+        const varMatch = varPattern.exec(solidityDeclaration);
+        if (varMatch) {
+          const varName = varMatch[1];
+          if (!usedVariableNames.has(varName)) {
+            parameterDeclarations.push(`    ${solidityDeclaration}`);
+            usedVariableNames.add(varName);
+            variableMapping.set(paramName, varName);
           }
         }
       }
