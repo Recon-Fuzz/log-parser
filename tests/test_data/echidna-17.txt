@@ -1,0 +1,237 @@
+entreprenerd2@MacBook-Pro-di-Entreprenerd create-chimera-app % 
+entreprenerd2@MacBook-Pro-di-Entreprenerd create-chimera-app % 
+entreprenerd2@MacBook-Pro-di-Entreprenerd create-chimera-app % echidna . --contract CryticTester --config echidna.yaml --format text --workers 16 --test-limit 1000000
+[2025-09-16 16:40:30.49] Compiling `.`... Done! (3.334481s)
+Analyzing contract: /Users/entreprenerd2/Code/create-chimera-app/test/recon/CryticTester.sol:CryticTester
+[2025-09-16 16:40:34.12] Running slither on `.`... Done! (5.80673s)
+Loaded 0 transaction sequences from echidna/reproducers
+Loaded 0 transaction sequences from echidna/coverage
+[2025-09-16 16:40:40.06] [Worker 1] Test doomsday_increment_never_reverts() falsified!
+  Call sequence:
+CryticTester.add_new_asset(214) from: 0x0000000000000000000000000000000000010000 Time delay: 73043 seconds Block delay: 4985
+CryticTester.counter_setNumber1(50) from: 0x0000000000000000000000000000000000030000 Time delay: 136393 seconds Block delay: 53011
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000030000 Time delay: 322336 seconds Block delay: 561
+CryticTester.asset_approve(0x2fffffffd,29) from: 0x0000000000000000000000000000000000020000 Time delay: 35 seconds Block delay: 5013
+CryticTester.asset_mint(0xffffffff,62) from: 0x0000000000000000000000000000000000030000 Time delay: 275394 seconds Block delay: 15005
+CryticTester.asset_approve(0xffffffff,218714009175374954697163649954788256065) from: 0x0000000000000000000000000000000000020000
+CryticTester.asset_approve(0x2e234dae75c793f67a35089c9d99245e1c58470b,79568104937753139556834024818389374489) from: 0x0000000000000000000000000000000000030000 Time delay: 332369 seconds Block delay: 5004
+CryticTester.counter_setNumber1(11) from: 0x0000000000000000000000000000000000030000 Time delay: 360522 seconds Block delay: 27404
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000020000 Time delay: 305572 seconds Block delay: 12493
+CryticTester.add_new_asset(94) from: 0x0000000000000000000000000000000000030000 Time delay: 525476 seconds Block delay: 30659
+CryticTester.asset_approve(0x2fffffffd,65254832046159995829875712036444876233) from: 0x0000000000000000000000000000000000020000 Time delay: 34851 seconds Block delay: 800
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000010000 Time delay: 35 seconds Block delay: 19933
+CryticTester.asset_mint(0xffffffff,51) from: 0x0000000000000000000000000000000000010000 Time delay: 322325 seconds Block delay: 17
+CryticTester.counter_setNumber2(83929859194464406291477883992644268405786430670890072504825650066222939656536) from: 0x0000000000000000000000000000000000020000 Time delay: 261185 seconds Block delay: 62
+CryticTester.counter_setNumber2(83217301416960549371199396103171795528330308383646167169409790292032309718315) from: 0x0000000000000000000000000000000000020000 Time delay: 322344 seconds Block delay: 30655
+CryticTester.invariant_number_never_zero() from: 0x0000000000000000000000000000000000020000 Time delay: 117472 seconds Block delay: 47
+CryticTester.counter_setNumber2(329) from: 0x0000000000000000000000000000000000030000 Time delay: 31594 seconds Block delay: 5952
+CryticTester.asset_mint(0x10000,40684885087801850250051168274513624824) from: 0x0000000000000000000000000000000000010000 Time delay: 322325 seconds Block delay: 4993
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000020000 Time delay: 7702 seconds Block delay: 59981
+CryticTester.asset_mint(0x0,61734435979068226178551653478080852317) from: 0x0000000000000000000000000000000000020000 Time delay: 376096 seconds Block delay: 12053
+CryticTester.asset_mint(0x2e234dae75c793f67a35089c9d99245e1c58470b,135471709211756510903285580477184518439) from: 0x0000000000000000000000000000000000010000 Time delay: 487078 seconds Block delay: 5
+CryticTester.asset_approve(0x2e234dae75c793f67a35089c9d99245e1c58470b,35545926226769832389825522207113486742) from: 0x0000000000000000000000000000000000010000 Time delay: 287524 seconds Block delay: 42595
+CryticTester.asset_approve(0x20000,4369999) from: 0x0000000000000000000000000000000000020000 Time delay: 52 seconds Block delay: 27404
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000020000 Time delay: 322360 seconds Block delay: 53562
+CryticTester.counter_increment() from: 0x0000000000000000000000000000000000030000 Time delay: 5 seconds Block delay: 43709
+CryticTester.counter_setNumber1(41530091411215323339317113771261316691457871091238769373426287850881301170721) from: 0x0000000000000000000000000000000000030000 Time delay: 287530 seconds Block delay: 5237
+CryticTester.asset_approve(0x5615deb798bb3e4dfa0139dfa1b3d433cc23b72f,1524785993) from: 0x0000000000000000000000000000000000030000 Time delay: 275394 seconds Block delay: 4986
+CryticTester.switchActor(67959659533395334063495528324307966330922664911063990919105923148058152787529) from: 0x0000000000000000000000000000000000020000 Time delay: 9 seconds Block delay: 58180
+CryticTester.asset_approve(0x2e234dae75c793f67a35089c9d99245e1c58470b,183383098030928705762403213129375504541) from: 0x0000000000000000000000000000000000030000 Time delay: 322371 seconds Block delay: 7395
+CryticTester.switch_asset(76590113362104817784189049975853087363752897878945861409193482122158503025448) from: 0x0000000000000000000000000000000000010000 Time delay: 16802 seconds Block delay: 11349
+CryticTester.counter_increment() from: 0x0000000000000000000000000000000000020000 Time delay: 287530 seconds Block delay: 30304
+CryticTester.counter_increment_asAdmin() from: 0x0000000000000000000000000000000000010000 Time delay: 17 seconds Block delay: 4896
+CryticTester.asset_mint(0x2e234dae75c793f67a35089c9d99245e1c58470b,285497371151724398040130570334264695819) from: 0x0000000000000000000000000000000000020000 Time delay: 34846 seconds Block delay: 4973
+CryticTester.counter_setNumber1(965323) from: 0x0000000000000000000000000000000000030000 Time delay: 195123 seconds Block delay: 38
+CryticTester.invariant_number_never_zero() from: 0x0000000000000000000000000000000000010000 Time delay: 226472 seconds Block delay: 1123
+CryticTester.add_new_asset(28) from: 0x0000000000000000000000000000000000030000 Time delay: 225906 seconds Block delay: 58783
+CryticTester.switchActor(115792089237316195423570985008687907853269984665640564039457584007913129639917) from: 0x0000000000000000000000000000000000010000 Time delay: 24867 seconds Block delay: 4960
+CryticTester.switch_asset(115792089237316195423570985008687907853269984665640564039457584007913129639890) from: 0x0000000000000000000000000000000000020000 Time delay: 322291 seconds Block delay: 34847
+CryticTester.counter_setNumber2(418) from: 0x0000000000000000000000000000000000010000 Time delay: 249335 seconds Block delay: 49068
+CryticTester.invariant_number_never_zero() from: 0x0000000000000000000000000000000000030000 Time delay: 6 seconds Block delay: 7325
+CryticTester.counter_setNumber2(83982396737198162203996668515800733926688054241855743117779971856393391538148) from: 0x0000000000000000000000000000000000020000 Time delay: 7 seconds Block delay: 7324
+CryticTester.switch_asset(115792089237316195423570985008687907853269984665640564039457584007913129605089) from: 0x0000000000000000000000000000000000020000 Time delay: 322339 seconds Block delay: 53451
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000010000 Time delay: 554465 seconds Block delay: 32767
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000010000 Time delay: 390247 seconds Block delay: 23653
+CryticTester.invariant_number_never_zero() from: 0x0000000000000000000000000000000000030000 Time delay: 322346 seconds Block delay: 4223
+CryticTester.invariant_number_never_zero() from: 0x0000000000000000000000000000000000030000 Time delay: 522178 seconds Block delay: 38350
+CryticTester.counter_increment() from: 0x0000000000000000000000000000000000020000 Time delay: 19029 seconds Block delay: 47
+CryticTester.switch_asset(115792089237316195423570985008687907853269984665640564039457584007913129639934) from: 0x0000000000000000000000000000000000020000 Time delay: 195123 seconds Block delay: 45819
+CryticTester.asset_approve(0x2fffffffd,62351271880174244319864496567848509656) from: 0x0000000000000000000000000000000000020000 Time delay: 68 seconds Block delay: 7397
+CryticTester.counter_setNumber2(31) from: 0x0000000000000000000000000000000000010000 Time delay: 322293 seconds Block delay: 49
+CryticTester.counter_setNumber1(79209587763761077343777860867578253708864364437845533648861662560517410024051) from: 0x0000000000000000000000000000000000020000 Time delay: 172101 seconds Block delay: 7395
+CryticTester.add_new_asset(215) from: 0x0000000000000000000000000000000000010000 Time delay: 115085 seconds Block delay: 4961
+CryticTester.switchActor(71378841921434456812876799958262702928941881377987661584118178485529750763485) from: 0x0000000000000000000000000000000000020000 Time delay: 322372 seconds Block delay: 35248
+CryticTester.asset_approve(0x2fffffffd,48237956074256707076269271294832060238) from: 0x0000000000000000000000000000000000020000 Time delay: 33605 seconds Block delay: 4943
+CryticTester.counter_increment() from: 0x0000000000000000000000000000000000030000 Time delay: 15 seconds Block delay: 15369
+CryticTester.counter_setNumber1(115792089237316195423570985008687907853269984665640564039457584007913129639889) from: 0x0000000000000000000000000000000000030000 Time delay: 156190 seconds Block delay: 40991
+CryticTester.counter_setNumber1(8649630091084652581300077437560340534538706809342127810238722710247325644547) from: 0x0000000000000000000000000000000000030000 Time delay: 150016 seconds Block delay: 1984
+CryticTester.add_new_asset(1) from: 0x0000000000000000000000000000000000010000 Time delay: 322292 seconds Block delay: 58181
+CryticTester.counter_setNumber2(48) from: 0x0000000000000000000000000000000000010000 Time delay: 275394 seconds Block delay: 23885
+CryticTester.counter_setNumber1(112086430262744846525600958397615975938678082996979931875505875956963537029107) from: 0x0000000000000000000000000000000000020000 Time delay: 67960 seconds Block delay: 55538
+CryticTester.counter_increment() from: 0x0000000000000000000000000000000000030000 Time delay: 322367 seconds Block delay: 82
+CryticTester.switchActor(31958726593837077379918667555807915643009637638812289635024241718637282170875) from: 0x0000000000000000000000000000000000020000 Time delay: 412373 seconds Block delay: 1984
+CryticTester.counter_increment() from: 0x0000000000000000000000000000000000030000 Time delay: 322326 seconds Block delay: 34846
+CryticTester.counter_increment_asAdmin() from: 0x0000000000000000000000000000000000020000 Time delay: 317965 seconds Block delay: 51
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000010000 Time delay: 34851 seconds Block delay: 42595
+CryticTester.invariant_number_never_zero() from: 0x0000000000000000000000000000000000030000 Time delay: 322313 seconds Block delay: 58109
+CryticTester.counter_setNumber1(46) from: 0x0000000000000000000000000000000000020000 Time delay: 249334 seconds Block delay: 7
+CryticTester.asset_approve(0xffffffff,247736426116984397279516797535000921263) from: 0x0000000000000000000000000000000000010000 Time delay: 49735 seconds Block delay: 4943
+CryticTester.invariant_number_never_zero() from: 0x0000000000000000000000000000000000030000 Time delay: 254414 seconds Block delay: 4945
+CryticTester.counter_setNumber1(115792089237316195423570985008687907853269984665640564039457584007913129639933) from: 0x0000000000000000000000000000000000030000 Time delay: 322309 seconds Block delay: 4946
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000020000 Time delay: 64 seconds Block delay: 5022
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000020000 Time delay: 322339 seconds Block delay: 7397
+CryticTester.invariant_number_never_zero() from: 0x0000000000000000000000000000000000030000 Time delay: 322312 seconds Block delay: 30656
+CryticTester.switchActor(42644569182187594367958275334494100971012015795858027251010282994447135209120) from: 0x0000000000000000000000000000000000030000 Time delay: 322368 seconds Block delay: 53011
+CryticTester.switch_asset(115792089237316195423570985008687907853269984665640564039457584007913129639931) from: 0x0000000000000000000000000000000000010000 Time delay: 287524 seconds Block delay: 47075
+CryticTester.asset_approve(0x2fffffffd,50724977738709640203061452451199632387) from: 0x0000000000000000000000000000000000030000 Time delay: 249335 seconds Block delay: 54585
+CryticTester.invariant_number_never_zero() from: 0x0000000000000000000000000000000000020000 Time delay: 249337 seconds Block delay: 38100
+CryticTester.counter_increment_asAdmin() from: 0x0000000000000000000000000000000000030000 Time delay: 322372 seconds Block delay: 7325
+CryticTester.invariant_number_never_zero() from: 0x0000000000000000000000000000000000020000 Time delay: 547224 seconds Block delay: 59552
+CryticTester.asset_mint(0xffffffff,237764423144986337193492928729615640472) from: 0x0000000000000000000000000000000000010000 Time delay: 566039 seconds Block delay: 33760
+CryticTester.switch_asset(90225955992702957825063567719469147183321511792041181597523454539970693875631) from: 0x0000000000000000000000000000000000010000 Time delay: 551836 seconds Block delay: 7324
+CryticTester.asset_mint(0xffffffff,50) from: 0x0000000000000000000000000000000000030000 Time delay: 236762 seconds Block delay: 2
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000030000 Time delay: 322291 seconds Block delay: 9966
+CryticTester.counter_increment_asAdmin() from: 0x0000000000000000000000000000000000030000 Time delay: 39 seconds Block delay: 58181
+CryticTester.switch_asset(10856599804835955484876982978188048442982023135037225493875872842878964267848) from: 0x0000000000000000000000000000000000030000 Time delay: 287530 seconds Block delay: 7324
+CryticTester.asset_mint(0x411c3,66) from: 0x0000000000000000000000000000000000010000 Time delay: 82672 seconds Block delay: 39
+CryticTester.switchActor(90023127786105650453548843509703065841160357924600261439367448805781390016721) from: 0x0000000000000000000000000000000000030000 Time delay: 512439 seconds Block delay: 58107
+CryticTester.switch_asset(979) from: 0x0000000000000000000000000000000000020000 Time delay: 64 seconds Block delay: 59982
+CryticTester.add_new_asset(78) from: 0x0000000000000000000000000000000000030000 Time delay: 322370 seconds Block delay: 53166
+CryticTester.asset_approve(0xffffffff,51) from: 0x0000000000000000000000000000000000020000 Time delay: 490448 seconds Block delay: 4977
+CryticTester.doomsday_increment_never_reverts() from: 0x0000000000000000000000000000000000030000 Time delay: 338920 seconds Block delay: 5018
+
+[2025-09-16 16:40:40.06]  Saved reproducer to echidna/reproducers-unshrunk/2493304018829152678.txt
+[2025-09-16 16:40:40.06] [Worker 14] New coverage: 9402 instr, 4 contracts, 1 seqs in corpus
+[2025-09-16 16:40:40.06] [Worker 12] New coverage: 9402 instr, 4 contracts, 2 seqs in corpus
+[2025-09-16 16:40:40.06] [Worker 8] New coverage: 9402 instr, 4 contracts, 3 seqs in corpus
+[2025-09-16 16:40:40.06] [Worker 0] New coverage: 9402 instr, 4 contracts, 4 seqs in corpus
+[2025-09-16 16:40:40.07]  Saved reproducer to echidna/coverage/7188559226073540170.txt
+[2025-09-16 16:40:40.07] [Worker 3] New coverage: 9402 instr, 4 contracts, 5 seqs in corpus
+[2025-09-16 16:40:40.07] [Worker 15] New coverage: 9402 instr, 4 contracts, 6 seqs in corpus
+[2025-09-16 16:40:40.07] [Worker 11] New coverage: 9405 instr, 4 contracts, 7 seqs in corpus
+[2025-09-16 16:40:40.07] [Worker 6] New coverage: 9405 instr, 4 contracts, 8 seqs in corpus
+[2025-09-16 16:40:40.07]  Saved reproducer to echidna/coverage/1169451921053146285.txt
+[2025-09-16 16:40:40.07] [Worker 4] New coverage: 9405 instr, 4 contracts, 9 seqs in corpus
+[2025-09-16 16:40:40.07] [Worker 9] New coverage: 9405 instr, 4 contracts, 10 seqs in corpus
+[2025-09-16 16:40:40.07] [Worker 1] New coverage: 9405 instr, 4 contracts, 11 seqs in corpus
+[2025-09-16 16:40:40.07]  Saved reproducer to echidna/coverage/8407151698263364135.txt
+[2025-09-16 16:40:40.07] [Worker 2] New coverage: 9405 instr, 4 contracts, 12 seqs in corpus
+[2025-09-16 16:40:40.07] [Worker 10] New coverage: 9405 instr, 4 contracts, 13 seqs in corpus
+[2025-09-16 16:40:40.07] [Worker 5] New coverage: 9405 instr, 4 contracts, 14 seqs in corpus
+[2025-09-16 16:40:40.07] [Worker 13] New coverage: 9405 instr, 4 contracts, 15 seqs in corpus
+[2025-09-16 16:40:40.07]  Saved reproducer to echidna/coverage/7470890804040042529.txt
+[2025-09-16 16:40:40.08]  Saved reproducer to echidna/coverage/5521574354533767038.txt
+[2025-09-16 16:40:40.08]  Saved reproducer to echidna/coverage/2287709334776563146.txt
+[2025-09-16 16:40:40.08]  Saved reproducer to echidna/coverage/3359308571266207777.txt
+[2025-09-16 16:40:40.08] [Worker 7] New coverage: 9405 instr, 4 contracts, 16 seqs in corpus
+[2025-09-16 16:40:40.08]  Saved reproducer to echidna/coverage/6157936925797606809.txt
+[2025-09-16 16:40:40.09]  Saved reproducer to echidna/coverage/7380337804064687389.txt
+[2025-09-16 16:40:40.09]  Saved reproducer to echidna/coverage/3303487196284921827.txt
+[2025-09-16 16:40:40.09]  Saved reproducer to echidna/coverage/7153994825914068012.txt
+[2025-09-16 16:40:40.09]  Saved reproducer to echidna/coverage/1673009489050368702.txt
+[2025-09-16 16:40:40.10]  Saved reproducer to echidna/coverage/7872008222185847428.txt
+[2025-09-16 16:40:40.10]  Saved reproducer to echidna/coverage/8841819689833662574.txt
+[2025-09-16 16:40:40.10]  Saved reproducer to echidna/coverage/1833665049240283298.txt
+[2025-09-16 16:40:40.10]  Saved reproducer to echidna/coverage/151765532996959408.txt
+[2025-09-16 16:40:40.14] [Worker 12] New coverage: 9431 instr, 4 contracts, 17 seqs in corpus
+[2025-09-16 16:40:40.14]  Saved reproducer to echidna/coverage/8152048964207633054.txt
+[2025-09-16 16:40:40.16] [Worker 9] New coverage: 9434 instr, 4 contracts, 18 seqs in corpus
+[2025-09-16 16:40:40.16]  Saved reproducer to echidna/coverage/4422424061491462821.txt
+[2025-09-16 16:40:40.31] [Worker 8] New coverage: 9437 instr, 4 contracts, 19 seqs in corpus
+[2025-09-16 16:40:40.31]  Saved reproducer to echidna/coverage/735812382023915040.txt
+[2025-09-16 16:40:40.36] [Worker 14] New coverage: 9440 instr, 4 contracts, 20 seqs in corpus
+[2025-09-16 16:40:40.36]  Saved reproducer to echidna/coverage/6189822189767845139.txt
+[2025-09-16 16:40:40.46] [Worker 12] New coverage: 9443 instr, 4 contracts, 21 seqs in corpus
+[2025-09-16 16:40:40.46]  Saved reproducer to echidna/coverage/5172674731435552465.txt
+[2025-09-16 16:40:40.74] [Worker 3] New coverage: 9446 instr, 4 contracts, 22 seqs in corpus
+[2025-09-16 16:40:40.75]  Saved reproducer to echidna/coverage/7462784465174750650.txt
+[2025-09-16 16:40:40.81] [Worker 11] New coverage: 9449 instr, 4 contracts, 23 seqs in corpus
+[2025-09-16 16:40:40.81]  Saved reproducer to echidna/coverage/3499626427870480518.txt
+[2025-09-16 16:40:41.30] [Worker 12] New coverage: 9452 instr, 4 contracts, 24 seqs in corpus
+[2025-09-16 16:40:41.30]  Saved reproducer to echidna/coverage/1346899943509503228.txt
+[2025-09-16 16:40:41.87] [Worker 13] New coverage: 9455 instr, 4 contracts, 25 seqs in corpus
+[2025-09-16 16:40:41.88]  Saved reproducer to echidna/coverage/704665740001292908.txt
+[2025-09-16 16:40:42.20] [Worker 3] New coverage: 9458 instr, 4 contracts, 26 seqs in corpus
+[2025-09-16 16:40:42.20]  Saved reproducer to echidna/coverage/3847768369385736953.txt
+[2025-09-16 16:40:42.47] [Worker 3] New coverage: 9461 instr, 4 contracts, 27 seqs in corpus
+[2025-09-16 16:40:42.47]  Saved reproducer to echidna/coverage/8865415773274437099.txt
+[2025-09-16 16:40:42.94] [status] tests: 1/12, fuzzing: 49502/1000000, values: [], cov: 9461, corpus: 27, gas/s: 114500306465
+[2025-09-16 16:40:45.94] [status] tests: 1/12, fuzzing: 105294/1000000, values: [], cov: 9461, corpus: 27, gas/s: 129142943842
+[2025-09-16 16:40:48.94] [status] tests: 1/12, fuzzing: 163666/1000000, values: [], cov: 9461, corpus: 27, gas/s: 135271367177
+[2025-09-16 16:40:51.95] [status] tests: 1/12, fuzzing: 222827/1000000, values: [], cov: 9461, corpus: 27, gas/s: 136537896056
+[2025-09-16 16:40:54.95] [status] tests: 1/12, fuzzing: 283400/1000000, values: [], cov: 9461, corpus: 27, gas/s: 140225446226
+[2025-09-16 16:40:57.95] [status] tests: 1/12, fuzzing: 344051/1000000, values: [], cov: 9461, corpus: 27, gas/s: 139391764484
+[2025-09-16 16:41:00.96] [status] tests: 1/12, fuzzing: 405992/1000000, values: [], cov: 9461, corpus: 27, gas/s: 143641900535
+[2025-09-16 16:41:03.96] [status] tests: 1/12, fuzzing: 467552/1000000, values: [], cov: 9461, corpus: 27, gas/s: 142391587464
+[2025-09-16 16:41:06.96] [status] tests: 1/12, fuzzing: 529037/1000000, values: [], cov: 9461, corpus: 27, gas/s: 141767631367
+[2025-09-16 16:41:09.98] [status] tests: 1/12, fuzzing: 591291/1000000, values: [], cov: 9461, corpus: 27, gas/s: 144306770160
+[2025-09-16 16:41:12.98] [status] tests: 1/12, fuzzing: 653679/1000000, values: [], cov: 9461, corpus: 27, gas/s: 144168746867
+[2025-09-16 16:41:16.00] [status] tests: 1/12, fuzzing: 716208/1000000, values: [], cov: 9461, corpus: 27, gas/s: 143664185089
+[2025-09-16 16:41:19.00] [status] tests: 1/12, fuzzing: 779127/1000000, values: [], cov: 9461, corpus: 27, gas/s: 144934312665
+[2025-09-16 16:41:22.01] [status] tests: 1/12, fuzzing: 841182/1000000, values: [], cov: 9461, corpus: 27, gas/s: 143384400215
+[2025-09-16 16:41:25.02] [status] tests: 1/12, fuzzing: 903442/1000000, values: [], cov: 9461, corpus: 27, gas/s: 143765718846
+[2025-09-16 16:41:26.23] [Worker 15] Test limit reached. Stopping.
+[2025-09-16 16:41:26.41] [Worker 7] Test limit reached. Stopping.
+[2025-09-16 16:41:26.48] [Worker 13] Test limit reached. Stopping.
+[2025-09-16 16:41:26.50] [Worker 5] Test limit reached. Stopping.
+[2025-09-16 16:41:26.54] [Worker 2] Test limit reached. Stopping.
+[2025-09-16 16:41:26.57] [Worker 11] Test limit reached. Stopping.
+[2025-09-16 16:41:26.62] [Worker 12] Test limit reached. Stopping.
+[2025-09-16 16:41:26.62] [Worker 4] Test limit reached. Stopping.
+[2025-09-16 16:41:26.63] [Worker 6] Test limit reached. Stopping.
+[2025-09-16 16:41:26.66] [Worker 9] Test limit reached. Stopping.
+[2025-09-16 16:41:26.71] [Worker 3] Test limit reached. Stopping.
+[2025-09-16 16:41:26.74] [Worker 10] Test limit reached. Stopping.
+[2025-09-16 16:41:26.74] [Worker 8] Test limit reached. Stopping.
+[2025-09-16 16:41:26.77] [Worker 14] Test limit reached. Stopping.
+[2025-09-16 16:41:26.82] [Worker 0] Test limit reached. Stopping.
+[2025-09-16 16:41:28.02] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 80909263389
+[2025-09-16 16:41:31.02] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+[2025-09-16 16:41:34.02] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+[2025-09-16 16:41:37.02] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+[2025-09-16 16:41:40.02] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+[2025-09-16 16:41:43.02] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+[2025-09-16 16:41:46.02] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+[2025-09-16 16:41:49.02] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+[2025-09-16 16:41:52.03] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+[2025-09-16 16:41:55.03] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+[2025-09-16 16:41:58.03] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+^C[2025-09-16 16:41:58.67] [Worker 1] Killed (thread killed). Stopping.
+[2025-09-16 16:41:58.67] [status] tests: 1/12, fuzzing: 938342/1000000, values: [], cov: 9461, corpus: 27, gas/s: 0
+counter_setNumber1(uint256): passing
+invariant_number_never_zero(): passing
+asset_approve(address,uint128): passing
+counter_setNumber2(uint256): passing
+switch_asset(uint256): passing
+counter_increment_asAdmin(): passing
+asset_mint(address,uint128): passing
+switchActor(uint256): passing
+add_new_asset(uint8): passing
+counter_increment(): passing
+doomsday_increment_never_reverts(): failed!💥  
+  Call sequence, shrinking 38704/100000:
+    CryticTester.counter_setNumber1(115792089237316195423570985008687907853269984665640564039457584007913129639933)
+    CryticTester.counter_increment_asAdmin()
+    CryticTester.counter_increment_asAdmin()
+    CryticTester.doomsday_increment_never_reverts()
+
+Traces: 
+call HEVM::prank(CryticTester) (/Users/entreprenerd2/Code/create-chimera-app/test/recon/Setup.sol:40)
+ └╴← 0x
+call Counter::increment()() (/Users/entreprenerd2/Code/create-chimera-app/test/recon/targets/DoomsdayTargets.sol:23)
+ └╴error Revert Panic(0x4e487b710000000000000000000000000000000000000000000000000000000000000011) (/Users/entreprenerd2/Code/create-chimera-app/src/Counter.sol:4)
+emit Log(«doomsday_increment_never_reverts») (/Users/entreprenerd2/Code/create-chimera-app/lib/chimera/src/CryticAsserts.sol:46)
+
+AssertionFailed(..): passing
+
+Unique instructions: 9461
+Unique codehashes: 4
+Corpus size: 27
+Seed: 1276306872100737805
+Total calls: 938342
+
+WARNING: assertion at file: lib/chimera/src/CryticAsserts.sol starting at line: 12 was never reached
+[2025-09-16 16:41:58.70] Saving test reproducers... Done! (0.00035s)
+[2025-09-16 16:41:58.70] Saving corpus... Done! (0.00074s)
+[2025-09-16 16:41:58.70] Saving coverage... Done! (0.523851s)
+entreprenerd2@MacBook-Pro-di-Entreprenerd create-chimera-app % 

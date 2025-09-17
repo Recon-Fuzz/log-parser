@@ -2,6 +2,13 @@ import { type FuzzingResults, type PropertyAndSequence } from "../types/types";
 
 let allLines: string[] = [];
 
+/**
+ * Reset internal parser state (for test isolation or starting a new parsing session).
+ */
+export function resetHalmosParserState(): void {
+  allLines = [];
+}
+
 export function extractCallStatement(line: string): string | null {
   const callStart = line.indexOf("CALL");
   if (callStart === -1) return null;

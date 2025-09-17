@@ -3,13 +3,19 @@ import {
   halmosLogsToFunctions,
   halmosSequenceToFunction,
   processHalmos,
-} from "./index";
-import { type FuzzingResults, Fuzzer } from "../types/types";
-import { processLogs } from "../main";
+} from "../src/halmos/index";
+import { type FuzzingResults, Fuzzer } from "../src/types/types";
+import { processLogs } from "../src/main";
 import * as fs from "fs";
 import * as path from "path";
 
+import { resetHalmosParserState } from "../src/halmos/logParser";
+
 describe("Halmos Parser", () => {
+  beforeEach(() => {
+    resetHalmosParserState();
+  });
+
   describe("getHalmosPropertyAndSequence", () => {
     it("should extract property and sequence from logs", () => {
       const logs = `Counterexample:
@@ -98,7 +104,10 @@ Sequence:
     });
 
     it("should parse actual logs file and generate correct invariant test", () => {
-      const logs = fs.readFileSync(path.join(__dirname, "logs.txt"), "utf-8");
+      const logs = fs.readFileSync(
+            "./tests/test_data/halmos-1.txt",
+            "utf8"
+          );
       const result = halmosLogsToFunctions(logs, "test");
 
       console.log("Generated test functions:");

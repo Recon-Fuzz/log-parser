@@ -165,14 +165,18 @@ vm.roll(block.number + ${blockDelay});`;
           sequence: `${line}\n`,
         });
       } else {
-        if (maxValueOptimization !== "") {
-          existingProperty.sequence += `// Max value:${maxValueOptimization}\n`
-          // jobStats.traces.push(`// Max value: ${maxValueOptimization}`);
-          maxValueOptimization = "";
-        }
-        if (!existingProperty.sequence.includes("---End Trace---")) {
-          existingProperty.sequence += `${line}\n`;
-        }
+          if(line.startsWith("Call sequence")) {
+              existingProperty.sequence = `${line}\n`;
+          } else {
+              if (maxValueOptimization !== "") {
+                  existingProperty.sequence += `// Max value:${maxValueOptimization}\n`
+                  // jobStats.traces.push(`// Max value: ${maxValueOptimization}`);
+                  maxValueOptimization = "";
+              }
+              if (!existingProperty.sequence.includes("---End Trace---")) {
+                  existingProperty.sequence += `${line}\n`;
+              }
+          }
       }
     }
   }
