@@ -1,6 +1,17 @@
 import { type FuzzingResults, type PropertyAndSequence } from "../types/types";
 
+// Internal accumulator for lines processed across a single Halmos run.
+// This was previously never cleared which caused test contamination when
+// multiple tests invoked processHalmos sequentially. We expose a reset
+// helper and also auto-reset when we detect the start of a new run.
 let allLines: string[] = [];
+
+/**
+ * Reset internal parser state (for test isolation or starting a new parsing session).
+ */
+export function resetHalmosParserState(): void {
+  allLines = [];
+}
 
 export function extractCallStatement(line: string): string | null {
   const callStart = line.indexOf("CALL");

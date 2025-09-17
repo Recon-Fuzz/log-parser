@@ -1,0 +1,37 @@
+Counterexample:
+    halmos_block_timestamp_depth1_6c7bfa9 = 0x8000000000000000
+    halmos_block_timestamp_depth2_ad1396a = 0x8000000000000000
+    halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_31225f5_36 =
+0x00
+    halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_e23a43b_69 =
+0x00
+    p_entropy_uint256_bf67ff6_37 = 0x00
+    p_manager_address_b8e5817_70 = 0x8000000000000000000000000000000000000000
+Sequence:
+    CALL CryticToFoundry::switchActor(p_entropy_uint256_bf67ff6_37) (value:
+halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_31225f5_36) (caller:
+halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_9282034_35)
+        SLOAD  @1 →
+0x0000000000000000000000000000000000000000000000000000000000000002
+        SLOAD
+@+(0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6,
+p_entropy_uint256_bf67ff6_37) →
+Select(storage_0x7fa9385be102ac3eac297483dd6233d62b3e1496_1_1_256_14378b1_03,
++(0x0000000000000000000000000000000000000000000000000000000000000000,
+p_entropy_uint256_bf67ff6_37))
+        SLOAD  @0 →
+0x0000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e1496
+        SSTORE @0 ← Concat(0x000000000000000000000000, Extract(0x9f, 0x00,
+Select(storage_0x7fa9385be102ac3eac297483dd6233d62b3e1496_1_1_256_14378b1_03,
+p_entropy_uint256_bf67ff6_37)))
+    ↩ RETURN 0x
+    CALL CryticToFoundry::setTheManager(p_manager_address_b8e5817_70) (value:
+halmos_msg_value_0x7fa9385be102ac3eac297483dd6233d62b3e1496_e23a43b_69) (caller:
+halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_22a8176_68)
+        SLOAD  @10 →
+0x0000000000000000000000000000000000000000000000000000000000000000
+        SSTORE @10 ← Concat(0x000000000000000000000000, Extract(0x9f, 0x00,
+p_manager_address_b8e5817_70))
+    ↩ RETURN 0x
+
+[FAIL] invariant_never_manager() (paths: 90, time: 0.56s, bounds: [])
