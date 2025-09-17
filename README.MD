@@ -4,8 +4,9 @@ A TypeScript utility for parsing Medusa, Echidna, and Halmos fuzzing / symbolic 
 
 ## Web
 
-Used in (selection):
+Used in:
 
+- Recon VSCode Extension
 - https://getrecon.xyz/tools/medusa
 - https://getrecon.xyz/tools/echidna
 - https://getrecon.xyz/tools/halmos
