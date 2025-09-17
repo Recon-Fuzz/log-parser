@@ -91,15 +91,33 @@ export function getHalmosPropertyAndSequence(
   let currentProperty = "";
   let foundFirstCounterexample = false;
 
+  let emptyCounterexampleMode = false;
+  let pendingFailProperty = "";
+  const alreadyEmitted = new Set<string>();
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
 
-    // Skip counterexample if it's 'Counterexample: ∅'
+    // Detect 'Counterexample: ∅' and enter empty mode
     if (line === "Counterexample: ∅" || line.includes("Counterexample: ∅")) {
-      capturing = false;
-      currentCounterexample = [];
-      currentSequenceCalls = [];
-      capturingSequence = false;
+      emptyCounterexampleMode = true;
+      continue;
+    }
+
+    // If in emptyCounterexampleMode, skip all counterexamples/sequences until [FAIL] or [TIMEOUT]
+    if (emptyCounterexampleMode) {
+      const failMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(line);
+      if (failMatch) {
+        pendingFailProperty = failMatch[1].trim();
+        if (!alreadyEmitted.has(pendingFailProperty)) {
+          results.push({
+            brokenProperty: pendingFailProperty,
+            sequence: [`${pendingFailProperty.replace(/\(.*/, '')}() // fails for all paths`],
+          });
+          alreadyEmitted.add(pendingFailProperty);
+        }
+        emptyCounterexampleMode = false;
+        pendingFailProperty = "";
+      }
       continue;
     }
 
