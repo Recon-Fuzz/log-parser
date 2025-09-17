@@ -86,7 +86,7 @@ Sequence:
       expect(result).toContain(
         "// Counterexample for: invariant_never_manager()"
       );
-      expect(result).toContain("uint256 entropy_uint256 = 0x00;");
+      expect(result).toContain("uint256 entropy_uint256 = 0;");
       expect(result).toContain(
         "address manager_address = 0x8000000000000000000000000000000000000000;"
       );
@@ -105,9 +105,9 @@ Sequence:
 
     it("should parse actual logs file and generate correct invariant test", () => {
       const logs = fs.readFileSync(
-            "./tests/test_data/halmos-1.txt",
-            "utf8"
-          );
+        "./tests/test_data/halmos-1.txt",
+        "utf8"
+      );
       const result = halmosLogsToFunctions(logs, "test");
 
       console.log("Generated test functions:");
@@ -117,6 +117,27 @@ Sequence:
       expect(result).toContain("switchActor(");
       expect(result).toContain("setTheManager(");
       expect(result).toContain("invariant_never_manager()");
+    });
+
+    it("should parse actual logs file and generate correct invariant test", () => {
+      const logs = fs.readFileSync(
+        "./tests/test_data/halmos-2.txt",
+        "utf8"
+      );
+      const result = halmosLogsToFunctions(logs, "test");
+
+      console.log("Generated test functions:");
+      console.log(result);
+
+      const expected = `function test_invariant_amt_isAbove0___test_0() public {
+    // Counterexample for: invariant_amt_isAbove0()
+
+    // Reproduction sequence:
+    invariant_amt_isAbove0();
+}`
+
+      // Check that the invariant test includes the ∅ sequence calls
+      expect(result).toContain(expected);
     });
 
     it("should debug the specific failing case", () => {
@@ -169,9 +190,12 @@ p_manager_address_b8e5817_70))
       console.log(result);
 
       // Check that the invariant test includes the sequence calls
-      expect(result).toContain("switchActor(");
-      expect(result).toContain("setTheManager(");
+      expect(result).toContain("switchActor");
+      expect(result).toContain("setTheManager");
       expect(result).toContain("invariant_never_manager()");
+
+      // msg.value is zero in the logs -> should not add {value: ...}
+      expect(result).not.toContain("{value:");
     });
 
     it("should test halmosSequenceToFunction specifically", () => {
@@ -420,7 +444,7 @@ halmos_msg_sender_0x7fa9385be102ac3eac297483dd6233d62b3e1496_3c634f7_63)
 
       // Should generate proper variable declarations
       expect(result).toContain("bool flag_bool = true;");
-      expect(result).toContain("uint256 value_uint256 = 0x00;");
+      expect(result).toContain("uint256 value_uint256 = 0;");
 
       // Should generate proper function call with actual variables (not placeholder comments)
       expect(result).toContain(

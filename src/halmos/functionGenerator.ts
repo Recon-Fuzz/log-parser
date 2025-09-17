@@ -66,6 +66,10 @@ export const generateTestFunction = (
   const variableMapping = new Map<string, string>();
   const arrayDeclarations: string[] = [];
   const sequenceCalls: string[] = [];
+  // Track msg.value variables that are explicitly zero to omit {value: ...}
+  const zeroMsgValueKeys = new Set<string>();
+  // When any msg.value variable is declared as zero, omit value from all calls
+  let anyMsgValueZero = false;
 
   // Process only the first counterexample when there are multiple
   const firstCounterexampleLines: string[] = [];
@@ -106,7 +110,8 @@ export const generateTestFunction = (
             param.includes("=") &&
             (param.startsWith("p_") ||
               param.includes("p_") ||
-              param.includes("p_s."))
+              param.includes("p_s.") ||
+              param.startsWith("halmos_msg_value_"))
         );
 
   // First pass: process all length parameters
@@ -136,20 +141,35 @@ export const generateTestFunction = (
         }
       }
 
-      const solidityDeclaration = formatSolidityValue(
-        paramName,
-        paramValue,
-        lengthMap
-      );
+      // Check if this is a zero msg.value parameter and skip declaration
+      let shouldSkipDeclaration = false;
+      if (paramName.startsWith("halmos_msg_value_")) {
+        const raw = paramValue.trim();
+        const hex = raw.toLowerCase().startsWith("0x") ? raw.slice(2) : raw;
+        const isZero = hex.length === 0 || /^0+$/.test(hex);
+        if (isZero) {
+          zeroMsgValueKeys.add(paramName);
+          anyMsgValueZero = true;
+          shouldSkipDeclaration = true;
+        }
+      }
 
-      const varPattern = /\w+\s+(\w+)\s*=/;
-      const varMatch = varPattern.exec(solidityDeclaration);
-      if (varMatch) {
-        const varName = varMatch[1];
-        if (!usedVariableNames.has(varName)) {
-          parameterDeclarations.push(`    ${solidityDeclaration}`);
-          usedVariableNames.add(varName);
-          variableMapping.set(paramName, varName);
+      if (!shouldSkipDeclaration) {
+        const solidityDeclaration = formatSolidityValue(
+          paramName,
+          paramValue,
+          lengthMap
+        );
+
+        const varPattern = /\w+\s+(\w+)\s*=/;
+        const varMatch = varPattern.exec(solidityDeclaration);
+        if (varMatch) {
+          const varName = varMatch[1];
+          if (!usedVariableNames.has(varName)) {
+            parameterDeclarations.push(`    ${solidityDeclaration}`);
+            usedVariableNames.add(varName);
+            variableMapping.set(paramName, varName);
+          }
         }
       }
     }
@@ -158,12 +178,18 @@ export const generateTestFunction = (
   sequences
     .filter(
       (line): line is string =>
-        typeof line === "string" && line.startsWith("CALL ")
+        typeof line === "string" &&
+        line.startsWith("CALL ") &&
+        !line.includes("hevm::prank")
     )
     .forEach((callLine) => {
       const parsedCall = parseCallStatement(callLine);
       if (parsedCall) {
-        const { functionName: callFunctionName, parameters } = parsedCall;
+        const {
+          functionName: callFunctionName,
+          parameters,
+          msgValue,
+        } = parsedCall;
 
         const mappedParams = parameters.map((param) => {
           const paramMatch = /p_\w+_[a-f0-9]+_\d+/.exec(param);
@@ -200,9 +226,45 @@ export const generateTestFunction = (
           return param;
         });
 
-        const functionCallStr = `${callFunctionName}(${mappedParams.join(
-          ", "
-        )})`;
+        let functionCallStr = "";
+        let shouldIncludeValue = false;
+        if (msgValue) {
+          if (anyMsgValueZero) {
+            // If any msg.value is explicitly zero, omit value decorator entirely
+            shouldIncludeValue = false;
+          } else if (!zeroMsgValueKeys.has(msgValue)) {
+            // Fallback: inspect the mapped variable declaration to see if it's zero
+            const mappedMsgValueVar = variableMapping.get(msgValue);
+            if (mappedMsgValueVar) {
+              const decl = parameterDeclarations.find((d) =>
+                d.includes(` ${mappedMsgValueVar} = 0x`)
+              );
+              if (decl) {
+                const hexPart = (decl.split("= 0x")[1] || "")
+                  .replace(/;$/, "")
+                  .trim();
+                // Treat empty or all-zero as zero
+                const isZeroHex = hexPart.length === 0 || /^0+$/i.test(hexPart);
+                shouldIncludeValue = !isZeroHex;
+              } else {
+                // If we can't find the declaration, include it conservatively
+                shouldIncludeValue = true;
+              }
+            } else {
+              // No mapping available, include it conservatively
+              shouldIncludeValue = true;
+            }
+          }
+        }
+
+        if (msgValue && shouldIncludeValue) {
+          const mappedMsgValue = variableMapping.get(msgValue) || msgValue;
+          functionCallStr = `${callFunctionName}{value: ${mappedMsgValue}}(${mappedParams.join(
+            ", "
+          )})`;
+        } else {
+          functionCallStr = `${callFunctionName}(${mappedParams.join(", ")})`;
+        }
         sequenceCalls.push(`    ${functionCallStr};`);
       }
     });
