@@ -105,9 +105,9 @@ Sequence:
 
     it("should parse actual logs file and generate correct invariant test", () => {
       const logs = fs.readFileSync(
-            "./tests/test_data/halmos-1.txt",
-            "utf8"
-          );
+        "./tests/test_data/halmos-1.txt",
+        "utf8"
+      );
       const result = halmosLogsToFunctions(logs, "test");
 
       console.log("Generated test functions:");
@@ -121,9 +121,9 @@ Sequence:
 
     it("should parse actual logs file and generate correct invariant test", () => {
       const logs = fs.readFileSync(
-            "./tests/test_data/halmos-2.txt",
-            "utf8"
-          );
+        "./tests/test_data/halmos-2.txt",
+        "utf8"
+      );
       const result = halmosLogsToFunctions(logs, "test");
 
       console.log("Generated test functions:");
@@ -190,9 +190,12 @@ p_manager_address_b8e5817_70))
       console.log(result);
 
       // Check that the invariant test includes the sequence calls
-      expect(result).toContain("switchActor(");
-      expect(result).toContain("setTheManager(");
+      expect(result).toContain("switchActor");
+      expect(result).toContain("setTheManager");
       expect(result).toContain("invariant_never_manager()");
+
+      // msg.value is zero in the logs -> should not add {value: ...}
+      expect(result).not.toContain("{value:");
     });
 
     it("should test halmosSequenceToFunction specifically", () => {

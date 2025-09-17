@@ -1,6 +1,6 @@
 export const parseCallStatement = (
   callLine: string
-): { functionName: string; parameters: string[] } | null => {
+): { functionName: string; parameters: string[]; msgValue?: string } | null => {
   const callMatch = callLine.match(/CALL\s+\w+::(\w+)\(([^)]*)\)/);
   if (!callMatch) {
     return null;
@@ -9,14 +9,18 @@ export const parseCallStatement = (
   const functionName = callMatch[1];
   const paramString = callMatch[2].trim();
 
+  // Extract msg.value if present
+  const valueMatch = callLine.match(/VALUE\(([^)]+)\)/);
+  const msgValue = valueMatch ? valueMatch[1].trim() : undefined;
+
   if (!paramString) {
-    return { functionName, parameters: [] };
+    return { functionName, parameters: [], msgValue };
   }
 
   if (paramString.startsWith("Concat(")) {
     const concatContent = paramString.slice(7, -1);
     const concatParams = parseConcatParameters(concatContent);
-    return { functionName, parameters: concatParams };
+    return { functionName, parameters: concatParams, msgValue };
   }
 
   const parameters: string[] = [];
@@ -48,7 +52,7 @@ export const parseCallStatement = (
     parameters.push(currentParam.trim());
   }
 
-  return { functionName, parameters };
+  return { functionName, parameters, msgValue };
 };
 
 export const parseConcatParameters = (concatContent: string): string[] => {
@@ -123,6 +127,13 @@ export const formatSolidityValue = (
   value: string,
   lengthMapping?: Map<string, string>
 ): string => {
+  // Handle halmos_msg_value_* parameters specially
+  if (paramName.startsWith("halmos_msg_value_")) {
+    const cleanValue = value.replace(/^0x/, "");
+    const cleanName = "msgValue";
+    return cleanValue === "00" ? "" : `uint256 ${cleanName} = 0x${cleanValue};`;
+  }
+
   const cleanName = cleanParameterName(paramName);
   const cleanValue = value.replace(/^0x/, "");
   const type = extractTypeFromParamName(paramName);

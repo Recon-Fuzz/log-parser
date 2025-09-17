@@ -30,14 +30,30 @@ export function extractCallStatement(line: string): string | null {
 
   if (parenCount === 0) {
     const params = line.substring(openParenIndex + 1, i - 1);
+
+    // Extract msg.value if present
+    const valueMatch = line.match(/\(value:\s*([^)]+)\)/);
+    const msgValue = valueMatch ? valueMatch[1].trim() : null;
+
+    if (msgValue && msgValue !== "0" && msgValue !== "0x00") {
+      return `CALL ${functionName}(${params}) VALUE(${msgValue})`;
+    }
+
     return `CALL ${functionName}(${params})`;
   }
 
   return null;
 }
 
+let hasAssertionFailure = false;
+
 export function processHalmos(line: string, jobStats: FuzzingResults): void {
   allLines.push(line);
+
+  // Track if we've seen an assertion failure in the logs
+  if (line.includes("Assertion failure detected")) {
+    hasAssertionFailure = true;
+  }
 
   if (line.includes("[FAIL]") || line.includes("[TIMEOUT]")) {
     jobStats.failed++;
@@ -52,7 +68,12 @@ export function processHalmos(line: string, jobStats: FuzzingResults): void {
     }
   }
 
-  if (line.includes("[FAIL]") || line.includes("[TIMEOUT]")) {
+  if (
+    line.includes("[FAIL]") ||
+    line.includes("[TIMEOUT]") ||
+    (line.includes("[PASS]") && hasAssertionFailure) ||
+    line.includes("Symbolic test result:")
+  ) {
     const logsText = allLines.join("\n");
     const propertySequences = getHalmosPropertyAndSequence(logsText);
 
@@ -70,6 +91,10 @@ export function processHalmos(line: string, jobStats: FuzzingResults): void {
         });
       }
     });
+
+    if (line.includes("[PASS]") || line.includes("Symbolic test result:")) {
+      hasAssertionFailure = false;
+    }
   }
 
   if (line.trim()) {
@@ -90,6 +115,8 @@ export function getHalmosPropertyAndSequence(
   let currentCall = "";
   let currentProperty = "";
   let foundFirstCounterexample = false;
+  let callDepth = 0;
+
 
   let emptyCounterexampleMode = false;
   let pendingFailProperty = "";
@@ -127,7 +154,7 @@ export function getHalmosPropertyAndSequence(
     }
 
     const assertionFailMatch =
-      /Assertion failure detected in \w+\.(.+?)\(\)/.exec(line);
+      /Assertion failure detected in \w+\.(.+?)\(/.exec(line);
     if (assertionFailMatch) {
       currentProperty = assertionFailMatch[1].trim();
     }
@@ -151,6 +178,8 @@ export function getHalmosPropertyAndSequence(
     if (line.includes("Sequence:")) {
       capturingSequence = true;
       currentCall = "";
+      callDepth = 0; // reset depth at the start of a new sequence
+
       continue;
     }
 
@@ -159,7 +188,9 @@ export function getHalmosPropertyAndSequence(
       line.includes("[FAIL]") ||
       line.includes("[TIMEOUT]") ||
       line.includes("Symbolic test result:") ||
-      (currentProperty && i === lines.length - 1);
+      (currentProperty && i === lines.length - 1) ||
+      (currentProperty && line.includes("[PASS]"));
+
 
     if (isEndCondition || capturing) {
       if (isEndCondition) {
@@ -172,9 +203,8 @@ export function getHalmosPropertyAndSequence(
 
         let propertyName = currentProperty;
         if (!propertyName) {
-          const propertyMatch = /\[(?:FAIL|TIMEOUT)\]\s+(.+?)\s+\(paths:/.exec(
-            line
-          );
+          const propertyMatch =
+            /\[(?:FAIL|TIMEOUT|PASS)\]\s+(.+?)\s+\(paths:/.exec(line);
           if (propertyMatch) {
             propertyName = propertyMatch[1].trim();
           }
@@ -212,9 +242,21 @@ export function getHalmosPropertyAndSequence(
         }
         const callMatch = extractCallStatement(currentCall);
         if (callMatch) {
-          currentSequenceCalls.push(callMatch);
+          const contractMatch = /CALL\s+([^:]+)::/.exec(callMatch);
+          const contractName = contractMatch ? contractMatch[1] : "";
+          if (contractName === "CryticToFoundry") {
+            currentSequenceCalls.push(callMatch);
+          }
         }
+        callDepth++;
+
         currentCall = "";
+      } else if (
+        capturingSequence &&
+        (line.startsWith("↩") || line.startsWith("\u21A9"))
+      ) {
+        callDepth = Math.max(0, callDepth - 1);
+        continue;
       } else if (
         capturingSequence &&
         currentCall &&
@@ -252,7 +294,11 @@ export function getHalmosPropertyAndSequence(
           line.includes("_bool") ||
           line.includes("halmos_"))
       ) {
-        if (!line.includes("halmos_") || line.startsWith("p_")) {
+        if (
+          !line.includes("halmos_") ||
+          line.startsWith("p_") ||
+          line.startsWith("halmos_msg_value_")
+        ) {
           // Only capture parameters if we're in the first counterexample
           if (capturing && foundFirstCounterexample) {
             currentCounterexample.push(line);
