@@ -140,7 +140,7 @@ export const formatSolidityValue = (
   }
 
   if (type.startsWith("uint") || type.startsWith("int")) {
-    return `${type} ${cleanName} = ${cleanValue == "00" ? "0" : `0x${cleanValue}`};`;
+    return `${type} ${cleanName} = ${cleanValue === "00" ? "0" : `0x${cleanValue}`};`;
   }
 
   if (type === "bytes") {
