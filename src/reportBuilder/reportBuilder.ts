@@ -1,8 +1,8 @@
 import { echidnaLogsToFunctions, echidnaShrunkAndProcess } from "../echidna";
+import { halmosLogsToFunctions } from "../halmos";
 import { processLogs } from "../main";
 import { medusaLogsToFunctions } from "../medusa";
 import { Fuzzer, FuzzingResults, VmParsingData } from "../types/types";
-import { generateTestFunction } from "../halmos/functionGenerator";
 
 export const generateJobMD = (fuzzer: Fuzzer, logs: string, label: string) => {
   let data = processLogs(logs, fuzzer);
@@ -77,7 +77,7 @@ const prepareTrace = (
   } else if (fuzzer === Fuzzer.ECHIDNA) {
     finalTrace = echidnaLogsToFunctions(trace, "", brokenProperty, vmData);
   } else if (fuzzer === Fuzzer.HALMOS) {
-    finalTrace = generateTestFunction({ sequence: trace.split("\n"), brokenProperty: brokenProperty}, '', 0);
+    finalTrace = halmosLogsToFunctions(trace, "", brokenProperty, vmData);
   }
   const functionName = finalTrace
     .split("() public")[0]

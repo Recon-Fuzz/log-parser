@@ -7,7 +7,6 @@ export { processMedusa, medusaLogsToFunctions } from "./medusa/index";
 export {
   processHalmos,
   halmosLogsToFunctions,
-  halmosSequenceToFunction,
 } from "./halmos/index";
 
 export {
