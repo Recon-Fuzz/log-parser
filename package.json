@@ -17,8 +17,7 @@
   "author": "0xsi <simon.busch@live.fr>",
   "scripts": {
     "test": "jest",
-    "build": "tsc && tsc -p tsconfig.cjs.json",
-    "demo:halmos": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/run-halmos.ts"
+    "build": "tsc && tsc -p tsconfig.cjs.json"
   },
   "dependencies": {
     "@babel/parser": "^7.25.6",
