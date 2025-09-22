@@ -1,8 +1,8 @@
 import { echidnaLogsToFunctions, echidnaShrunkAndProcess } from "../echidna";
-import { halmosLogsToFunctions } from "../halmos";
 import { processLogs } from "../main";
 import { medusaLogsToFunctions } from "../medusa";
 import { Fuzzer, FuzzingResults, VmParsingData } from "../types/types";
+import { generateTestFunction } from "../halmos/functionGenerator";
 
 export const generateJobMD = (fuzzer: Fuzzer, logs: string, label: string) => {
   let data = processLogs(logs, fuzzer);
@@ -72,12 +72,12 @@ const prepareTrace = (
   brokenProperty: string
 ) => {
   let finalTrace = "";
-  if (fuzzer === "MEDUSA") {
+  if (fuzzer === Fuzzer.MEDUSA) {
     finalTrace = medusaLogsToFunctions(trace, "", vmData);
-  } else if (fuzzer === "ECHIDNA") {
+  } else if (fuzzer === Fuzzer.ECHIDNA) {
     finalTrace = echidnaLogsToFunctions(trace, "", brokenProperty, vmData);
-  } else if (fuzzer === "HALMOS") {
-    finalTrace = halmosLogsToFunctions(trace, "");
+  } else if (fuzzer === Fuzzer.HALMOS) {
+    finalTrace = generateTestFunction({ sequence: trace.split("\n"), brokenProperty: brokenProperty}, '', 0);
   }
   const functionName = finalTrace
     .split("() public")[0]
@@ -114,6 +114,16 @@ export const prepareProperties = (
       property: propRaw.split(":")[0],
       status: "❌",
     };
+  // Capture Halmos
+  } else if (propRaw.includes("[PASS]")) {
+      const m = propRaw.match(/\[PASS\]\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/);
+      return { property: m?.[1] ?? "Unknown", status: "✅" };
+  } else if (propRaw.includes("[FAIL]")) {
+      const m = propRaw.match(/\[FAIL\]\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/);
+      return { property: m?.[1] ?? "Unknown", status: "❌" };
+  } else if (propRaw.includes("[TIMEOUT]")) {
+      const m = propRaw.match(/\[TIMEOUT\]\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/);
+      return { property: m?.[1] ?? "Unknown", status: "⏳" };
   } else {
     return {
       property: "Unknown",

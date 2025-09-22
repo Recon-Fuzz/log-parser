@@ -29,6 +29,10 @@ export function halmosLogsToFunctions(
 ): string {
   const propertySequences = getHalmosPropertyAndSequence(logs);
 
+  if(logs.includes("// fails for all paths")) {
+      return logs;
+  }
+
   return propertySequences.length === 0
     ? "// No failed properties found in Halmos logs"
     : propertySequences

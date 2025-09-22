@@ -56,8 +56,10 @@ export function processHalmos(line: string, jobStats: FuzzingResults): void {
   }
 
   if (line.includes("[FAIL]") || line.includes("[TIMEOUT]")) {
+    jobStats.results.push(line);
     jobStats.failed++;
   } else if (line.includes("[PASS]")) {
+    jobStats.results.push(line);
     jobStats.passed++;
   }
 

@@ -6,6 +6,7 @@ import {
 } from "../src/halmos/index";
 import { type FuzzingResults, Fuzzer } from "../src/types/types";
 import { processLogs } from "../src/main";
+import { generateJobMD } from "../src/reportBuilder/reportBuilder";
 import * as fs from "fs";
 import * as path from "path";
 
