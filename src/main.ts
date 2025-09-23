@@ -30,16 +30,18 @@ export const processLogs = (logs: string, tool: Fuzzer): FuzzingResults => {
     numberOfTests: 0,
   };
   const unescapedLogs = logs.replace(/\\n/g, "\n");
-  const lines = unescapedLogs.split("\n");
-  lines.forEach((line) => {
-    if (tool === Fuzzer.MEDUSA) {
-      processMedusa(line, jobStats);
-    } else if (tool === Fuzzer.ECHIDNA) {
-      processEchidna(line, jobStats);
-    } else if (tool === Fuzzer.HALMOS) {
-      processHalmos(line, jobStats);
-    }
-  });
+  if (tool === Fuzzer.HALMOS) {
+    processHalmos(unescapedLogs, jobStats);
+  } else {
+    const lines = unescapedLogs.split("\n");
+    lines.forEach((line) => {
+      if (tool === Fuzzer.MEDUSA) {
+        processMedusa(line, jobStats);
+      } else if (tool === Fuzzer.ECHIDNA) {
+        processEchidna(line, jobStats);
+      }
+    });
+  }
 
   jobStats.traces = processTraceLogs(jobStats.traces);
   return jobStats;
