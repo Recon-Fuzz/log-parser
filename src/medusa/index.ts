@@ -139,7 +139,7 @@ export function getPropertyAndSequenceString(
   const bodies = splitted.map((entry) =>
     vmData
       ? getFunctionCallsWithVM(entry, vmData)
-      : getFunctionCalls(entry).map((body) => body.replace(" (block=", ";"))
+      : getFunctionCalls(entry)?.map((body) => body.replace(" (block=", ";"))
   );
   const headers = splitted.map((entry, counter) => getHeaders(entry, counter));
   if (bodies.length != headers.length) {
@@ -243,7 +243,7 @@ function getFunctionCalls(logs: string): string[] {
   const pattern: RegExp = /\b(\w+)\(([^)]*)\)\s+\(block=/gm;
   const matches: RegExpMatchArray | null = logs.match(pattern);
 
-  const functionCalls = matches?.map((entry) => entry.toString()) as string[];
+  const functionCalls = matches?.map((entry) => entry.toString()) || [];
   return functionCalls;
 }
 
