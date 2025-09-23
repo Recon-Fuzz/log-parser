@@ -353,7 +353,7 @@ function materializeArgs(raw: string, vars: Record<string, string>): string {
     const base = lenVar.split("_length_")[0]; // e.g. p_arr
     const elems: string[] = [];
     for (let i = 0; i < len; i++) {
-      const re = new RegExp(`^${escapeRegExp(base)}\\\\[${i}\\\\]_`);
+      const re = new RegExp(`^${escapeRegExp(base)}\\[${i}\\]_`);
       const part = parts.find((p) => re.test(p));
       if (part) {
         elems.push(renderAtom(part, vars));
@@ -424,7 +424,7 @@ function materializeArgsWithPre(raw: string, vars: Record<string, string>): { ar
       // 2) Collect scalar args that are not offsets, not lengths, not array elements, not bytes blobs for those bases
       const isBaseToken = (tok: string) => basesInOrder.some((b) =>
         new RegExp(`^${escapeRegExp(b)}_length_`).test(tok) ||
-        new RegExp(`^${escapeRegExp(b)}\\\\[\\\\d+\\\\]_`).test(tok) ||
+        new RegExp(`^${escapeRegExp(b)}\\[\\d+\\]_`).test(tok) ||
         new RegExp(`^${escapeRegExp(b)}_bytes_`).test(tok)
       );
       const scalarArgs: string[] = [];
@@ -467,12 +467,12 @@ function materializeArgsWithPre(raw: string, vars: Record<string, string>): { ar
       return { args: varName, pre };
     }
     // Infer element type from first element var name if possible
-    const elemVar = parts.find((p) => new RegExp(`^${escapeRegExp(base)}\\\\[0\\\\]_`).test(p));
+  const elemVar = parts.find((p) => new RegExp(`^${escapeRegExp(base)}\\[0\\]_`).test(p));
     const elemType = inferSolElemType(elemVar || "p_uint256_0");
       const varName = varBaseName;
     pre.push(`${elemType}[] memory ${varName} = new ${elemType}[](${len});`);
     for (let i = 0; i < len; i++) {
-      const re = new RegExp(`^${escapeRegExp(base)}\\\\[${i}\\\\]_`);
+      const re = new RegExp(`^${escapeRegExp(base)}\\[${i}\\]_`);
       const part = parts.find((p) => re.test(p));
       const value = part ? renderAtom(part, vars) : "0";
       pre.push(`${varName}[${i}] = ${value};`);
