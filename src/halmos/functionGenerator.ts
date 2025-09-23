@@ -208,6 +208,10 @@ function renderCall(
   const callerMatch = /\(caller:\s([^\)]+)\)$/.exec(traceCallLine);
   const callerTag = callerMatch?.[1] || "";
   const prankResolved = resolveCaller(callerTag, vars);
+  // Extract value tag (if present)
+  const valueMatch = /\(value:\s([^\)]+)\)/.exec(traceCallLine);
+  const valueTag = valueMatch?.[1] || "";
+  const valueSpec = resolveValueSpecifier(valueTag, vars); // e.g., "{value: 1234}" or undefined
 
   // Remove trailing tags like (value: ...) and (caller: ...) before parsing target + args
   const sanitized = stripMetaTags(traceCallLine);
@@ -224,7 +228,7 @@ function renderCall(
     const { args, pre } = materializeArgsWithPre(rawArgs, vars);
     const contractName = findContractByAddress(addressBook, addr);
     const left = contractLeft(contractName, addr);
-    return { call: `${left}.${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
+    return { call: `${left}.${fn}${valueSpec ?? ""}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
   } else {
     const left = m[1];
     const fn = m[2];
@@ -246,14 +250,14 @@ function renderCall(
     if (leftRendered.includes("::")) leftRendered = leftRendered.split("::").pop() as string;
     // If original left was hex, always render as <contract>.<fn>(...)
     if (isLeftHex) {
-      return { call: `${leftRendered}.${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
+      return { call: `${leftRendered}.${fn}${valueSpec ?? ""}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
     }
     // Otherwise, for symbolic names (e.g., CryticToFoundry), just the function name alone
     if (!/^\s*MockERC20\s*\(/.test(leftRendered) && /^[A-Za-z_][A-Za-z0-9_]*$/.test(leftRendered)) {
-      return { call: `${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
+      return { call: `${fn}${valueSpec ?? ""}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
     }
     // Otherwise we already resolved to contractLeft
-    return { call: `${leftRendered}.${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
+    return { call: `${leftRendered}.${fn}${valueSpec ?? ""}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
   }
 }
 
@@ -293,6 +297,30 @@ function resolveCaller(callerTag: string, vars: Record<string, string>): string 
 
 function formatAddressLiteral(addr: string): string {
   return addr;
+}
+
+function resolveValueSpecifier(valueTag: string, vars: Record<string, string>): string | undefined {
+  // Only attach value when tag is a halmos_msg_value_* variable present in vars and non-zero
+  if (!valueTag) return undefined;
+  if (!/^halmos_msg_value_/.test(valueTag)) return undefined;
+  const v = vars[valueTag];
+  if (v === undefined) return undefined;
+  // Detect zero values
+  const trimmed = v.trim();
+  if (trimmed === "0" || /^0x0*$/i.test(trimmed)) return undefined;
+  // Convert to decimal for readability
+  let bn: bigint;
+  try {
+    bn = BigInt(trimmed);
+  } catch {
+    try {
+      bn = BigInt(trimmed.startsWith("0x") ? trimmed : `0x${trimmed}`);
+    } catch {
+      return undefined;
+    }
+  }
+  if (bn === 0n) return undefined;
+  return `{value: ${bn.toString(10)}}`;
 }
 
 function findContractByAddress(book: AddressBook, addr: string): string | undefined {
