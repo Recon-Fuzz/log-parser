@@ -32,16 +32,14 @@ export function processMedusa(line: string, jobStats: FuzzingResults): void {
     jobStats.duration =
       captureFuzzingDuration(line.replace("fuzz: elapsed:", "")) ?? ""; // TODO 0XSI - fix this
     const coverageMatch = line.match(/coverage: (\d+)/);
-    const numberOfTestsMatch = line.match( /calls:\s(\d+)/);
+    const numberOfTestsMatch = line.match(/calls:\s(\d+)/);
     if (coverageMatch) {
       jobStats.coverage = +coverageMatch[1];
     }
 
-
     if (numberOfTestsMatch) {
       jobStats.numberOfTests = parseInt(numberOfTestsMatch[1]);
     }
-
   } else if (line.includes("Test summary:")) {
     const passedMatch = line.match(/(\d+ test\(s\) passed)/);
     const failedMatch = line.match(/(\d+ test\(s\) failed)/);
@@ -141,7 +139,7 @@ export function getPropertyAndSequenceString(
   const bodies = splitted.map((entry) =>
     vmData
       ? getFunctionCallsWithVM(entry, vmData)
-      : getFunctionCalls(entry).map((body) => body.replace(" (block=", ";"))
+      : getFunctionCalls(entry)?.map((body) => body.replace(" (block=", ";"))
   );
   const headers = splitted.map((entry, counter) => getHeaders(entry, counter));
   if (bodies.length != headers.length) {
@@ -172,7 +170,8 @@ export function getFunctionCallsWithVM(
   logs: string,
   vmData?: VmParsingData
 ): string[] {
-  const pattern: RegExp =/(?<=\.)[\w]+\(([^()]*(?:\([^()]*\)[^()]*)*)\)\(?([^()]*)\)?\s+\(block=\d*,\s*time=\d*,\s*gas=\d*,\s*gasprice=\d*,\s*value=\d*,\s*sender=0x[0-9a-fA-F]{1,40}\)/gm
+  const pattern: RegExp =
+    /(?<=\.)[\w]+\(([^()]*(?:\([^()]*\)[^()]*)*)\)\(?([^()]*)\)?\s+\(block=\d*,\s*time=\d*,\s*gas=\d*,\s*gasprice=\d*,\s*value=\d*,\s*sender=0x[0-9a-fA-F]{1,40}\)/gm;
   const matches: RegExpMatchArray | null = logs.match(pattern);
   const functionCalls = matches?.map((entry) => {
     let returnData = "";
@@ -188,16 +187,16 @@ export function getFunctionCallsWithVM(
     // Check for uncommon scenarios like: ((hex"address",uint256)[])([])
     if (cleanedData.includes("((")) {
       // Remove the content inside the first set of parentheses and replace it with an empty string
-      cleanedData = cleanedData.replace(patternArrayParams, '');
+      cleanedData = cleanedData.replace(patternArrayParams, "");
 
       // Remove the extra '([])' from the second set of parentheses
-      cleanedData = cleanedData.replace(emptyArrayPattern, '');
+      cleanedData = cleanedData.replace(emptyArrayPattern, "");
     } else if (cleanedData.includes("()()")) {
       // For common cases like: check_liquidation_solvency()();
       cleanedData = cleanedData.replace("()()", "()");
     } else if (/\([^\(\)]*\)\([^\(\)]*\)/.test(cleanedData)) {
       // If there are two sets of parentheses, remove the first set and its contents
-      cleanedData = cleanedData.replace(/\([^\(\)]*\)(?=\([^\(\)]*\))/, '');
+      cleanedData = cleanedData.replace(/\([^\(\)]*\)(?=\([^\(\)]*\))/, "");
     }
 
     if (vmData) {
@@ -244,7 +243,7 @@ export function getFunctionCalls(logs: string): string[] {
   const pattern: RegExp = /\b(\w+)\(([^)]*)\)\s+\(block=/gm;
   const matches: RegExpMatchArray | null = logs.match(pattern);
 
-  const functionCalls = matches?.map((entry) => entry.toString()) as string[];
+  const functionCalls = matches?.map((entry) => entry.toString()) || [];
   return functionCalls;
 }
 
