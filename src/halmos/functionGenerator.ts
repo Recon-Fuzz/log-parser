@@ -38,7 +38,7 @@ interface CounterexampleBlock {
 }
 
 export interface HalmosGenOptions {
-  maxCounterexamples?: number; // default 3
+  maxCounterexamples?: number; // default 1
 }
 
 export function buildReprosFromHalmosLogs(
@@ -48,7 +48,7 @@ export function buildReprosFromHalmosLogs(
   allowProps: Set<string>,
   options?: HalmosGenOptions
 ): string {
-  const maxPerProp = options?.maxCounterexamples ?? 3;
+  const maxPerProp = options?.maxCounterexamples ?? 1;
   // Break the log by FAIL markers to find blocks
   const blocks = splitIntoBlocks(input);
   const filtered = blocks.filter((b) => allowProps.has(extractPropName(b.headerLine)));
@@ -224,7 +224,7 @@ function renderCall(
     const { args, pre } = materializeArgsWithPre(rawArgs, vars);
     const contractName = findContractByAddress(addressBook, addr);
     const left = contractLeft(contractName, addr);
-    return { call: `${left}.${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved) ? prankResolved : undefined, pre };
+    return { call: `${left}.${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
   } else {
     const left = m[1];
     const fn = m[2];
@@ -246,25 +246,30 @@ function renderCall(
     if (leftRendered.includes("::")) leftRendered = leftRendered.split("::").pop() as string;
     // If original left was hex, always render as <contract>.<fn>(...)
     if (isLeftHex) {
-      return { call: `${leftRendered}.${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved) ? prankResolved : undefined, pre };
+      return { call: `${leftRendered}.${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
     }
     // Otherwise, for symbolic names (e.g., CryticToFoundry), just the function name alone
     if (!/^\s*MockERC20\s*\(/.test(leftRendered) && /^[A-Za-z_][A-Za-z0-9_]*$/.test(leftRendered)) {
-      return { call: `${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved) ? prankResolved : undefined, pre };
+      return { call: `${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
     }
     // Otherwise we already resolved to contractLeft
-    return { call: `${leftRendered}.${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved) ? prankResolved : undefined, pre };
+    return { call: `${leftRendered}.${fn}(${args})`, prank: shouldPrank(callerTag, prankResolved, vars) ? prankResolved : undefined, pre };
   }
 }
 
 const DEFAULT_SENDER = normalizeAddress("0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38");
 
-function shouldPrank(callerTag: string, prankAddress?: string): boolean {
-  if (!prankAddress) return false;
-  // Skip if caller var is a symbolic halmos_msg_sender_*
-  if (callerTag.startsWith("halmos_msg_sender_")) return false;
-  // Skip if caller is the default sender
-  if (normalizeAddress(prankAddress) === DEFAULT_SENDER) return false;
+function shouldPrank(callerTag: string, _prankAddressExpr?: string, vars?: Record<string, string>): boolean {
+  // Only prank if callerTag is a symbolic msg.sender variable and it exists in vars
+  if (!callerTag || !vars) return false;
+  if (!/^halmos_msg_sender_/.test(callerTag)) return false;
+  const raw = vars[callerTag];
+  if (raw === undefined) return false;
+  const hex = raw.startsWith("0x") ? raw : `0x${raw}`;
+  // Skip default sender
+  try {
+    if (normalizeAddress(hex) === DEFAULT_SENDER) return false;
+  } catch {}
   return true;
 }
 
@@ -276,17 +281,14 @@ function stripMetaTags(line: string): string {
 }
 
 function resolveCaller(callerTag: string, vars: Record<string, string>): string | undefined {
-  // callerTag examples:
-  // 0x1804c8ab1f12...
-  // halmos_msg_sender_0x..._abc_01
-  const direct = callerTag.match(/(0x[a-fA-F0-9]{8,40})/);
-  if (direct) return formatAddressLiteral(normalizeAddress(direct[1]));
+  // Only resolve caller when tag is a symbolic Halmos variable and exists in vars
   if (!callerTag) return undefined;
+  if (!/^halmos_msg_sender_/.test(callerTag)) return undefined;
   const v = vars[callerTag];
-  if (!v) return undefined;
-  // value may be 0x00 or a 20-byte hex string without 0x prefix length 40
+  if (v === undefined) return undefined;
   const hex = v.startsWith("0x") ? v : `0x${v}`;
-  return formatAddressLiteral(normalizeAddress(hex));
+  // Return a Foundry-style cast, preserving provided width (don't pad)
+  return `address(${hex})`;
 }
 
 function formatAddressLiteral(addr: string): string {

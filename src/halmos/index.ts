@@ -6,7 +6,7 @@ import {
 } from "./functionGenerator";
 
 // Parse the entire Halmos log and update the jobStats counters and results list
-export const processHalmos = (logs: string, jobStats: FuzzingResults, maxCounterexamples: number = 3) => {
+export const processHalmos = (logs: string, jobStats: FuzzingResults, maxCounterexamples: number = 1) => {
     // Collect result lines
     const resultLines = logs
         .split("\n")
@@ -99,7 +99,7 @@ export const halmosLogsToFunctions = (
     prefix: string,
     brokenProp?: string,
     _vmData?: VmParsingData,
-    maxCounterexamples: number = 3
+    maxCounterexamples: number = 1
 ): string => {
     // Build address maps from the initial target section
     const addressBook = parseAddressBook(input);
