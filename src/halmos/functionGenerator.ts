@@ -21,12 +21,39 @@ export function parseAddressBook(input: string): AddressBook {
 
 export function parseFailedProperties(input: string): Set<string> {
   const set = new Set<string>();
+  // 1) Regular FAIL lines, capture function name without params
   const re = /^\[FAIL\]\s+([^\(\[]+)/gm;
   let m: RegExpExecArray | null;
   while ((m = re.exec(input))) {
     set.add(m[1].trim());
   }
+  // 2) Inline assertion failures
+  // Example: Assertion failure detected in CryticToFoundry.doomsday_increment_never_reverts()
+  const assertionRe = /Assertion failure detected in\s+[\w$]+\.([^\)]+)\(\)/g;
+  const targetFns = parseTargetFunctions(input); // Full names incl. params, e.g. foo(uint256) or bar()
+  while ((m = assertionRe.exec(input))) {
+    const fn = (m[1] || "").trim(); // name without parens
+    // Only count as failed if it's one of the initial target functions (by name only)
+    const matchInTargets = Array.from(targetFns).some((full) => full.replace(/\(.*/, "") === fn);
+    if (matchInTargets) set.add(fn);
+  }
   return set;
+}
+
+// Parse list of target function signatures from the "Initial Invariant Target Functions" section
+export function parseTargetFunctions(input: string): Set<string> {
+  const out = new Set<string>();
+  const section = /Initial Invariant Target Functions([\s\S]*?)\n╰/m.exec(input);
+  if (!section) return out;
+  const body = section[1];
+  // Lines look like: "│ ├── add_new_asset(uint8)" or "│ └── switchActor(uint256)"
+  const lineRe = /^[\s\u2502]+[├└]──\s+([^\s]+\([^)]*\))/gm;
+  let m: RegExpExecArray | null;
+  while ((m = lineRe.exec(body))) {
+    const sig = (m[1] || "").trim(); // e.g., add_new_asset(uint8)
+    if (sig) out.add(sig);
+  }
+  return out;
 }
 
 interface CounterexampleBlock {
@@ -177,15 +204,32 @@ function renderFoundryTest(
   }
 
   // Render final call from Trace first line, always last
+  // But avoid duplication when the same function already appears in the Sequence
   if (block.traceFirstLine) {
+    const traceFn = extractFnNameFromCall(block.traceFirstLine);
+    const seqFns = new Set(
+      block.sequenceCalls.map((s) => extractFnNameFromCall(s)).filter((x): x is string => !!x)
+    );
+    const duplicate = traceFn && seqFns.has(traceFn);
+    if (!duplicate) {
     const { call, prank, pre } = renderCall(block.traceFirstLine, block.counterexampleVars, addressBook);
     if (pre && pre.length) pre.forEach((l) => bodyLines.push(`   ${l}`));
     if (prank) bodyLines.push(`   vm.prank(${prank});`);
     bodyLines.push(`   ${call};`);
+    }
   }
 
   const footer = "}";
   return [header, ...bodyLines, footer].join("\n");
+}
+
+function extractFnNameFromCall(traceCallLine: string): string | null {
+  const sanitized = stripMetaTags(traceCallLine).replace(/^\s+/, "");
+  const m1 = /^CALL\s+[^:]+::([^\(]+)\(/.exec(sanitized);
+  if (m1 && m1[1]) return m1[1].trim();
+  const m2 = /^CALL\s+(0x[a-fA-F0-9]{8,40})::([^\(]+)\(/.exec(sanitized);
+  if (m2 && m2[2]) return m2[2].trim();
+  return null;
 }
 
 function sanitizeTestName(s: string): string {

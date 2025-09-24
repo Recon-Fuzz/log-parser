@@ -116,14 +116,15 @@ export const prepareProperties = (
     };
   // Capture Halmos
   } else if (propRaw.includes("[PASS]")) {
-      const m = propRaw.match(/\[PASS\]\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/);
-      return { property: m?.[1] ?? "Unknown", status: "✅" };
+    // Show full signature inside the parentheses
+    const m = propRaw.match(/\[PASS\]\s+([A-Za-z_][A-Za-z0-9_]*\([^)]*\))/);
+    return { property: m?.[1] ?? "Unknown", status: "✅" };
   } else if (propRaw.includes("[FAIL]")) {
-      const m = propRaw.match(/\[FAIL\]\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/);
-      return { property: m?.[1] ?? "Unknown", status: "❌" };
+    const m = propRaw.match(/\[FAIL\]\s+([A-Za-z_][A-Za-z0-9_]*\([^)]*\))/);
+    return { property: m?.[1] ?? "Unknown", status: "❌" };
   } else if (propRaw.includes("[TIMEOUT]")) {
-      const m = propRaw.match(/\[TIMEOUT\]\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/);
-      return { property: m?.[1] ?? "Unknown", status: "⏳" };
+    const m = propRaw.match(/\[TIMEOUT\]\s+([A-Za-z_][A-Za-z0-9_]*\([^)]*\))/);
+    return { property: m?.[1] ?? "Unknown", status: "⏳" };
   } else {
     return {
       property: "Unknown",
