@@ -1,7 +1,7 @@
 {
   "name": "@recon-fuzz/log-parser",
   "description": "Fuzzer log parser for Recon Fuzz",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "license": "GPL-2.0-only",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -21,8 +21,7 @@
   },
   "dependencies": {
     "@babel/parser": "^7.25.6",
-    "ethereumjs-util": "^7.1.5",
-    "ethers": "^6.15.0",
+    "ethers": "^6.16.0",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
