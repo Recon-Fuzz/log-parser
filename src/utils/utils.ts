@@ -1,4 +1,4 @@
-import { toChecksumAddress, bufferToInt, toBuffer } from "ethereumjs-util";
+import { getAddress } from "ethers";
 
 export function captureFuzzingDuration(line: string): string | null {
   const pattern = /\b(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?\b/;
@@ -12,7 +12,7 @@ export function captureFuzzingDuration(line: string): string | null {
 
 export function correctChecksum(address: string): string {
   try {
-    return toChecksumAddress(address);
+    return getAddress(address);
   } catch (error) {
     return address; // Return the original address if it's invalid
   }
@@ -40,12 +40,7 @@ export function parseHexValue(input: string): string {
   const value = input.split(" Value: ")[1];
   const fnCall = input.split("(");
   try {
-    // Remove 0x prefix if present
-    const cleanHex = value.slice(2);
-    // Convert to buffer
-    const buffer = toBuffer(`0x${cleanHex}`);
-    // Convert buffer to integer
-    const valueNumber = bufferToInt(buffer);
+    const valueNumber = Number(BigInt(value));
     return `${fnCall[0]}{value: ${valueNumber}}(${
       fnCall[1].split(" Value: ")[0]
     }`;
